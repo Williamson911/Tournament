@@ -1,4 +1,4 @@
-package com.example.tournament;
+package be.technifutur.tournament;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
