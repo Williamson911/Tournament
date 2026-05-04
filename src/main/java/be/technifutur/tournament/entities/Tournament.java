@@ -1,6 +1,5 @@
 package be.technifutur.tournament.entities;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import jakarta.persistence.*;
 import lombok.*;
 
