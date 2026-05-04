@@ -1,6 +1,8 @@
 package be.technifutur.tournament;
 
 import be.technifutur.tournament.utils.AppInfo;
+import be.technifutur.tournament.utils.Dsg;
+import be.technifutur.tournament.utils.Tabeau;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -18,7 +20,7 @@ public class HelloApplication extends Application implements ServletContextListe
         String realPath = sce.getServletContext().getRealPath("/");
         AppInfo appInfo = new AppInfo();
         appInfo.getCurrentVersion(realPath);
-        System.out.println("\n$$$$$$$$$$$$$$$$$$$$$\n" + AppInfo.staticVersion + "\n$$$$$$$$$$$$$$$$$$$$$\n");
+        System.out.println(Tabeau.displayInbox(Dsg.ye,AppInfo.staticVersion));
     }
 
     @Override
