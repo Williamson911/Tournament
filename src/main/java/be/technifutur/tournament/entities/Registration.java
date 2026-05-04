@@ -27,8 +27,8 @@ public class Registration {
     private Tournament tournament;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "character_id", nullable = false)
-    private Character character;
+    @JoinColumn(name = "fighter_id", nullable = false)
+    private Fighter fighter;
 
     @Column(name = "registered_at", nullable = false, updatable = false)
     private LocalDateTime registeredAt;
