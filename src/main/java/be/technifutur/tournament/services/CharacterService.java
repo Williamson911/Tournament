@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 public class CharacterService {
 
     @Inject
-    private FighterDao characterDao;
+    private FighterDao fighterDao;
 
 
 

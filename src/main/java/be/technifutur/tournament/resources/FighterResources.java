@@ -2,23 +2,25 @@ package be.technifutur.tournament.resources;
 
 import be.technifutur.tournament.daos.FighterDao;
 import be.technifutur.tournament.entities.Fighter;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 @Path("/fighterResource")
 public class FighterResources {
 
-    private final FighterDao characterDao = new FighterDao();
+    @Inject
+    private FighterDao fighterDao;
 
     @GET
     @Path("/{name}")
     @Produces("application/json")
     public Response findByName(@PathParam("name") String name){
-        Fighter fighter = characterDao.getFighterByName(name);
-        if (fighter == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok().entity(fighter).build();
+        Fighter fighter = fighterDao.getFighterByName(name);
+
+        return Response.ok()
+                .entity(fighter)
+                .build();
     }
 
 }

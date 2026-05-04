@@ -15,7 +15,7 @@
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/tournament"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5440/tournament"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <property name="jakarta.persistence.jdbc.password" value="nyhc9111"/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
