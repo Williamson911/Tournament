@@ -16,21 +16,21 @@ public class Registration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "id_player", nullable = false)
     private Player player;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament_id", nullable = false)
+    @JoinColumn(name = "id_tournament", nullable = false)
     private Tournament tournament;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fighter_id", nullable = false)
+    @JoinColumn(name = "id_fighter", nullable = false)
     private Fighter fighter;
 
-    @Column(name = "registered_at", nullable = false, updatable = false)
+    @Column(name = "registered_date", nullable = false, updatable = false)
     private LocalDateTime registeredAt;
 
     @Column(nullable = false)

@@ -5,7 +5,7 @@ import be.technifutur.tournament.entities.Registration;
 import java.util.List;
 import java.util.Optional;
 
-public class RegistrationDAO extends CrudDao<Registration, Long> {
+public class RegistrationDAO extends CrudDao<Registration, Integer> {
 
     public List<Registration> findByTournamentId(Long tournamentId) {
         try (var em = emf.createEntityManager()) {
