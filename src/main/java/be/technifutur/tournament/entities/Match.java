@@ -1,0 +1,50 @@
+package be.technifutur.tournament.entities;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "match")
+public class Match {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tournament_id", nullable = false)
+    private Tournament tournament;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "player1_id", nullable = false)
+    private Player player1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "player2_id", nullable = false)
+    private Player player2;
+
+    @Column(name = "round_number", nullable = false)
+    private Integer roundNumber;
+
+    @Column(name = "bracket_position")
+    private String bracketPosition;
+
+    @Column(nullable = false)
+    private String status;
+
+    @Column(name = "scheduled_at")
+    private LocalDateTime scheduledAt;
+
+    @Column(name = "played_at")
+    private LocalDateTime playedAt;
+
+    @OneToOne(mappedBy = "match", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private MatchResult result;
+}
