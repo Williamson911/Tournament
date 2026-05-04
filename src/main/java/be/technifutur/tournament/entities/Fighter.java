@@ -28,7 +28,7 @@ public class Fighter {
     private String originCountry;
 
 
-    @Column(name = "imgage")
+    @Column(name = "image")
     private String imgUrl;
 
     @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
