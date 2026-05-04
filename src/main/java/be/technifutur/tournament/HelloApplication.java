@@ -10,6 +10,6 @@ public class HelloApplication extends Application {
     public HelloApplication(){
         AppInfo appInfo = new AppInfo();
         appInfo.getCurrentVersion();
-        System.out.println(AppInfo.staticVersion);
+        System.out.println("\n$$$$$$$$$$$$$$$$$$$$$\n"+AppInfo.staticVersion+"\n$$$$$$$$$$$$$$$$$$$$$\n");
     }
 }
