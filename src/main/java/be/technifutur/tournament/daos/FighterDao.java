@@ -1,9 +1,11 @@
 package be.technifutur.tournament.daos;
 
 import be.technifutur.tournament.entities.Fighter;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 
-public class CharacterDao extends CrudDao<Fighter,Integer>{
+@ApplicationScoped
+public class FighterDao extends CrudDao<Fighter,Integer>{
 
 //    public Optional<Character> findByEmailOrUsername(String login){
 //        try(EntityManager em = emf.createEntityManager()){
