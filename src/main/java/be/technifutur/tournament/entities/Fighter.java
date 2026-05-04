@@ -21,18 +21,15 @@ public class Fighter {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "fighting_style")
-    private String fightingStyle;
+    @Column(name = "style")
+    private String style;
 
-    @Column(name = "origin_country")
+    @Column(name = "origine")
     private String originCountry;
 
-    @Column
-    private String tier;
+    @Column(name = "image")
+    private String image;
 
-    @Column(name = "img_url")
-    private String imgUrl;
-
-    @OneToMany(mappedBy = "character", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
     private List<Registration> registrations;
 }

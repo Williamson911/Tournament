@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "player")
 public class Player {
 
     @Id
@@ -25,14 +24,15 @@ public class Player {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @Column(name = "image")
+    private String image;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    @Column(name = "elo")
+    private String elo;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name="age")
+    private int age;
+
 
     @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Registration> registrations;
@@ -43,8 +43,4 @@ public class Player {
     @OneToMany(mappedBy = "player2", fetch = FetchType.LAZY)
     private List<Match> matchesAsPlayer2;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
 }
