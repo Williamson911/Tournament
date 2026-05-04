@@ -11,11 +11,15 @@ import jakarta.ws.rs.core.Application;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+
+
 @ApplicationPath("/api")
 @WebListener
 public class HelloApplication extends Application implements ServletContextListener {
 
-    public HelloApplication() {}
+    public HelloApplication() {
+
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
