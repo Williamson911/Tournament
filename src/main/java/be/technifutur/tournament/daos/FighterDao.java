@@ -3,7 +3,7 @@ package be.technifutur.tournament.daos;
 import be.technifutur.tournament.entities.Fighter;
 import jakarta.persistence.EntityManager;
 
-public class CharacterDao extends CrudDao<Fighter,Integer>{
+public class FighterDao extends CrudDao<Fighter,Integer>{
 
 //    public Optional<Character> findByEmailOrUsername(String login){
 //        try(EntityManager em = emf.createEntityManager()){
@@ -26,10 +26,11 @@ public class CharacterDao extends CrudDao<Fighter,Integer>{
 
     public Fighter getFighterByName(String name){
         try(EntityManager em = emf.createEntityManager()){
-            Fighter fighter =  em.createQuery("SELECT f FROM Fighter f WHERE f.name= :name",Fighter.class)
+            return em.createQuery("SELECT f FROM Fighter f WHERE f.name= :name",Fighter.class)
                     .setParameter("name",name)
-                    .getSingleResult();
-            return fighter;
+                    .getResultStream()
+                    .findFirst()
+                    .orElse(null);
         }
     }
 

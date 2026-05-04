@@ -33,6 +33,6 @@ public class Fighter {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToMany(mappedBy = "character", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
     private List<Registration> registrations;
 }
