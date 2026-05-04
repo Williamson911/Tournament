@@ -29,7 +29,7 @@ public class AppInfo {
     }
 
     //versionning dynamique quotidienne
-    public String getCurrentVersion() {
+    public String getCurrentVersion(String basePath) {
         Gson json = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -37,8 +37,8 @@ public class AppInfo {
         String today = java.time.LocalDate.now().toString(); // 2026-04-01
         today = today.replace("-", "."); // 2026.04.01
 
-        File file = new File("./mydata/appVersion.json");
-        String ss = file.getAbsolutePath();
+        File file = new File(basePath + "mydata/appVersion.json");
+        file.getParentFile().mkdirs();
         //Lire ancienne version*******************************
         AppInfo oldInfo = null;
         if (file.exists()) {
