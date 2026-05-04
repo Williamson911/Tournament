@@ -6,11 +6,23 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Path("/fighterResource")
 public class FighterResources {
 
     @Inject
     private FighterDao fighterDao;
+
+    @GET
+    @Produces("application/json")
+    public Response getAllFighters(){
+        List<Fighter> allFighters = fighterDao.getAllFighters();
+
+        return Response.ok()
+                .entity(allFighters)
+                .build();
+    }
 
     @GET
     @Path("/{name}")
