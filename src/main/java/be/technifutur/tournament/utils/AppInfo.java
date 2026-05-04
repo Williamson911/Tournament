@@ -38,6 +38,7 @@ public class AppInfo {
         today = today.replace("-", "."); // 2026.04.01
 
         File file = new File("./mydata/appVersion.json");
+        String ss = file.getAbsolutePath();
         //Lire ancienne version*******************************
         AppInfo oldInfo = null;
         if (file.exists()) {
