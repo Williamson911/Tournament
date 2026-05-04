@@ -6,7 +6,7 @@
     <persistence-unit name="Tournament" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>be.technifutur.tournament.entities.Character</class>
+        <class>be.technifutur.tournament.entities.Fighter</class>
         <class>be.technifutur.tournament.entities.Match</class>
         <class>be.technifutur.tournament.entities.MatchResult</class>
         <class>be.technifutur.tournament.entities.Player</class>
