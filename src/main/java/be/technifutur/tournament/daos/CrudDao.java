@@ -8,12 +8,12 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class CrudDao<TEntity, TId> {
+public abstract class CrudDao<T, ID> {
 
 
 
     protected final EntityManagerFactory emf;
-    private final Class<TEntity> entityClass;
+    private final Class<T> entityClass;
 
     @SuppressWarnings("unchecked")
     public CrudDao() {
@@ -22,24 +22,24 @@ public abstract class CrudDao<TEntity, TId> {
         while (!(superclass instanceof ParameterizedType)) {
             superclass = ((Class<?>) superclass).getGenericSuperclass();
         }
-        this.entityClass = (Class<TEntity>)
+        this.entityClass = (Class<T>)
                 ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
 
-    public List<TEntity> findAll() {
+    public List<T> findAll() {
         try(var em = emf.createEntityManager()) {
             return em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass)
                     .getResultList();
         }
     }
 
-    public Optional<TEntity> findById(TId id) {
+    public Optional<T> findById(ID id) {
         try(var em = emf.createEntityManager()) {
             return Optional.ofNullable(em.find(entityClass, id));
         }
     }
 
-    public TEntity save(TEntity entity) {
+    public T save(T entity) {
         try(var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
@@ -49,7 +49,7 @@ public abstract class CrudDao<TEntity, TId> {
         }
     }
 
-    public void saveAll(List<TEntity> list) {
+    public void saveAll(List<T> list) {
         try(var em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
@@ -67,28 +67,28 @@ public abstract class CrudDao<TEntity, TId> {
         }
     }
 
-    public TEntity update(TEntity entity) {
+    public T update(T entity) {
         try(var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            TEntity merged = em.merge(entity);
+            T merged = em.merge(entity);
             tx.commit();
             return merged;
         }
     }
 
-    public TEntity delete(TId id) {
+    public T delete(ID id) {
         try(var em = emf.createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            TEntity ref = em.getReference(entityClass,id);
+            T ref = em.getReference(entityClass, id);
             em.remove(ref);
             tx.commit();
             return ref;
         }
     }
 
-    public boolean existsById(TId id) {
+    public boolean existsById(ID id) {
         try(var em = emf.createEntityManager()) {
             return em.createQuery("SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.id = :id", Long.class)
                     .setParameter("id", id)
