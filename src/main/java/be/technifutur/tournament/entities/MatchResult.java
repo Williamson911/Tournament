@@ -1,5 +1,7 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.FinishType;
+import be.technifutur.tournament.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +19,7 @@ public class MatchResult {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "match_id", nullable = false, unique = true)
+    @JoinColumn(name = "id_match", nullable = false, unique = true)
     private Match match;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,8 +33,9 @@ public class MatchResult {
     private Integer player2Score;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer numberRounds;
+    private Integer roundsPlayed;
 
-    @Column(name = "finish_type")
-    private String finishType;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FinishType finishType;
 }

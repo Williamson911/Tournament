@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-//@Table(name = "registration")
+@Table(name = "registration")
 public class Registration {
 
     @Id
@@ -31,8 +32,14 @@ public class Registration {
     private Fighter fighter;
 
     @Column(name = "registered_date", nullable = false, updatable = false)
-    private LocalDateTime registeredDate;
+    private LocalDateTime registeredAt;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private RegistrationStatus registrationStatus;
+
+    @PrePersist
+    protected void onCreate() {
+        this.registeredAt = LocalDateTime.now();
+    }
 }
