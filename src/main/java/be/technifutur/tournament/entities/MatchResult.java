@@ -35,7 +35,7 @@ public class MatchResult {
     @Column(name = "nb_rounds", nullable = false)
     private Integer numberRounds;
 
-    @Column(nullable = false)
+    @Column(name = "finish_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private FinishType finishType;
 }

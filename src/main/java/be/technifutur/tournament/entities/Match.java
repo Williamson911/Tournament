@@ -32,19 +32,19 @@ public class Match {
     private Player player2;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer numberRounds;
+    private Integer roundNumber;
 
     @Column(name = "bracket_position")
     private String bracketPosition;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private MatchStatus matchStatus;
 
     @Column(name = "scheduled_at")
     private LocalDateTime scheduledAt;
 
-    @Column(name = "played_at")
+    @Column(name = "finished_at")
     private LocalDateTime playedAt;
 
     @OneToOne(mappedBy = "match", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
