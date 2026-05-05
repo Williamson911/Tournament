@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name = "fighter")
 public class Fighter {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,15 +23,11 @@ public class Fighter {
     private String name;
 
     @Column(name = "style")
-    private String fightingStyle;
+    private String style;
 
     @Column(name = "origine")
     private String originCountry;
 
-
     @Column(name = "image")
-    private String imgUrl;
-
-    @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
-    private List<Registration> registrations;
+    private String image;
 }

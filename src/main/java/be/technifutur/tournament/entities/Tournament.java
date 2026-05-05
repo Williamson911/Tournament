@@ -22,7 +22,7 @@ public class Tournament {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TournamentStatus tournamentStatus;
 
@@ -35,17 +35,10 @@ public class Tournament {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-//    @Column(name = "created_at", nullable = false, updatable = false)
-//    private LocalDateTime createdAt;
-
     @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Registration> registrations;
 
     @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Match> matches;
 
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdAt = LocalDateTime.now();
-//    }
 }

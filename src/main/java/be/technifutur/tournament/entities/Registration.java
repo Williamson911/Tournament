@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "registration")
+//@Table(name = "registration")
 public class Registration {
 
     @Id
@@ -32,14 +32,14 @@ public class Registration {
     private Fighter fighter;
 
     @Column(name = "registered_date", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
+    private LocalDateTime registeredDate;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RegistrationStatus registrationStatus;
 
     @PrePersist
     protected void onCreate() {
-        this.registeredAt = LocalDateTime.now();
+        this.registeredDate = LocalDateTime.now();
     }
 }
