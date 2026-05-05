@@ -26,14 +26,20 @@ public class FighterResources {
     }
 
     @GET
-    @Path("/{name}")
+    @Path("/id/{id}")
+    @Produces("application/json")
+    public Response findByName(@PathParam("id") Integer id){
+        Fighter fighter = fighterDao.findById(id).orElseThrow();
+
+        return Response.ok().entity(fighter).build();
+    }
+
+    @GET
+    @Path("/name/{name}")
     @Produces("application/json")
     public Response findByName(@PathParam("name") String name){
         Fighter fighter = fighterDao.getFighterByName(name);
 
-        return Response.ok()
-                .entity(fighter)
-                .build();
+        return Response.ok().entity(fighter).build();
     }
-
 }

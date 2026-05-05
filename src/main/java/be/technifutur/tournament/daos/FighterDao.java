@@ -9,7 +9,6 @@ import java.util.List;
 @ApplicationScoped
 public class FighterDao extends CrudDao<Fighter,Integer>{
 
-
 //    public Optional<Character> findByEmailOrUsername(String login){
 //        try(EntityManager em = emf.createEntityManager()){
 //            Character user = em.createQuery("SELECT u FROM User u JOIN FETCH u.roles WHERE u.email = :login OR u.username = :login",User.class)
@@ -35,6 +34,8 @@ public class FighterDao extends CrudDao<Fighter,Integer>{
 //        }
 //    }
 
+
+
     public Fighter getFighterByName(String name){
         try(EntityManager em = emf.createEntityManager()){
             Fighter fighter =  em.createQuery("SELECT f FROM Fighter f WHERE f.name ILIKE :name",Fighter.class)
@@ -42,7 +43,6 @@ public class FighterDao extends CrudDao<Fighter,Integer>{
                     .getSingleResult();
             return fighter;
         }
-
     }
 
 }
