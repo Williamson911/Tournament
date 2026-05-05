@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,7 +35,8 @@ public class Registration {
     private LocalDateTime registeredAt;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private RegistrationStatus registrationStatus;
 
     @PrePersist
     protected void onCreate() {
