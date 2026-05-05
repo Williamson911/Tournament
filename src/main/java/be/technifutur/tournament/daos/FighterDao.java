@@ -40,6 +40,7 @@ public class FighterDao extends CrudDao<Fighter,Integer>{
                     .getSingleResult();
             return fighter;
         }
+
     }
 
 }
