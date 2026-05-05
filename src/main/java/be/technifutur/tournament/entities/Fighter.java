@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "character_sf")
+@Table(name = "fighter")
 public class Fighter {
 
     @Id
@@ -30,6 +31,7 @@ public class Fighter {
     @Column(name = "image")
     private String image;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
     private List<Registration> registrations;
 }

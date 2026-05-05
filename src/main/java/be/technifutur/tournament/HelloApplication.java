@@ -1,35 +1,23 @@
 package be.technifutur.tournament;
 
-import be.technifutur.tournament.utils.AppInfo;
-import be.technifutur.tournament.utils.Dsg;
-import be.technifutur.tournament.utils.Tableau;
-import jakarta.servlet.ServletContextEvent;
-import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.annotation.WebListener;
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
+import be.technifutur.tournament.daos.FighterDao;
+import be.technifutur.tournament.resources.FighterResources;
+import jakarta.inject.Singleton;
+import org.glassfish.jersey.internal.inject.AbstractBinder;
+import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 
-
-
-@ApplicationPath("/api")
-@WebListener
-public class HelloApplication extends Application implements ServletContextListener {
+public class HelloApplication extends ResourceConfig {
 
     public HelloApplication() {
-
+        register(FighterResources.class);
+        register(HelloResource.class);
+        register(JacksonFeature.class);
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bindAsContract(FighterDao.class).in(Singleton.class);
+            }
+        });
     }
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
-        String realPath = sce.getServletContext().getRealPath("/");
-        AppInfo appInfo = new AppInfo();
-        appInfo.getCurrentVersion(realPath);
-        System.out.println(Tableau.displayInbox(Dsg.ye,AppInfo.staticVersion));
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {}
 }

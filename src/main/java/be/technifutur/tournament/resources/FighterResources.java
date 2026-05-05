@@ -13,14 +13,21 @@ public class FighterResources {
     private FighterDao fighterDao;
 
     @GET
+    @Produces("application/json")
+    public Response findAll(){
+        return Response.ok(fighterDao.findAll()).build();
+    }
+
+    @GET
     @Path("/{name}")
     @Produces("application/json")
     public Response findByName(@PathParam("name") String name){
         Fighter fighter = fighterDao.getFighterByName(name);
 
-        return Response.ok()
-                .entity(fighter)
-                .build();
+        if (fighter == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(fighter).build();
     }
 
 }
