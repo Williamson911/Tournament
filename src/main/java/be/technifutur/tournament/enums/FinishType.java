@@ -1,4 +1,8 @@
 package be.technifutur.tournament.enums;
 
-public enum StatusResult {
+public enum FinishType {
+    KO,
+    SUPER,
+    TIMEOUT,
+    PERFECT
 }
