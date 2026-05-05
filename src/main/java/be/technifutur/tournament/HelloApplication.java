@@ -3,19 +3,29 @@ package be.technifutur.tournament;
 import be.technifutur.tournament.utils.AppInfo;
 import be.technifutur.tournament.utils.Dsg;
 import be.technifutur.tournament.utils.Tableau;
+import io.swagger.v3.jaxrs2.integration.resources.AcceptHeaderOpenApiResource;
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import org.glassfish.jersey.server.ResourceConfig;
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
+
+
 @ApplicationPath("/api")
 @WebListener
-public class HelloApplication extends Application implements ServletContextListener {
+public class HelloApplication extends ResourceConfig implements ServletContextListener {
 
-    public HelloApplication() {}
+    public HelloApplication() {
+        packages("be.technifutur.tournament");
+        register(OpenApiResource.class);
+        register(AcceptHeaderOpenApiResource.class);
+    }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
