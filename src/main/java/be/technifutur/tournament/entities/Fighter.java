@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "character_sf")
+@Table(name = "fighter")
 public class Fighter {
 
 
@@ -30,7 +30,4 @@ public class Fighter {
 
     @Column(name = "image")
     private String image;
-
-    @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
-    private List<Registration> registrations;
 }

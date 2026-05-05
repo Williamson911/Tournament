@@ -1,16 +1,21 @@
 package be.technifutur.tournament.daos;
 
 import be.technifutur.tournament.entities.Match;
+import be.technifutur.tournament.entities.MatchResult;
 
 import java.util.List;
 import java.util.Optional;
 
-public class MatchDAO extends CrudDao<Match, Integer> {
+public class MatchResultDAO extends CrudDao<Match, Integer> {
 
-    public List<Match> findByTournamentAndRound(int tournamentId, int round) {
+    //findByWinner(Long playerId) — stat : combien de matchs gagnés
+    //findByTournament(Long tournamentId) — tous les résultats d'un tournoi (classement final)
+    //countWinsByPlayer(Long tournamentId) — leaderboard du tournoi
+
+    public List<MatchResult> findByWinner(int tournamentId, int round) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
-                            "SELECT m FROM Match m WHERE m.tournament.id = :tid AND m.numberRounds = :round",
+                            "SELECT m FROM Match m WHERE m.tournament.id = :tid AND m.roundNumber = :round",
                             Match.class)
                     .setParameter("tid", tournamentId)
                     .setParameter("round", round)
@@ -18,7 +23,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
-    public Optional<Match> findNextMatchForPlayer(int playerId, int tournamentId) {
+    public Optional<MatchResult> findNextMatchForPlayer(Long playerId, Long tournamentId) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid AND (m.player1.id = :pid OR m.player2.id = :pid) AND m.status = 'SCHEDULED' ORDER BY m.roundNumber ASC",
@@ -30,7 +35,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
-    public List<Match> findByTournamentOrdered(int tournamentId) {
+    public List<MatchResult> findByTournament(int tournamentId) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid ORDER BY m.roundNumber ASC, m.bracketPosition ASC",
@@ -40,7 +45,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
-    public boolean existsUnfinishedMatch(int tournamentId, int round) {
+    public boolean countWinsByPlayer(int tournamentId, int round) {
         try (var em = emf.createEntityManager()) {
             Long count = em.createQuery(
                             "SELECT COUNT(m) FROM Match m WHERE m.tournament.id = :tid AND m.roundNumber = :round AND m.status <> 'FINISHED'",
@@ -52,3 +57,6 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 }
+
+
+
