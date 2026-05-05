@@ -16,15 +16,13 @@ public class MatchResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_match", nullable = false, unique = true)
-    private Match match;
+    @Column(name = "id_match", nullable = false)
+    private Integer idMatch;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_winner", nullable = false)
-    private Player winner;
+    @Column(name = "id_winner", nullable = false)
+    private int winner;
 
     @Column(name = "player1_score", nullable = false)
     private Integer player1Score;
@@ -33,7 +31,7 @@ public class MatchResult {
     private Integer player2Score;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer numberRounds;
+    private Integer roundsPlayed;
 
     @Column(name = "finish_type", nullable = false)
     @Enumerated(EnumType.STRING)

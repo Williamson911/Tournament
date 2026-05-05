@@ -22,12 +22,9 @@ public class Tournament {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TournamentStatus tournamentStatus;
-
-//    @Column(name = "max_players", nullable = false)
-//    private Integer maxPlayers;
+    private TournamentStatus status;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -35,10 +32,9 @@ public class Tournament {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Registration> registrations;
-
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Match> matches;
-
+//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Registration> registrations;
+//
+//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Match> matches;
 }

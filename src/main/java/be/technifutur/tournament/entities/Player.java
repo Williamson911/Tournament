@@ -25,23 +25,14 @@ public class Player {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "image")
-    private String image;
-
-    @Column(name = "elo")
-    private String elo;
-
-    @Column(name="age")
     private int age;
 
+    private String elo;
 
-    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Registration> registrations;
+    private String image;
 
-    @OneToMany(mappedBy = "player1", fetch = FetchType.LAZY)
-    private List<Match> matchesAsPlayer1;
-
-    @OneToMany(mappedBy = "player2", fetch = FetchType.LAZY)
-    private List<Match> matchesAsPlayer2;
+//    @Column(name = "status", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private TournamentStatus tournamentStatus;
 
 }
