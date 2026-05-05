@@ -11,8 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "fighter")
+@Table(name = "character_sf")
 public class Fighter {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +23,13 @@ public class Fighter {
     private String name;
 
     @Column(name = "style")
-    private String fightingStyle;
+    private String style;
 
     @Column(name = "origine")
     private String originCountry;
 
-
     @Column(name = "image")
-    private String imgUrl;
+    private String image;
 
     @OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
     private List<Registration> registrations;

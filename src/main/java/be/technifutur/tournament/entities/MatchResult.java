@@ -17,7 +17,7 @@ public class MatchResult {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_match", nullable = false, unique = true)
+    @JoinColumn(name = "match_id", nullable = false, unique = true)
     private Match match;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,7 +31,7 @@ public class MatchResult {
     private Integer player2Score;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer roundsPlayed;
+    private Integer numberRounds;
 
     @Column(name = "finish_type")
     private String finishType;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "registration")
+//@Table(name = "registration")
 public class Registration {
 
     @Id
@@ -31,13 +31,8 @@ public class Registration {
     private Fighter fighter;
 
     @Column(name = "registered_date", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
+    private LocalDateTime registeredDate;
 
     @Column(nullable = false)
     private String status;
-
-    @PrePersist
-    protected void onCreate() {
-        this.registeredAt = LocalDateTime.now();
-    }
 }
