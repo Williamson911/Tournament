@@ -14,6 +14,7 @@ public class FighterResources {
     @Inject
     private FighterDao fighterDao;
 
+
     @GET
     @Produces("application/json")
     public Response getAllFighters(){
