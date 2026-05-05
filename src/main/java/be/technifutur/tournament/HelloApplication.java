@@ -8,6 +8,8 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
+import org.glassfish.jersey.server.ResourceConfig;
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
@@ -15,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 @ApplicationPath("/api")
 @WebListener
-public class HelloApplication extends Application implements ServletContextListener {
+public class HelloApplication extends ResourceConfig implements ServletContextListener {
 
     public HelloApplication() {
     }

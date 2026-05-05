@@ -91,6 +91,11 @@
             <version>1.18.42</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-jakarta</artifactId>
+            <version>2.2.31</version>
+        </dependency>
     </dependencies>
 
     <build>
