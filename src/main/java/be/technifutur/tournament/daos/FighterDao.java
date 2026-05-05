@@ -29,11 +29,12 @@ public class FighterDao extends CrudDao<Fighter,Integer>{
 //        }
 //    }
 
-    public List<Fighter> getAllFighters(){
-        try(EntityManager em = emf.createEntityManager()){
-            return em.createQuery("SELECT f FROM Fighter f",Fighter.class).getResultList();
-        }
-    }
+//    public List<Fighter> getAllFighters(){
+//        try(EntityManager em = emf.createEntityManager()){
+//            return em.createQuery("SELECT f FROM Fighter f",Fighter.class).getResultList();
+//        }
+//    }
+
     public Fighter getFighterByName(String name){
         try(EntityManager em = emf.createEntityManager()){
             Fighter fighter =  em.createQuery("SELECT f FROM Fighter f WHERE f.name ILIKE :name",Fighter.class)

@@ -18,7 +18,7 @@ public class FighterResources {
     @GET
     @Produces("application/json")
     public Response getAllFighters(){
-        List<Fighter> allFighters = fighterDao.getAllFighters();
+        List<Fighter> allFighters = fighterDao.findAll();
 
         return Response.ok()
                 .entity(allFighters)
