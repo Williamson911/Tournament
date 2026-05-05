@@ -10,6 +10,9 @@ target/
 *.iml
 *.ipr
 
+persistence.xml
+
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -34,4 +37,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
 persistence.xml
