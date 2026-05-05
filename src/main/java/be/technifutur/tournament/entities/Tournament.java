@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.TournamentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +23,8 @@ public class Tournament {
     private String name;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TournamentStatus tournamentStatus;
 
 //    @Column(name = "max_players", nullable = false)
 //    private Integer maxPlayers;

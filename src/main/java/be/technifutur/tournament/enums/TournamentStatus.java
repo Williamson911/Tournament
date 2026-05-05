@@ -1,7 +1,8 @@
 package be.technifutur.tournament.enums;
 
-public enum StatusMatch {
-    SCHEDULED,
+public enum TournamentStatus {
+    DRAFT,
+    OPEN,
     IN_PROGRESS,
     FINISHED
 }

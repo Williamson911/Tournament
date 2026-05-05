@@ -1,5 +1,7 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.FinishType;
+import be.technifutur.tournament.enums.RegistrationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +35,7 @@ public class MatchResult {
     @Column(name = "nb_rounds", nullable = false)
     private Integer roundsPlayed;
 
-    @Column(name = "finish_type")
-    private String finishType;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FinishType finishType;
 }

@@ -1,6 +1,6 @@
 package be.technifutur.tournament.enums;
 
-public enum StatusRegistration {
+public enum RegistrationStatus {
     PENDING,
     CONFIRMED,
     DISQUALIFIED

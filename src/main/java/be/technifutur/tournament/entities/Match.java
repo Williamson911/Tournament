@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.MatchStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,7 +38,8 @@ public class Match {
     private String bracketPosition;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private MatchStatus matchStatus;
 
     @Column(name = "scheduled_at")
     private LocalDateTime scheduledAt;
