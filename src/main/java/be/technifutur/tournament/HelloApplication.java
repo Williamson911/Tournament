@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 public class HelloApplication extends Application implements ServletContextListener {
 
     public HelloApplication() {
-
     }
 
     @Override
