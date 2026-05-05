@@ -34,7 +34,7 @@ public class Registration {
     @Column(name = "registered_date", nullable = false, updatable = false)
     private LocalDateTime registeredAt;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RegistrationStatus registrationStatus;
 
