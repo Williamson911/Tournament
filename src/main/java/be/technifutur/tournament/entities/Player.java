@@ -25,13 +25,10 @@ public class Player {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name="age")
     private int age;
 
-    @Column(name = "elo")
     private String elo;
 
-    @Column(name = "image")
     private String image;
 
 //    @Column(name = "status", nullable = false)

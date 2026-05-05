@@ -22,7 +22,7 @@ public class Tournament {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TournamentStatus status;
 
