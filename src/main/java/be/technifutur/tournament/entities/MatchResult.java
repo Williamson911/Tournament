@@ -33,7 +33,7 @@ public class MatchResult {
     private Integer player2Score;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer roundsPlayed;
+    private Integer numberRounds;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

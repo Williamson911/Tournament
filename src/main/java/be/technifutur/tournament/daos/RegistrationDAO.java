@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class RegistrationDAO extends CrudDao<Registration, Integer> {
 
-    public List<Registration> findByTournamentId(Long tournamentId) {
+    public List<Registration> findByTournamentId(Integer tournamentId) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
                     "SELECT r FROM Registration r WHERE r.tournament.id = :tid", Registration.class)
@@ -16,7 +16,7 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
-    public List<Registration> findByPlayerId(Long playerId) {
+    public List<Registration> findByPlayerId(Integer playerId) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
                     "SELECT r FROM Registration r WHERE r.player.id = :pid", Registration.class)
@@ -34,7 +34,7 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
-    public Optional<Registration> findByTournamentIdAndPlayerId(Long tournamentId, Long playerId) {
+    public Optional<Registration> findByTournamentIdAndPlayerId(Integer tournamentId, Integer playerId) {
         try (var em = emf.createEntityManager()) {
             return em.createQuery(
                     "SELECT r FROM Registration r WHERE r.tournament.id = :tid AND r.player.id = :pid", Registration.class)

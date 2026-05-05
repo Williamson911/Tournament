@@ -20,7 +20,7 @@ public class Match {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament", nullable = false)
+    @JoinColumn(name = "id_tournament", nullable = false)
     private Tournament tournament;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,8 +31,8 @@ public class Match {
     @JoinColumn(name = "id_player2", nullable = false)
     private Player player2;
 
-    @Column(name = "round_number", nullable = false)
-    private Integer roundNumber;
+    @Column(name = "nb_rounds", nullable = false)
+    private Integer numberRounds;
 
     @Column(name = "bracket_position")
     private String bracketPosition;
