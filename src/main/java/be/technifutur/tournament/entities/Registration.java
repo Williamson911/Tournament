@@ -1,48 +1,43 @@
 package be.technifutur.tournament.entities;
 
-import be.technifutur.tournament.enums.StatusRegistration;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "registration")
 public class Registration {
 
-    @EmbeddedId
-    private RegistrationId id = new RegistrationId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatusRegistration status;
-
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("playerId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_player", nullable = false)
     private Player player;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("tournamentId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tournament", nullable = false)
     private Tournament tournament;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("characterId")
-    private CharacterSF character;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_fighter", nullable = false)
+    private Fighter fighter;
 
+    @Column(name = "registered_date", nullable = false, updatable = false)
+    private LocalDateTime registeredAt;
 
+    @Column(nullable = false)
+    private String status;
 
-    @Embeddable
-    @Getter @Setter
-    @NoArgsConstructor @AllArgsConstructor
-    private static class RegistrationId implements Serializable {
-        private UUID tournamentId;
-        private UUID playerId;
-        private UUID characterId;
+    @PrePersist
+    protected void onCreate() {
+        this.registeredAt = LocalDateTime.now();
     }
 }
-

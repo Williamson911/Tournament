@@ -1,70 +1,50 @@
 package be.technifutur.tournament.entities;
 
-import be.technifutur.tournament.enums.StatusMatch;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "match")
 public class Match {
 
-    @EmbeddedId
-    private MatchId id = new MatchId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private int nbRounds;
-
-    @Column(length = 50)
-    private String bracketPos;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatusMatch status;
-
-    @Column(nullable = false)
-    LocalDateTime playedAt;
-
-    @Column(nullable = false)
-    LocalDateTime scheduledAt;
-
-    @OneToOne (mappedBy = "match",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    private MatchResult match;
-
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("tournamentId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tournament", nullable = false)
     private Tournament tournament;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("playerId1")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_player1", nullable = false)
     private Player player1;
 
-    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
-    @MapsId("playerId2")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_player2", nullable = false)
     private Player player2;
 
-    @OneToOne (optional = false,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
-    private MatchResult matchResult;
+    @Column(name = "round_number", nullable = false)
+    private Integer roundNumber;
 
+    @Column(name = "bracket_position")
+    private String bracketPosition;
 
+    @Column(nullable = false)
+    private String status;
 
-    @Embeddable
-    @Getter @Setter
-    @NoArgsConstructor @AllArgsConstructor
-    private static class MatchId implements Serializable {
-        private UUID tournamentID;
-        private UUID playerId1;
-        private UUID playerId2;
+    @Column(name = "scheduled_at")
+    private LocalDateTime scheduledAt;
 
-    }
+    @Column(name = "played_at")
+    private LocalDateTime playedAt;
+
+    @OneToOne(mappedBy = "match", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private MatchResult result;
 }

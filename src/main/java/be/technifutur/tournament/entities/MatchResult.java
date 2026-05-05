@@ -1,39 +1,38 @@
 package be.technifutur.tournament.entities;
 
-import be.technifutur.tournament.enums.FinishType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-import java.util.UUID;
-
-@Entity
-@Table(name = "match_result")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "match_result")
 public class MatchResult {
 
-    @EmbeddedId
-    private MatchResultId id = new MatchResultId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private FinishType finishType;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_match", nullable = false, unique = true)
+    private Match match;
 
-    private int player1Score;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_winner", nullable = false)
+    private Player winner;
 
-    private int player2Score;
+    @Column(name = "player1_score", nullable = false)
+    private Integer player1Score;
 
+    @Column(name = "player2_score", nullable = false)
+    private Integer player2Score;
 
-    @Embeddable
-    @Getter @Setter
-    @NoArgsConstructor @AllArgsConstructor
-    private static class MatchResultId implements Serializable {
-        private UUID matchId;
-        private UUID winnerId;
+    @Column(name = "nb_rounds", nullable = false)
+    private Integer roundsPlayed;
 
-    }
+    @Column(name = "finish_type")
+    private String finishType;
 }
