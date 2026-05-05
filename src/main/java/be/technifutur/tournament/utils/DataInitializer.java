@@ -2,41 +2,64 @@ package be.technifutur.tournament.utils;
 
 import be.technifutur.tournament.entities.*;
 import be.technifutur.tournament.enums.*;
-import lombok.Builder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.event.Startup;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class DataInitializer {
 
-    @Inject
-    private EntityManagerFactory emf;
+    private record FighterData(String name, String style, String originCountry, String imageUrl) {}
 
     public void init(@Observes Startup startup) {
-
-        EntityManager em = emf.createEntityManager();
-
+        EntityManager em = null;
         try {
+            EntityManagerFactory emf = EmfFactory.getEmf();
+            em = emf.createEntityManager();
+
+            Long count = em.createQuery("SELECT COUNT(f) FROM Fighter f", Long.class).getSingleResult();
+            if (count > 0) return;
+
             em.getTransaction().begin();
 
             // =====================
-            // 🎮 FIGHTERS
+            // FIGHTERS (depuis fighters.json)
             // =====================
-            Fighter jin = Fighter.builder().name("Jin Kazama").style("Karate").originCountry("Japan").build();
-            Fighter kazuya = Fighter.builder().name("Kazuya Mishima").style("Mishima Karate").originCountry("Japan").build();
-            Fighter king = Fighter.builder().name("King").style("Wrestling").originCountry("Mexico").build();
-            Fighter nina = Fighter.builder().name("Nina Williams").style("Assassination").originCountry("Ireland").build();
+            InputStream is = getClass().getClassLoader().getResourceAsStream("fighters.json");
+            Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+            Type listType = new TypeToken<List<FighterData>>() {}.getType();
+            List<FighterData> fighterDataList = new Gson().fromJson(reader, listType);
 
-            em.persist(jin);
-            em.persist(kazuya);
-            em.persist(king);
-            em.persist(nina);
+            Map<String, Fighter> fighterMap = new HashMap<>();
+            for (FighterData fd : fighterDataList) {
+                Fighter f = Fighter.builder()
+                        .name(fd.name())
+                        .style(fd.style())
+                        .originCountry(fd.originCountry())
+                        .image(fd.imageUrl())
+                        .build();
+                em.persist(f);
+                fighterMap.put(fd.name(), f);
+            }
+
+            Fighter jin = fighterMap.get("Jin Kazama");
+            Fighter kazuya = fighterMap.get("Kazuya Mishima");
+            Fighter king = fighterMap.get("King");
+            Fighter nina = fighterMap.get("Nina Williams");
 
             // =====================
             // 👤 PLAYERS
@@ -172,12 +195,13 @@ public class DataInitializer {
             em.getTransaction().commit();
 
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
+            System.err.println("[DataInitializer] ERROR: " + e.getMessage());
+            e.printStackTrace(System.err);
+            if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw e;
         } finally {
-            em.close();
+            if (em != null) em.close();
         }
     }
 }
