@@ -11,15 +11,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "character_sf")
 public class Fighter {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name="name", nullable = false)
     private String name;
 
     @Column(name = "style")

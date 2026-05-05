@@ -12,41 +12,42 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "match")
 public class Match {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tournament", nullable = false)
-    private Tournament tournament;
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_tournament", nullable = false)
+    private int tournament;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_player1", nullable = false)
-    private Player player1;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MatchStatus matchStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_player2", nullable = false)
-    private Player player2;
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_player1", nullable = false)
+    private int idPlayer1;
 
-    @Column(name = "round_number", nullable = false)
-    private Integer roundNumber;
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_player2", nullable = false)
+    private int idPlayer2;
+
+    @Column(name = "nb_rounds", nullable = false)
+    private int roundNumber;
 
     @Column(name = "bracket_position")
     private String bracketPosition;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MatchStatus matchStatus;
-
     @Column(name = "scheduled_at")
     private LocalDateTime scheduledAt;
 
-    @Column(name = "played_at")
-    private LocalDateTime playedAt;
+    @Column(name = "started_at")
+    private LocalDateTime startedAt;
 
-    @OneToOne(mappedBy = "match", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private MatchResult result;
+    @Column(name = "finished_at")
+    private LocalDateTime finishedAt;
+
+//    @OneToOne(mappedBy = "match", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private MatchResult result;
 }

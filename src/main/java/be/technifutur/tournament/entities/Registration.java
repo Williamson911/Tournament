@@ -12,29 +12,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "registration")
 public class Registration {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_player", nullable = false)
-    private Player player;
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_player", nullable = false)
+    private int idPlayer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tournament", nullable = false)
-    private Tournament tournament;
+    //    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_fighter", nullable = false)
+    private int idFighter;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_fighter", nullable = false)
-    private Fighter fighter;
+//    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "id_tournament", nullable = false)
+    private int idTournament;
 
     @Column(name = "registered_date", nullable = false, updatable = false)
     private LocalDateTime registeredAt;
 
-    @Column(nullable = false)
+    @Column(name="status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RegistrationStatus registrationStatus;
 
