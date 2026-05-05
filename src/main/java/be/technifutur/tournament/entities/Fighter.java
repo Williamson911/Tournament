@@ -14,7 +14,7 @@ import java.util.List;
 public class Fighter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="name", nullable = false)
     private String name;

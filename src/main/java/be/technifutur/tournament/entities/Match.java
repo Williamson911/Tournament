@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "id_tournament", nullable = false)
