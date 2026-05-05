@@ -1,43 +1,49 @@
 package be.technifutur.tournament.entities;
 
-import be.technifutur.tournament.enums.StatusTournament;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
 public class Tournament {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusTournament status;
+    private String status;
 
-    @Column(nullable = false)
+//    @Column(name = "max_players", nullable = false)
+//    private Integer maxPlayers;
+
+    @Column(name = "start_date")
     private LocalDateTime startDate;
 
-    @Column(nullable = false)
+    @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY)
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Registration> registrations;
 
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Match> matches;
 
+//    @PrePersist
+//    protected void onCreate() {
+//        this.createdAt = LocalDateTime.now();
+//    }
 }
-
-

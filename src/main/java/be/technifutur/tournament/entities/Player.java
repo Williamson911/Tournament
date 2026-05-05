@@ -3,32 +3,36 @@ package be.technifutur.tournament.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "player")
 public class Player {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(length = 150, nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(length = 255)
-    private String image;
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-    private int age;
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
-    private int elo;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Registration> registrations;
@@ -39,4 +43,8 @@ public class Player {
     @OneToMany(mappedBy = "player2", fetch = FetchType.LAZY)
     private List<Match> matchesAsPlayer2;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
