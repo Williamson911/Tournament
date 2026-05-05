@@ -2,7 +2,7 @@ package be.technifutur.tournament.utils;
 
 import be.technifutur.tournament.entities.*;
 import be.technifutur.tournament.enums.*;
-
+import lombok.Builder;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.event.Startup;

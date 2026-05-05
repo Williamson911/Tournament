@@ -32,7 +32,7 @@ public class Match {
     private Player player2;
 
     @Column(name = "nb_rounds", nullable = false)
-    private Integer roundNumber;
+    private Integer numberRounds;
 
     @Column(name = "bracket_position")
     private String bracketPosition;
