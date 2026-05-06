@@ -126,7 +126,7 @@ public class DataInitializer {
                     .numberRounds(3)
                     .matchStatus(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .playedAt(LocalDateTime.now().minusDays(1))
+                    .startedAt(LocalDateTime.now().minusDays(1))
                     .build();
 
             Match m2 = Match.builder()
@@ -136,7 +136,7 @@ public class DataInitializer {
                     .numberRounds(3)
                     .matchStatus(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .playedAt(LocalDateTime.now().minusDays(1))
+                    .startedAt(LocalDateTime.now().minusDays(1))
                     .build();
 
             Match finale = Match.builder()
@@ -146,7 +146,7 @@ public class DataInitializer {
                     .numberRounds(5)
                     .matchStatus(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now())
-                    .playedAt(LocalDateTime.now())
+                    .startedAt(LocalDateTime.now())
                     .build();
 
             em.persist(m1);
@@ -188,11 +188,11 @@ public class DataInitializer {
             em.persist(r3);
 
             // important pour la relation bidirectionnelle
-            m1.setResult(r1);
-            m2.setResult(r2);
-            finale.setResult(r3);
-
-            em.getTransaction().commit();
+//            m1.setResult(r1);
+//            m2.setResult(r2);
+//            finale.setResult(r3);
+//
+//            em.getTransaction().commit();
 
         } catch (Exception e) {
             System.err.println("[DataInitializer] ERROR: " + e.getMessage());

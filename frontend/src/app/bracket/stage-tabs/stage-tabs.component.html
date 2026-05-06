@@ -1,0 +1,4 @@
+<div class="tabs">
+  <button class="tab" [class.active]="activeTab() === 'groups'" (click)="tabChange.emit('groups')">POULES</button>
+  <button class="tab" [class.active]="activeTab() === 'bracket'" (click)="tabChange.emit('bracket')">BRACKET</button>
+</div>
