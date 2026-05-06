@@ -20,8 +20,8 @@ public class FighterResource {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    @Operation(summary = "Creer un fighter")
-    @ApiResponse(responseCode = "201", description = "Fighter cree")
+    @Operation(summary = "Create fighter")
+    @ApiResponse(responseCode = "201", description = "Fighter created")
     public Response create(Fighter fighter){
         Fighter created = fighterDao.save(fighter);
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -29,6 +29,7 @@ public class FighterResource {
 
     @GET
     @Produces("application/json")
+    @Operation(summary = "Get all fighters")
     public Response findAll(){
         List<Fighter> allFighters = fighterDao.findAll();
 
@@ -40,6 +41,7 @@ public class FighterResource {
     @GET
     @Path("/id/{id}")
     @Produces("application/json")
+    @Operation(summary = "Get fighter by id")
     public Response findByName(@PathParam("id") Integer id){
         Fighter fighter = fighterDao.findById(id).orElseThrow();
 
@@ -49,6 +51,7 @@ public class FighterResource {
     @GET
     @Path("/name/{name}")
     @Produces("application/json")
+    @Operation(summary = "Get fighter by name")
     public Response findByName(@PathParam("name") String name){
         Fighter fighter = fighterDao.getFighterByName(name);
 
@@ -59,9 +62,9 @@ public class FighterResource {
     @Path("/{id}")
     @Consumes("application/json")
     @Produces("application/json")
-    @Operation(summary = "Mettre a jour un fighter")
-    @ApiResponse(responseCode = "200", description = "Fighter mis a jour")
-    @ApiResponse(responseCode = "404", description = "Fighter introuvable")
+    @Operation(summary = "Update fighter")
+    @ApiResponse(responseCode = "200", description = "Fighter updated")
+    @ApiResponse(responseCode = "404", description = "Fighter not found")
     public Response update(@PathParam("id") Integer id, Fighter fighter){
         Fighter existing = fighterDao.findById(id).orElseThrow();
         existing.setName(fighter.getName());
@@ -74,9 +77,9 @@ public class FighterResource {
 
     @DELETE
     @Path("/{id}")
-    @Operation(summary = "Supprimer un fighter")
-    @ApiResponse(responseCode = "204", description = "Fighter supprime")
-    @ApiResponse(responseCode = "404", description = "Fighter introuvable")
+    @Operation(summary = "Delete fighter")
+    @ApiResponse(responseCode = "204", description = "Fighter deleted")
+    @ApiResponse(responseCode = "404", description = "Fighter not found")
     public Response delete(@PathParam("id") Integer id){
         fighterDao.delete(id);
         return Response.noContent().build();
