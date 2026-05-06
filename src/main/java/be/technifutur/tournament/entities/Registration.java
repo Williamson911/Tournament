@@ -6,35 +6,35 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 public class Registration {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "id_player", nullable = false)
-    private int idPlayer;
-
-    //    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "id_fighter", nullable = false)
-    private int idFighter;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "id_tournament", nullable = false)
-    private int idTournament;
-
-    @Column(name = "registered_date", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
-
+    @Getter @Setter
     @Column(name="status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RegistrationStatus registrationStatus;
+
+    @Getter @Setter
+    @Column(name = "registered_date", nullable = false, updatable = false)
+    private LocalDateTime registeredAt;
+
+    @Getter @Setter
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "id_player", nullable = false)
+    private Player player;
+
+    @Getter @Setter
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "id_tournament", nullable = false)
+    private Tournament tournament;
 
     @PrePersist
     protected void onCreate() {
