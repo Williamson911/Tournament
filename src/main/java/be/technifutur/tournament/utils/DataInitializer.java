@@ -25,26 +25,41 @@ public class DataInitializer {
 
     private record FighterData(String name, String style, String originCountry, String imageUrl) {}
 
+    // =====================
+    // 🧠 HELPER RESULT
+    // =====================
+    private void setResult(Match match, int score1, int score2, FinishType type) {
+        match.setPlayer1Score(score1);
+        match.setPlayer2Score(score2);
+        match.setFinishType(type);
+        match.setFinishedAt(LocalDateTime.now());
+    }
+
     public void init(@Observes Startup startup) {
         EntityManager em = null;
+
         try {
             EntityManagerFactory emf = EmfFactory.getEmf();
             em = emf.createEntityManager();
 
+            // ❌ Skip si déjà data
             Long count = em.createQuery("SELECT COUNT(f) FROM Fighter f", Long.class).getSingleResult();
             if (count > 0) return;
 
             em.getTransaction().begin();
 
             // =====================
-            // FIGHTERS (depuis fighters.json)
+            // 🥊 FIGHTERS
             // =====================
             InputStream is = getClass().getClassLoader().getResourceAsStream("fighters.json");
+            if (is == null) throw new RuntimeException("fighters.json not found");
+
             Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
             Type listType = new TypeToken<List<FighterData>>() {}.getType();
             List<FighterData> fighterDataList = new Gson().fromJson(reader, listType);
 
             Map<String, Fighter> fighterMap = new HashMap<>();
+
             for (FighterData fd : fighterDataList) {
                 Fighter f = Fighter.builder()
                         .name(fd.name())
@@ -52,22 +67,45 @@ public class DataInitializer {
                         .originCountry(fd.originCountry())
                         .image(fd.imageUrl())
                         .build();
+
                 em.persist(f);
                 fighterMap.put(fd.name(), f);
             }
 
-            Fighter jin = fighterMap.get("Jin Kazama");
-            Fighter kazuya = fighterMap.get("Kazuya Mishima");
-            Fighter king = fighterMap.get("King");
-            Fighter nina = fighterMap.get("Nina Williams");
-
             // =====================
             // 👤 PLAYERS
             // =====================
-            Player p1 = Player.builder().username("kevin").email("kevin@test.be").elo("1200").age(25).build();
-            Player p2 = Player.builder().username("laura").email("laura@test.be").elo("1250").age(23).build();
-            Player p3 = Player.builder().username("yassine").email("yassine@test.be").elo("1300").age(27).build();
-            Player p4 = Player.builder().username("sofia").email("sofia@test.be").elo("1100").age(22).build();
+            Player p1 = Player.builder()
+                    .username("kevin")
+                    .email("kevin@test.be")
+                    .elo("1200")
+                    .age(25)
+                    .fighterMain(fighterMap.get("Jin Kazama"))
+                    .build();
+
+            Player p2 = Player.builder()
+                    .username("laura")
+                    .email("laura@test.be")
+                    .elo("1250")
+                    .age(23)
+                    .fighterMain(fighterMap.get("Kazuya Mishima"))
+                    .build();
+
+            Player p3 = Player.builder()
+                    .username("yassine")
+                    .email("yassine@test.be")
+                    .elo("1300")
+                    .age(27)
+                    .fighterMain(fighterMap.get("King"))
+                    .build();
+
+            Player p4 = Player.builder()
+                    .username("sofia")
+                    .email("sofia@test.be")
+                    .elo("1100")
+                    .age(22)
+                    .fighterMain(fighterMap.get("Heihachi Mishima"))
+                    .build();
 
             em.persist(p1);
             em.persist(p2);
@@ -86,31 +124,15 @@ public class DataInitializer {
             em.persist(t);
 
             // =====================
-            // 📝 REGISTRATIONS (fighter obligatoire)
+            // 📝 REGISTRATIONS
             // =====================
-            em.persist(Registration.builder()
-                    .player(p1)
-                    .tournament(t)
-                    .registrationStatus(RegistrationStatus.CONFIRMED)
-                    .build());
-
-            em.persist(Registration.builder()
-                    .player(p2)
-                    .tournament(t)
-                    .registrationStatus(RegistrationStatus.CONFIRMED)
-                    .build());
-
-            em.persist(Registration.builder()
-                    .player(p3)
-                    .tournament(t)
-                    .registrationStatus(RegistrationStatus.CONFIRMED)
-                    .build());
-
-            em.persist(Registration.builder()
-                    .player(p4)
-                    .tournament(t)
-                    .registrationStatus(RegistrationStatus.CONFIRMED)
-                    .build());
+            for (Player p : List.of(p1, p2, p3, p4)) {
+                em.persist(Registration.builder()
+                        .player(p)
+                        .tournament(t)
+                        .registrationStatus(RegistrationStatus.CONFIRMED)
+                        .build());
+            }
 
             // =====================
             // ⚔️ MATCHES
@@ -125,6 +147,8 @@ public class DataInitializer {
                     .startedAt(LocalDateTime.now().minusDays(1))
                     .build();
 
+            setResult(m1, 2, 1, FinishType.KO);
+
             Match m2 = Match.builder()
                     .tournament(t)
                     .player1(p3)
@@ -134,6 +158,8 @@ public class DataInitializer {
                     .scheduledAt(LocalDateTime.now().minusDays(1))
                     .startedAt(LocalDateTime.now().minusDays(1))
                     .build();
+
+            setResult(m2, 2, 0, FinishType.PERFECT);
 
             Match finale = Match.builder()
                     .tournament(t)
@@ -145,6 +171,8 @@ public class DataInitializer {
                     .startedAt(LocalDateTime.now())
                     .build();
 
+            setResult(finale, 3, 2, FinishType.SUPER);
+
             em.persist(m1);
             em.persist(m2);
             em.persist(finale);
@@ -153,7 +181,8 @@ public class DataInitializer {
 
         } catch (Exception e) {
             System.err.println("[DataInitializer] ERROR: " + e.getMessage());
-            e.printStackTrace(System.err);
+            e.printStackTrace();
+
             if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }

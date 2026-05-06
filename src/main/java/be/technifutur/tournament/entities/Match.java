@@ -56,12 +56,12 @@ public class Match {
     private Tournament tournament;
 
     @Getter @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_player1", nullable = false)
     private Player player1;
 
     @Getter @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_player2", nullable = false)
     private Player player2;
 
