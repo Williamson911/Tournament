@@ -60,4 +60,18 @@ public class MatchDAO extends CrudDao<Match, Integer> {
             return count > 0;
         }
     }
+
+    public List<Match> findByTournamentWithPlayers(int tournamentId) {
+        try (var em = emf.createEntityManager()) {
+            return em.createQuery(
+                "SELECT m FROM Match m " +
+                "JOIN FETCH m.player1 p1 JOIN FETCH p1.fighterMain " +
+                "JOIN FETCH m.player2 p2 JOIN FETCH p2.fighterMain " +
+                "WHERE m.tournament.id = :tid " +
+                "ORDER BY m.roundNumber ASC NULLS LAST, m.id ASC",
+                Match.class)
+                .setParameter("tid", tournamentId)
+                .getResultList();
+        }
+    }
 }
