@@ -1,24 +1,25 @@
 package be.technifutur.tournament.daos;
 
-import be.technifutur.tournament.utils.EmfFactory;
-import jakarta.persistence.EntityManagerFactory;
+import be.technifutur.tournament.EMFProvider;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
+
 public abstract class CrudDao<TEntity, TId> {
 
+    protected final EMFProvider emfProvider;
 
-
-    protected final EntityManagerFactory emf;
     private final Class<TEntity> entityClass;
 
     @SuppressWarnings("unchecked")
-    public CrudDao() {
-        this.emf = EmfFactory.getEmf();
-        Type superclass = getClass().getGenericSuperclass();
+    public CrudDao(EMFProvider emfProvider) {
+        this.emfProvider = emfProvider;
+      git  Type superclass = getClass().getGenericSuperclass();
         while (!(superclass instanceof ParameterizedType)) {
             superclass = ((Class<?>) superclass).getGenericSuperclass();
         }
@@ -27,20 +28,20 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public List<TEntity> findAll() {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             return em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass)
                     .getResultList();
         }
     }
 
     public Optional<TEntity> findById(TId id) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             return Optional.ofNullable(em.find(entityClass, id));
         }
     }
 
     public TEntity save(TEntity entity) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
             em.persist(entity);
@@ -50,7 +51,7 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public void saveAll(List<TEntity> list) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             em.getTransaction().begin();
 
             int batchSize = 20;
@@ -68,7 +69,7 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public TEntity update(TEntity entity) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
             TEntity merged = em.merge(entity);
@@ -78,7 +79,7 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public TEntity delete(TId id) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
             TEntity ref = em.getReference(entityClass,id);
@@ -89,7 +90,7 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public boolean existsById(TId id) {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             return em.createQuery("SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.id = :id", Long.class)
                     .setParameter("id", id)
                     .getSingleResult() > 0;
@@ -97,7 +98,7 @@ public abstract class CrudDao<TEntity, TId> {
     }
 
     public long count() {
-        try(var em = emf.createEntityManager()) {
+        try(var em = emfProvider.get().createEntityManager()) {
             return em.createQuery("SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e", Long.class)
                     .getSingleResult();
         }

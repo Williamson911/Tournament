@@ -1,14 +1,23 @@
 package be.technifutur.tournament.daos;
 
+import be.technifutur.tournament.EMFProvider;
 import be.technifutur.tournament.entities.Match;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
 
+@ApplicationScoped
 public class MatchDAO extends CrudDao<Match, Integer> {
 
+    @Inject
+    public MatchDAO(EMFProvider emfProvider) {
+        super(emfProvider);
+    }
+
     public List<Match> findByTournamentAndRound(int tournamentId, int round) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid AND m.numberRounds = :round",
                             Match.class)
@@ -19,7 +28,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     }
 
     public Optional<Match> findNextMatchForPlayer(int playerId, int tournamentId) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid AND (m.player1.id = :pid OR m.player2.id = :pid) AND m.status = 'SCHEDULED' ORDER BY m.roundNumber ASC",
                             Match.class)
@@ -31,7 +40,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     }
 
     public List<Match> findByTournamentOrdered(int tournamentId) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid ORDER BY m.roundNumber ASC, m.bracketPosition ASC",
                             Match.class)
@@ -41,7 +50,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     }
 
     public boolean existsUnfinishedMatch(int tournamentId, int round) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             Long count = em.createQuery(
                             "SELECT COUNT(m) FROM Match m WHERE m.tournament.id = :tid AND m.roundNumber = :round AND m.status <> 'FINISHED'",
                             Long.class)
