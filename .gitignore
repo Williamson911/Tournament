@@ -10,6 +10,9 @@ target/
 *.iml
 *.ipr
 
+persistence.xml
+
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -47,5 +50,9 @@ src/main/webapp/swagger-ui/swagger-dark.css
 frontend/node_modules/
 frontend/dist/
 frontend/.angular/
+
+### Git worktrees ###
+.worktrees/
+
 /**/**/persistence.xml
 src/main/resources/META-INF/persistence.xml

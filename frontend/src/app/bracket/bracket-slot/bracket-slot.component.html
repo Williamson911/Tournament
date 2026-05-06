@@ -1,0 +1,16 @@
+<div class="slot-wrapper"
+     [class.winner]="participant()?.isWinner"
+     [class.loser]="matchComplete() && participant() !== null && !participant()!.isWinner && !participant()!.isEliminated"
+     [class.eliminated]="participant()?.isEliminated">
+  <div class="slot-portrait">
+    @if (participant()) {
+      <img [src]="participant()!.fighterImageUrl" [alt]="participant()!.fighterName" />
+      <div class="portrait-label">{{ participant()!.fighterName }}</div>
+    }
+  </div>
+  <div class="slot-content">
+    <span class="slot-rank">{{ seed() }}</span>
+    <span class="slot-name">{{ participant()?.playerName ?? '???' }}</span>
+    <span class="slot-score">{{ participant()?.score ?? '' }}</span>
+  </div>
+</div>
