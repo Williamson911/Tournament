@@ -1,0 +1,23 @@
+<div class="group-card">
+  <div class="group-name">{{ group().name }}</div>
+  <table class="standings">
+    <thead>
+      <tr>
+        <th>#</th><th>Joueur</th><th>Fighter</th><th>V</th><th>D</th><th>Pts</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of group().standings; track row.participant.playerId) {
+        <tr [class.qualified]="row.qualified">
+          <td class="rank">{{ row.rank }}</td>
+          <td class="player-name">{{ row.participant.playerName }}</td>
+          <td class="fighter-name">{{ row.participant.fighterName }}</td>
+          <td>{{ row.wins }}</td>
+          <td>{{ row.losses }}</td>
+          <td class="pts">{{ row.points }}</td>
+          <td>@if (row.qualified) { <span class="badge">QUALIFIÉ</span> }</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

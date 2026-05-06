@@ -1,6 +1,6 @@
 @use '../../../styles/tekken-tokens' as t;
 
-.lb-section { margin-top: 8px; }
+.lb-section { margin-top: 8px; overflow: visible; }
 
 .section-label {
   font-family: t.$font-display; font-size: 13px; letter-spacing: 6px;
@@ -9,7 +9,7 @@
   border-left: 2px solid rgba(120, 0, 0, 0.40);
 }
 
-.rounds-row { display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.rounds-row { display: flex; align-items: center; gap: 0; }
 
 .connector-col {
   display: flex; flex-direction: column; justify-content: space-around;
