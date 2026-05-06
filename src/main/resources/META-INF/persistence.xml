@@ -24,4 +24,25 @@
         </properties>
 
     </persistence-unit>
+    <persistence-unit name="PROD" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>be.technifutur.tournament.entities.Fighter</class>
+        <class>be.technifutur.tournament.entities.Match</class>
+        <class>be.technifutur.tournament.entities.Player</class>
+        <class>be.technifutur.tournament.entities.Registration</class>
+        <class>be.technifutur.tournament.entities.Tournament</class>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/tournament"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="nyhc9111"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
 </persistence>

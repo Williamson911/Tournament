@@ -1,10 +1,10 @@
 package be.technifutur.tournament.daos;
 
+import be.technifutur.tournament.dtos.MatchDTO;
 import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Match;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,18 +61,14 @@ public class MatchDAO extends CrudDao<Match, Integer> {
             return count > 0;
         }
     }
-
-    public List<Match> findByTournamentWithPlayers(int tournamentId) {
-        try(EntityManager em = emfProvider.get().createEntityManager()) {
-            return em.createQuery(
-                "SELECT m FROM Match m " +
-                "JOIN FETCH m.player1 p1 JOIN FETCH p1.fighterMain " +
-                "JOIN FETCH m.player2 p2 JOIN FETCH p2.fighterMain " +
-                "WHERE m.tournament.id = :tid " +
-                "ORDER BY m.roundNumber ASC NULLS LAST, m.id ASC",
-                Match.class)
-                .setParameter("tid", tournamentId)
-                .getResultList();
+    public List<Match> findAllWithRelations() {
+        try (var em = emfProvider.get().createEntityManager()) {
+            return em.createQuery("""
+            SELECT m FROM Match m
+            JOIN FETCH m.tournament
+            JOIN FETCH m.player1
+            JOIN FETCH m.player2
+        """, Match.class).getResultList();
         }
     }
 }
