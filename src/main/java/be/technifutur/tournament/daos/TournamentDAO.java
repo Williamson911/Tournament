@@ -2,12 +2,13 @@ package be.technifutur.tournament.daos;
 
 import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Tournament;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@ApplicationScoped
 public class TournamentDAO extends CrudDao<Tournament, Integer> {
 
     @Inject
