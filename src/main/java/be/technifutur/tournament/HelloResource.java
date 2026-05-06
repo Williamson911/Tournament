@@ -1,5 +1,7 @@
 package be.technifutur.tournament;
 
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.ws.rs.GET;
@@ -11,28 +13,15 @@ import java.util.Map;
 
 @Path("/hello-world")
 public class HelloResource {
+
+    @Inject
+    private EMFProvider emfProvider;
+
     @GET
     @Produces("text/plain")
     public String hello() {
-        String persistenceName = System.getenv().getOrDefault("PERSISTENCE_NAME", "tournament");
+        EntityManager em = emfProvider.get().createEntityManager();
 
-        Map<String, Object> props = new HashMap<>();
-
-        String dbUrl = System.getenv("DB_URL");
-
-        EntityManagerFactory emf;
-
-        if (dbUrl != null && !dbUrl.isBlank()) {
-            props.put("jakarta.persistence.jdbc.url", dbUrl);
-            props.put("jakarta.persistence.jdbc.user", System.getenv("DB_USER"));
-            props.put("jakarta.persistence.jdbc.password", System.getenv("DB_PASSWORD"));
-
-            emf = Persistence.createEntityManagerFactory(persistenceName, props);
-        } else {
-            emf = Persistence.createEntityManagerFactory(persistenceName);
-        }
-
-        return "Hello, World! with config "+persistenceName;
-
+        return "Hello with " + em + " for persistence unit "+ emfProvider.getPersistenceName();
     }
 }
