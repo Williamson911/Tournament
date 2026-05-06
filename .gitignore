@@ -10,9 +10,6 @@ target/
 *.iml
 *.ipr
 
-persistence.xml
-
-
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -39,3 +36,5 @@ build/
 .DS_Store
 
 persistence.xml
+/**/**/persistence.xml
+src/main/resources/META-INF/persistence.xml

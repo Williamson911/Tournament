@@ -7,8 +7,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,29 +14,30 @@ import java.util.List;
 public class Tournament {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Getter @Setter
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TournamentStatus status;
+
+    @Getter @Setter
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TournamentStatus tournamentStatus;
-
-//    @Column(name = "max_players", nullable = false)
-//    private Integer maxPlayers;
-
+    @Getter @Setter
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
+    @Getter @Setter
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Registration> registrations;
-
-    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Match> matches;
-
+//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Registration> registrations;
+//
+//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Match> matches;
 }
