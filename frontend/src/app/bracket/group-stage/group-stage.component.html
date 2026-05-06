@@ -1,0 +1,5 @@
+<div class="groups-grid">
+  @for (group of groups(); track group.groupId) {
+    <app-group-card [group]="group" />
+  }
+</div>
