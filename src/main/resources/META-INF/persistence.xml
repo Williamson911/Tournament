@@ -8,7 +8,6 @@
 
         <class>be.technifutur.tournament.entities.Fighter</class>
         <class>be.technifutur.tournament.entities.Match</class>
-        <class>be.technifutur.tournament.entities.MatchResult</class>
         <class>be.technifutur.tournament.entities.Player</class>
         <class>be.technifutur.tournament.entities.Registration</class>
         <class>be.technifutur.tournament.entities.Tournament</class>
