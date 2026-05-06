@@ -1,5 +1,6 @@
 package be.technifutur.tournament.entities;
 
+import be.technifutur.tournament.enums.BracketStage;
 import be.technifutur.tournament.enums.FinishType;
 import be.technifutur.tournament.enums.MatchStatus;
 import jakarta.persistence.*;
@@ -29,6 +30,15 @@ public class Match {
     @Getter @Setter
     @Column(name = "bracket_position")
     private String bracketPosition;
+
+    @Getter @Setter
+    @Column(name = "bracket_stage")
+    @Enumerated(EnumType.STRING)
+    private BracketStage bracketStage;
+
+    @Getter @Setter
+    @Column(name = "round_number")
+    private Integer roundNumber;
 
     @Getter @Setter
     @Column(name = "scheduled_at")
