@@ -1,4 +1,4 @@
-package be.technifutur.tournament;
+package be.technifutur.tournament.utils;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
