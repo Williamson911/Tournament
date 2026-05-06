@@ -6,8 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,20 +15,31 @@ public class Player {
 
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Getter @Setter
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Getter @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Getter @Setter
     private int age;
 
+    @Getter @Setter
     private String elo;
 
+    @Getter @Setter
     private String image;
+
+    @Getter @Setter
+    @JoinColumn(name = "id_fighter", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    private Fighter fighterMain;
 
 //    @Column(name = "status", nullable = false)
 //    @Enumerated(EnumType.STRING)
