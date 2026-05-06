@@ -1,6 +1,6 @@
 package be.technifutur.tournament.daos;
 
-import be.technifutur.tournament.EMFProvider;
+import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Match;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

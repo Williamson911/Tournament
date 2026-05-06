@@ -1,8 +1,6 @@
 package be.technifutur.tournament.daos;
 
-import be.technifutur.tournament.EMFProvider;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import be.technifutur.tournament.utils.EMFProvider;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
