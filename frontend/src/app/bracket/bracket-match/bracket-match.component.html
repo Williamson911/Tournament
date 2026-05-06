@@ -1,0 +1,5 @@
+<div class="match">
+  <app-bracket-slot [participant]="match().participant1" [seed]="1" [matchComplete]="match().isComplete" />
+  <div class="vs-divider">VS</div>
+  <app-bracket-slot [participant]="match().participant2" [seed]="2" [matchComplete]="match().isComplete" />
+</div>

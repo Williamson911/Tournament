@@ -1,0 +1,36 @@
+@use '../../../styles/tekken-tokens' as t;
+
+.wb-section { margin-bottom: 48px; }
+
+.section-label {
+  font-family: t.$font-display; font-size: 13px; letter-spacing: 6px;
+  color: rgba(220, 80, 80, 0.60);
+  margin-bottom: 24px; padding-left: 8px;
+  border-left: 2px solid rgba(180, 0, 0, 0.50);
+}
+
+.rounds-row {
+  display: flex; align-items: center; gap: 0; overflow-x: auto;
+}
+
+.connector-col {
+  display: flex; flex-direction: column; justify-content: space-around;
+  width: t.$connector-width; align-self: stretch;
+}
+
+.connector-pair {
+  position: relative; flex: 1; min-height: 80px;
+
+  &::before {
+    content: ''; position: absolute;
+    right: 0; top: 25%; bottom: 25%;
+    width: 1px; background: t.$connector-color;
+  }
+
+  &::after {
+    content: ''; position: absolute;
+    right: 0; top: 50%;
+    width: 100%; height: 1px;
+    background: t.$connector-color;
+  }
+}
