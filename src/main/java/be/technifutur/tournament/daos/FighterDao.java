@@ -8,6 +8,12 @@ import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class FighterDao extends CrudDao<Fighter,Integer>{
+    @Inject
+    public FighterDao(EMFProvider emfProvider) {
+        super(emfProvider);
+    }
+
+
     public Fighter getFighterByName(String name){
         try(EntityManager em = emfProvider.get().createEntityManager()){
             Fighter fighter =  em.createQuery("SELECT f FROM Fighter f WHERE f.name ILIKE :name",Fighter.class)
