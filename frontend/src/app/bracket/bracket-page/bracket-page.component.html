@@ -1,0 +1,31 @@
+<div class="page">
+  @if (loading()) {
+    <div class="state-msg">Chargement…</div>
+  } @else if (error()) {
+    <div class="state-msg error">{{ error() }}</div>
+  } @else {
+    @let d = data()!;
+    <app-bracket-title [title]="d.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
+
+    @if (d.hasGroupStage) {
+      <app-stage-tabs [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
+    }
+
+    @if (!d.hasGroupStage || activeTab() === 'bracket') {
+      <div class="bracket-view">
+        <app-winners-bracket [rounds]="d.winnersBracket" />
+        @if (d.losersBracket.length > 0) {
+          <app-losers-bracket [rounds]="d.losersBracket" />
+        }
+        <app-grand-final [grandFinal]="d.grandFinal" [bracketReset]="d.bracketReset" />
+        @if (d.champion) {
+          <app-champion-card [champion]="d.champion" />
+        }
+      </div>
+    }
+
+    @if (d.hasGroupStage && activeTab() === 'groups') {
+      <app-group-stage [groups]="d.groups" />
+    }
+  }
+</div>
