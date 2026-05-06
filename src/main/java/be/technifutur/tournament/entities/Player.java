@@ -12,8 +12,6 @@ import java.util.List;
 @Builder
 @Entity
 public class Player {
-
-
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
