@@ -4,6 +4,7 @@ import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Match;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     }
 
     public List<Match> findByTournamentWithPlayers(int tournamentId) {
-        try (var em = emf.createEntityManager()) {
+        try(EntityManager em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                 "SELECT m FROM Match m " +
                 "JOIN FETCH m.player1 p1 JOIN FETCH p1.fighterMain " +
