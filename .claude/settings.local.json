@@ -3,7 +3,8 @@
     "allow": [
       "Bash(rm -rf node_modules)",
       "Bash(npm install *)",
-      "Bash(npx ng *)"
+      "Bash(npx ng *)",
+      "Bash(mvn compile *)"
     ]
   }
 }
