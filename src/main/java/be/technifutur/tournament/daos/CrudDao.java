@@ -19,7 +19,7 @@ public abstract class CrudDao<TEntity, TId> {
     @SuppressWarnings("unchecked")
     public CrudDao(EMFProvider emfProvider) {
         this.emfProvider = emfProvider;
-      git  Type superclass = getClass().getGenericSuperclass();
+        Type superclass = getClass().getGenericSuperclass();
         while (!(superclass instanceof ParameterizedType)) {
             superclass = ((Class<?>) superclass).getGenericSuperclass();
         }
