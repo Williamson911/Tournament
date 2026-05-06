@@ -5,6 +5,7 @@ import be.technifutur.tournament.entities.Tournament;
 import java.util.List;
 import java.util.Optional;
 
+
 public class TournamentDAO extends CrudDao<Tournament, Integer> {
 
     public List<Tournament> findByStatus(String status) {
