@@ -1,6 +1,8 @@
 package be.technifutur.tournament.daos;
 
+import be.technifutur.tournament.EMFProvider;
 import be.technifutur.tournament.entities.Tournament;
+import jakarta.inject.Inject;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +10,13 @@ import java.util.Optional;
 
 public class TournamentDAO extends CrudDao<Tournament, Integer> {
 
+    @Inject
+    public TournamentDAO(EMFProvider emfProvider) {
+        super(emfProvider);
+    }
+
     public List<Tournament> findByStatus(String status) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                     "SELECT t FROM Tournament t WHERE t.status = :status", Tournament.class)
                     .setParameter("status", status)
@@ -18,7 +25,7 @@ public class TournamentDAO extends CrudDao<Tournament, Integer> {
     }
 
     public Optional<Tournament> findByName(String name) {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                     "SELECT t FROM Tournament t WHERE t.name = :name", Tournament.class)
                     .setParameter("name", name)
@@ -28,7 +35,7 @@ public class TournamentDAO extends CrudDao<Tournament, Integer> {
     }
 
     public List<Tournament> findUpcoming() {
-        try (var em = emf.createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                     "SELECT t FROM Tournament t WHERE t.status <> 'COMPLETED'", Tournament.class)
                     .getResultList();

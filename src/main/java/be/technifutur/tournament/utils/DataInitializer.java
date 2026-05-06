@@ -40,6 +40,9 @@ public class DataInitializer {
             // FIGHTERS (depuis fighters.json)
             // =====================
             InputStream is = getClass().getClassLoader().getResourceAsStream("fighters.json");
+            if (is == null) {
+                throw new RuntimeException("fighters.json not found in resources");
+            };
             Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
             Type listType = new TypeToken<List<FighterData>>() {}.getType();
             List<FighterData> fighterDataList = new Gson().fromJson(reader, listType);
@@ -59,15 +62,42 @@ public class DataInitializer {
             Fighter jin = fighterMap.get("Jin Kazama");
             Fighter kazuya = fighterMap.get("Kazuya Mishima");
             Fighter king = fighterMap.get("King");
-            Fighter nina = fighterMap.get("Nina Williams");
+            Fighter heihachi = fighterMap.get("Heihachi Mishima");
 
             // =====================
             // 👤 PLAYERS
             // =====================
-            Player p1 = Player.builder().username("kevin").email("kevin@test.be").elo("1200").age(25).build();
-            Player p2 = Player.builder().username("laura").email("laura@test.be").elo("1250").age(23).build();
-            Player p3 = Player.builder().username("yassine").email("yassine@test.be").elo("1300").age(27).build();
-            Player p4 = Player.builder().username("sofia").email("sofia@test.be").elo("1100").age(22).build();
+            Player p1 = Player.builder()
+                    .username("kevin")
+                    .email("kevin@test.be")
+                    .elo("1200")
+                    .age(25)
+                    .fighterMain(jin)
+                    .build();
+
+            Player p2 = Player.builder()
+                    .username("laura")
+                    .email("laura@test.be")
+                    .elo("1250")
+                    .age(23)
+                    .fighterMain(kazuya)
+                    .build();
+
+            Player p3 = Player.builder()
+                    .username("yassine")
+                    .email("yassine@test.be")
+                    .elo("1300")
+                    .age(27)
+                    .fighterMain(king)
+                    .build();
+
+            Player p4 = Player.builder()
+                    .username("sofia")
+                    .email("sofia@test.be")
+                    .elo("1100")
+                    .age(22)
+                    .fighterMain(heihachi)
+                    .build();
 
             em.persist(p1);
             em.persist(p2);
@@ -123,9 +153,6 @@ public class DataInitializer {
                     .status(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
                     .startedAt(LocalDateTime.now().minusDays(1))
-                    .player1Score(2)
-                    .player2Score(1)
-                    .finishType(FinishType.KO)
                     .build();
 
             Match m2 = Match.builder()
@@ -136,9 +163,6 @@ public class DataInitializer {
                     .status(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
                     .startedAt(LocalDateTime.now().minusDays(1))
-                    .player1Score(0)
-                    .player2Score(3)
-                    .finishType(FinishType.PERFECT)
                     .build();
 
             Match finale = Match.builder()
@@ -149,14 +173,12 @@ public class DataInitializer {
                     .status(MatchStatus.FINISHED)
                     .scheduledAt(LocalDateTime.now())
                     .startedAt(LocalDateTime.now())
-                    .player1Score(1)
-                    .player2Score(2)
-                    .finishType(FinishType.TIMEOUT)
                     .build();
 
             em.persist(m1);
             em.persist(m2);
             em.persist(finale);
+
             em.getTransaction().commit();
 
         } catch (Exception e) {
