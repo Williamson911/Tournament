@@ -125,59 +125,65 @@ public class DataInitializer {
             }
 
             // =====================
-            // ⚔️ MATCHES
+            // ⚔️ MATCHES — bracket 4 joueurs, WB R1 terminé
             // =====================
-            Match m1 = Match.builder()
-                    .tournament(t)
-                    .player1(p1)
-                    .player2(p2)
-                    .numberRounds(3)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.WINNERS_BRACKET)
-                    .roundNumber(1)
-                    .bracketPosition("W11")
-                    .player1Score(2)
-                    .player2Score(1)
-                    .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .startedAt(LocalDateTime.now().minusDays(1))
-                    .finishedAt(LocalDateTime.now().minusDays(1))
+            LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+
+            // WB R1 : kevin bat laura, yassine bat sofia
+            Match w11 = Match.builder()
+                    .tournament(t).player1(p1).player2(p2)
+                    .bracketPosition("W11").bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
+                    .numberRounds(3).status(MatchStatus.FINISHED)
+                    .player1Score(2).player2Score(1)
+                    .scheduledAt(yesterday).startedAt(yesterday).finishedAt(yesterday)
                     .build();
 
-            Match m2 = Match.builder()
-                    .tournament(t)
-                    .player1(p3)
-                    .player2(p4)
-                    .numberRounds(3)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.WINNERS_BRACKET)
-                    .roundNumber(1)
-                    .bracketPosition("W12")
-                    .player1Score(2)
-                    .player2Score(0)
-                    .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .startedAt(LocalDateTime.now().minusDays(1))
-                    .finishedAt(LocalDateTime.now().minusDays(1))
+            Match w12 = Match.builder()
+                    .tournament(t).player1(p3).player2(p4)
+                    .bracketPosition("W12").bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
+                    .numberRounds(3).status(MatchStatus.FINISHED)
+                    .player1Score(2).player2Score(0)
+                    .scheduledAt(yesterday).startedAt(yesterday).finishedAt(yesterday)
                     .build();
 
-            Match finale = Match.builder()
-                    .tournament(t)
-                    .player1(p1)
-                    .player2(p3)
-                    .numberRounds(5)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.GRAND_FINAL)
-                    .roundNumber(0)
-                    .bracketPosition("GF1")
-                    .player1Score(3)
-                    .player2Score(2)
+            // WB Final : kevin vs yassine (gagnants W11/W12)
+            Match w21 = Match.builder()
+                    .tournament(t).player1(p1).player2(p3)
+                    .bracketPosition("W21").bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(2)
+                    .numberRounds(3).status(MatchStatus.SCHEDULED)
                     .scheduledAt(LocalDateTime.now())
-                    .startedAt(LocalDateTime.now())
-                    .finishedAt(LocalDateTime.now())
                     .build();
 
-            em.persist(m1);
-            em.persist(m2);
-            em.persist(finale);
+            // LB R1 : laura vs sofia (perdants W11/W12)
+            Match l11 = Match.builder()
+                    .tournament(t).player1(p2).player2(p4)
+                    .bracketPosition("L11").bracketStage(BracketStage.LOSERS_BRACKET).roundNumber(1)
+                    .numberRounds(3).status(MatchStatus.SCHEDULED)
+                    .scheduledAt(LocalDateTime.now())
+                    .build();
+
+            // LB Final : slots vides
+            Match l21 = Match.builder()
+                    .tournament(t)
+                    .bracketPosition("L21").bracketStage(BracketStage.LOSERS_BRACKET).roundNumber(2)
+                    .numberRounds(3).status(MatchStatus.SCHEDULED)
+                    .scheduledAt(LocalDateTime.now())
+                    .build();
+
+            // Grand Final : slot vide
+            Match gf1 = Match.builder()
+                    .tournament(t)
+                    .bracketPosition("GF1").bracketStage(BracketStage.GRAND_FINAL).roundNumber(1)
+                    .numberRounds(5).status(MatchStatus.SCHEDULED)
+                    .scheduledAt(LocalDateTime.now())
+                    .build();
+
+            em.persist(w11);
+            em.persist(w12);
+            em.persist(w21);
+            em.persist(l11);
+            em.persist(l21);
+            em.persist(gf1);
 
             em.getTransaction().commit();
 

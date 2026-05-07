@@ -18,6 +18,19 @@
   width: t.$connector-width; align-self: stretch;
 }
 
+.connector-exit {
+  width: 16px; align-self: center;
+  height: 138px; margin-top: 17px;
+  position: relative;
+
+  &::after {
+    content: ''; position: absolute;
+    left: 0; top: 50%;
+    width: 100%; height: 1px;
+    background: t.$connector-color;
+  }
+}
+
 .connector-pair {
   position: relative; flex: 1; min-height: 80px;
 
