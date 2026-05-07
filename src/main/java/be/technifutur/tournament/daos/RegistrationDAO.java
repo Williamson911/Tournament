@@ -59,6 +59,19 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
+    public void resetAllStatusForTournament(int tournamentId, RegistrationStatus status) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery(
+                            "UPDATE Registration r SET r.registrationStatus = :status " +
+                                    "WHERE r.tournament.id = :tid")
+                    .setParameter("status", status)
+                    .setParameter("tid", tournamentId)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        }
+    }
+
     public void updateStatusForPlayers(int tournamentId, Set<Integer> playerIds, RegistrationStatus status) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
             em.getTransaction().begin();

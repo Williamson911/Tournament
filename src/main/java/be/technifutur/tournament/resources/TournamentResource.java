@@ -3,6 +3,7 @@ package be.technifutur.tournament.resources;
 import be.technifutur.tournament.dtos.*;
 import be.technifutur.tournament.entities.Player;
 import be.technifutur.tournament.services.TournamentService;
+import be.technifutur.tournament.services.TournamentSimulationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import java.util.List;
 public class TournamentResource {
 
     @Inject TournamentService tournamentService;
+    @Inject TournamentSimulationService simulationService;
 
     @POST
     @Operation(summary = "Create tournament")
@@ -91,6 +93,22 @@ public class TournamentResource {
         List<Player> qualifiers = tournamentService.launchGroupStage(id);
         List<Integer> qualifierIds = qualifiers.stream().map(Player::getId).toList();
         return Response.ok(qualifierIds).build();
+    }
+
+    @POST
+    @Path("/{id}/simulate-next-round")
+    @Operation(summary = "Auto-simulate one round of ready matches")
+    public Response simulateNextRound(@PathParam("id") int id) {
+        var data = simulationService.simulateNextRound(id);
+        return Response.ok(data).build();
+    }
+
+    @POST
+    @Path("/{id}/reset")
+    @Operation(summary = "Reset tournament to DRAFT (delete matches, restore registrations)")
+    public Response reset(@PathParam("id") int id) {
+        var tournament = tournamentService.resetTournament(id);
+        return Response.ok(tournament).build();
     }
 
     @PUT

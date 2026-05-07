@@ -137,6 +137,17 @@ public class TournamentService {
         return bracketService.buildBracketData(tournamentId);
     }
 
+    public Tournament resetTournament(int tournamentId) {
+        Tournament t = tournamentDAO.findById(tournamentId)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        matchDAO.deleteByTournament(tournamentId);
+        registrationDAO.resetAllStatusForTournament(tournamentId, RegistrationStatus.CONFIRMED);
+        t.setHasGroupStage(false);
+        t.setStatus(TournamentStatus.DRAFT);
+        tournamentDAO.update(t);
+        return t;
+    }
+
     public Tournament updateStatus(int tournamentId, TournamentStatus status) {
         Tournament t = tournamentDAO.findById(tournamentId)
             .orElseThrow(() -> new NotFoundException("Tournament not found"));

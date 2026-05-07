@@ -12,7 +12,20 @@
       "Bash(python *)",
       "Bash(./mvnw compile *)",
       "Bash(mvn test *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(where psql *)",
+      "Bash(C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe *)",
+      "Bash(dir C:\\\\Users\\\\lemet\\\\Documents\\\\tournament_fresh\\\\target\\\\classes\\\\be\\\\technifutur\\\\tournament\\\\resources *)",
+      "Bash(javap -p \"C:\\\\Users\\\\lemet\\\\Documents\\\\tournament_fresh\\\\target\\\\Tournament-1.0-SNAPSHOT\\\\WEB-INF\\\\classes\\\\be\\\\technifutur\\\\tournament\\\\resources\\\\TournamentResource.class\")",
+      "Bash(findstr /C:\"launchGroupStage\")",
+      "Bash(curl *)",
+      "Bash(\"C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2024.2.4/plugins/maven/lib/maven3/bin/mvn.cmd\" -q compile)",
+      "Bash(where mvn *)",
+      "Bash(where mvn.cmd)",
+      "Bash(where mvnw *)",
+      "Bash(where mvnw.cmd)",
+      "Bash(\"/c/Users/lemet/AppData/Local/Programs/IntelliJ IDEA 2026.1/plugins/maven/lib/maven3/bin/mvn.cmd\" -q compile)",
+      "Bash(\"/c/Users/lemet/AppData/Local/Programs/IntelliJ IDEA 2026.1/plugins/maven/lib/maven3/bin/mvn.cmd\" -q -f \"C:\\\\Users\\\\lemet\\\\Documents\\\\tournament_fresh\\\\pom.xml\" compile)"
     ]
   }
 }

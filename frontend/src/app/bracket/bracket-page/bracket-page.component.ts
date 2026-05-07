@@ -33,6 +33,8 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
   error = signal<string | null>(null);
   launching = signal(false);
   generating = signal(false);
+  simulating = signal(false);
+  resetting = signal(false);
   gfSvgH = signal<number | null>(null);
   gfTopLineY = signal<number | null>(null);
   gfBottomLineY = signal<number | null>(null);
@@ -65,6 +67,35 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
     });
   }
 
+  simulateTournament(): void {
+    this.simulating.set(true);
+    this.simulateLoop();
+  }
+
+  resetTournament(): void {
+    if (!confirm('Réinitialiser le tournoi ? Les matchs seront effacés et le tournoi reviendra en DRAFT.')) return;
+    this.resetting.set(true);
+    this.service.resetTournament(this.tournamentId).subscribe({
+      next: () => this.loadBracket(),
+      error: () => this.resetting.set(false)
+    });
+  }
+
+  private simulateLoop(): void {
+    this.service.simulateNextRound(this.tournamentId).subscribe({
+      next: d => {
+        this.data.set(d);
+        setTimeout(() => this.measureGfConnector());
+        if (d.status === 'IN_PROGRESS') {
+          setTimeout(() => this.simulateLoop(), 800);
+        } else {
+          this.simulating.set(false);
+        }
+      },
+      error: () => this.simulating.set(false)
+    });
+  }
+
   private loadBracket(): void {
     this.service.getBracket(this.tournamentId).subscribe({
       next: d => {
@@ -72,9 +103,8 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
         this.loading.set(false);
         this.launching.set(false);
         this.generating.set(false);
-        if (d.hasGroupStage && d.status !== 'IN_PROGRESS') {
-          this.activeTab.set('groups');
-        }
+        this.simulating.set(false);
+        this.resetting.set(false);
         setTimeout(() => this.measureGfConnector());
       },
       error: () => {
@@ -82,6 +112,8 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
         this.loading.set(false);
         this.launching.set(false);
         this.generating.set(false);
+        this.simulating.set(false);
+        this.resetting.set(false);
       }
     });
   }

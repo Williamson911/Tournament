@@ -109,4 +109,14 @@ public class MatchDAO extends CrudDao<Match, Integer> {
                 .getResultList();
         }
     }
+
+    public void deleteByTournament(int tournamentId) {
+        try (var em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Match m WHERE m.tournament.id = :tid")
+                .setParameter("tid", tournamentId)
+                .executeUpdate();
+            em.getTransaction().commit();
+        }
+    }
 }

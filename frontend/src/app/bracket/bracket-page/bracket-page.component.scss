@@ -47,3 +47,26 @@
     cursor: default;
   }
 }
+
+.reset-btn {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: rgba(180, 60, 60, 0.7);
+  background: transparent;
+  border: 1px solid rgba(120, 30, 30, 0.5);
+  padding: 4px 14px;
+  cursor: pointer;
+  align-self: flex-end;
+  margin: 8px 16px 0 0;
+
+  &:hover:not(:disabled) {
+    color: rgba(220, 80, 80, 0.95);
+    border-color: rgba(180, 30, 30, 0.8);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}

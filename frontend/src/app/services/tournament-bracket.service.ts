@@ -18,4 +18,12 @@ export class TournamentBracketService {
   generateBracket(tournamentId: number): Observable<any> {
     return this.http.post(`/api/tournaments/${tournamentId}/generate-bracket`, {});
   }
+
+  simulateNextRound(tournamentId: number): Observable<TournamentBracketData> {
+    return this.http.post<TournamentBracketData>(`/api/tournaments/${tournamentId}/simulate-next-round`, {});
+  }
+
+  resetTournament(tournamentId: number): Observable<any> {
+    return this.http.post(`/api/tournaments/${tournamentId}/reset`, {});
+  }
 }

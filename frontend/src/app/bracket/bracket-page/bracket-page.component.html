@@ -7,6 +7,12 @@
     @let d = data()!;
     <app-bracket-title [title]="d.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
 
+    @if (d.status !== 'DRAFT') {
+      <button class="reset-btn" [disabled]="resetting()" (click)="resetTournament()">
+        {{ resetting() ? 'Reset…' : 'Reset' }}
+      </button>
+    }
+
     @if (d.hasGroupStage) {
       <app-stage-tabs [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
     }
@@ -21,6 +27,11 @@
         @if (d.status === 'GROUP_STAGE_COMPLETE') {
           <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
             {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+          </button>
+        }
+        @if (d.status === 'IN_PROGRESS' && !d.champion) {
+          <button class="action-btn" [disabled]="simulating()" (click)="simulateTournament()">
+            {{ simulating() ? 'En cours…' : 'Commencer le tournoi' }}
           </button>
         }
 
