@@ -27,12 +27,12 @@ public class Registration {
     private LocalDateTime registeredAt;
 
     @Getter @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_player", nullable = false)
     private Player player;
 
     @Getter @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "id_tournament", nullable = false)
     private Tournament tournament;
 

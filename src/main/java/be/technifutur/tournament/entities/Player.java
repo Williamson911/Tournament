@@ -36,7 +36,7 @@ public class Player {
 
     @Getter @Setter
     @JoinColumn(name = "id_fighter", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Fighter fighterMain;
 
 //    @Column(name = "status", nullable = false)

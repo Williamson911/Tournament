@@ -42,9 +42,11 @@ public abstract class CrudDao<TEntity, TId> {
         try(var em = emfProvider.get().createEntityManager()) {
             var tx = em.getTransaction();
             tx.begin();
-            em.persist(entity);
+//            em.persist(entity);
+            TEntity managed = em.merge(entity);
             tx.commit();
-            return entity;
+//            return entity;
+            return managed;
         }
     }
 

@@ -10,6 +10,7 @@ import jakarta.enterprise.event.Startup;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,7 +36,7 @@ public class DataInitializer {
         match.setFinishedAt(LocalDateTime.now());
     }
 
-    public void init(@Observes Startup startup) {
+    public void init(@Observes Startup startup) throws IOException {
         EntityManager em = null;
 
         try {
@@ -190,4 +191,30 @@ public class DataInitializer {
             if (em != null) em.close();
         }
     }
+
+
+    public void initB(EntityManager em) throws IOException {
+
+        em.getTransaction().begin();
+
+        try (InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("scriptSqlTournament.sql")) {
+
+            if (is == null) {
+                throw new RuntimeException("SQL script not found");
+            }
+
+            String sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+
+            for (String stmt : sql.split(";")) {
+                if (!stmt.trim().isEmpty()) {
+                    em.createNativeQuery(stmt).executeUpdate();
+                }
+            }
+        }
+        em.getTransaction().commit();
+
+    }
+
+
 }
