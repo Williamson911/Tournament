@@ -19,10 +19,13 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     @Override
     public Optional<Match> findById(Integer id) {
         try (var em = emfProvider.get().createEntityManager()) {
-            return em.createQuery("SELECT m FROM Match m JOIN FETCH m.tournament " +
-                    "            JOIN FETCH m.player1 " +
-                    "            JOIN FETCH m.player2 " +
-                    "   WHERE m.id = :id", Match.class).setParameter("id", id).getResultStream().findFirst();
+            return em.createQuery(
+                "SELECT m FROM Match m JOIN FETCH m.tournament " +
+                "LEFT JOIN FETCH m.player1 p1 LEFT JOIN FETCH p1.fighterMain " +
+                "LEFT JOIN FETCH m.player2 p2 LEFT JOIN FETCH p2.fighterMain " +
+                "WHERE m.id = :id", Match.class)
+                .setParameter("id", id)
+                .getResultStream().findFirst();
         }
     }
 
@@ -60,6 +63,19 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
+    public Optional<Match> findByTournamentAndBracketPosition(int tournamentId, String bracketPosition) {
+        try (var em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                "SELECT m FROM Match m " +
+                "LEFT JOIN FETCH m.player1 LEFT JOIN FETCH m.player2 " +
+                "WHERE m.tournament.id = :tid AND m.bracketPosition = :pos",
+                Match.class)
+                .setParameter("tid", tournamentId)
+                .setParameter("pos", bracketPosition)
+                .getResultStream().findFirst();
+        }
+    }
+
     public boolean existsUnfinishedMatch(int tournamentId, int round) {
         try (var em = emfProvider.get().createEntityManager()) {
             Long count = em.createQuery(
@@ -73,12 +89,10 @@ public class MatchDAO extends CrudDao<Match, Integer> {
     }
     public List<Match> findAllWithRelations() {
         try (var em = emfProvider.get().createEntityManager()) {
-            return em.createQuery("""
-            SELECT m FROM Match m
-            JOIN FETCH m.tournament
-            JOIN FETCH m.player1
-            JOIN FETCH m.player2
-        """, Match.class).getResultList();
+            return em.createQuery(
+                "SELECT m FROM Match m JOIN FETCH m.tournament " +
+                "LEFT JOIN FETCH m.player1 LEFT JOIN FETCH m.player2",
+                Match.class).getResultList();
         }
     }
 
@@ -86,8 +100,8 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                 "SELECT m FROM Match m " +
-                "JOIN FETCH m.player1 p1 JOIN FETCH p1.fighterMain " +
-                "JOIN FETCH m.player2 p2 JOIN FETCH p2.fighterMain " +
+                "LEFT JOIN FETCH m.player1 p1 LEFT JOIN FETCH p1.fighterMain " +
+                "LEFT JOIN FETCH m.player2 p2 LEFT JOIN FETCH p2.fighterMain " +
                 "WHERE m.tournament.id = :tid " +
                 "ORDER BY m.roundNumber ASC NULLS LAST, m.id ASC",
                 Match.class)
