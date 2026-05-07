@@ -1,0 +1,26 @@
+@use '../../../styles/tekken-tokens' as t;
+
+.title-block { text-align: center; margin-bottom: 60px; }
+
+.title-main {
+  font-family: t.$font-display;
+  font-size: clamp(64px, 10vw, 128px); letter-spacing: 12px; line-height: 0.95;
+  background: linear-gradient(180deg, #fff 0%, #eee 20%, #ccc 55%, #999 85%, #555 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter:
+    drop-shadow(0 0 50px rgba(220, 0, 0, 0.70))
+    drop-shadow(0 0 20px rgba(160, 0, 0, 0.55))
+    drop-shadow(2px 4px 0 rgba(0, 0, 0, 0.95));
+}
+
+.title-sub {
+  font-family: t.$font-display; font-size: clamp(11px, 1.8vw, 15px); letter-spacing: 14px;
+  color: rgba(220, 80, 80, 0.80); margin-top: 4px;
+  text-shadow: 0 0 12px rgba(220, 0, 0, 0.50), 0 2px 6px rgba(0, 0, 0, 0.90);
+}
+
+.title-line {
+  width: 340px; height: 1px; margin: 16px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(180, 0, 0, 0.7), rgba(255, 60, 60, 0.9), rgba(180, 0, 0, 0.7), transparent);
+  box-shadow: 0 0 10px rgba(200, 0, 0, 0.55);
+}

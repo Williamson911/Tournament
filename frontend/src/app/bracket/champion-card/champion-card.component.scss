@@ -1,0 +1,66 @@
+@use '../../../styles/tekken-tokens' as t;
+
+.champion-card {
+  position: relative; width: 200px; min-height: 180px;
+  transform: skewX(t.$slot-skew);
+  background: linear-gradient(135deg, rgba(38, 0, 0, 0.99) 0%, rgba(14, 0, 0, 0.99) 100%);
+  border: 1px solid rgba(200, 0, 0, 0.72);
+  box-shadow: 0 0 50px rgba(200, 0, 0, 0.22), inset 0 0 35px rgba(90, 0, 0, 0.10), -4px 0 0 rgba(220, 0, 0, 0.62);
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+
+  &::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 4;
+    background: linear-gradient(90deg, rgba(160, 0, 0, 0.5), rgba(255, 50, 50, 0.95), rgba(220, 0, 0, 0.7), transparent);
+    box-shadow: 0 0 14px rgba(255, 0, 0, 0.80);
+  }
+
+  &:hover {
+    transform: skewX(t.$slot-skew) scale(1.04);
+    border-color: t.$color-hover-blue !important;
+    box-shadow: 0 0 40px t.$color-hover-blue-glow, inset 0 0 20px rgba(0, 60, 200, 0.18) !important;
+  }
+}
+
+.champion-portrait {
+  position: absolute; inset: 0; overflow: hidden;
+
+  img {
+    width: 110%; height: 100%; object-fit: cover; object-position: top center;
+    opacity: 0.28; filter: saturate(0.55) contrast(1.35);
+    transform: skewX(12deg) translateX(-5%) scale(1.1); transform-origin: top right;
+  }
+
+  &::before {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(180deg, rgba(20, 0, 0, 0.25) 0%, rgba(10, 0, 0, 0.85) 100%);
+  }
+}
+
+.champion-inner {
+  transform: skewX(12deg); position: relative; z-index: 2;
+  padding: 20px 16px 20px 20px; text-align: center;
+}
+
+.champion-label {
+  font-family: t.$font-display; font-size: 10px; letter-spacing: 6px;
+  color: rgba(210, 80, 80, 0.60); margin-bottom: 8px;
+}
+
+.champion-player {
+  font-family: t.$font-display; font-size: 26px; letter-spacing: 2px; line-height: 1.05;
+  background: linear-gradient(180deg, #fff 0%, #ffbbbb 35%, #ff3333 75%, #cc0000 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(200, 0, 0, 0.55));
+}
+
+.champion-fighter {
+  font-family: t.$font-display; font-size: 11px; letter-spacing: 3px;
+  color: rgba(200, 140, 140, 0.75); margin-top: 4px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); display: block;
+}
+
+.champion-sub {
+  font-size: 9px; letter-spacing: 3px;
+  color: rgba(200, 70, 70, 0.50); margin-top: 8px; text-transform: uppercase;
+}
