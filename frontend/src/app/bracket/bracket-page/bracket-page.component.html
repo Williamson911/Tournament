@@ -7,20 +7,46 @@
     @let d = data()!;
     <app-bracket-title [title]="d.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
 
+    @if (d.status !== 'DRAFT') {
+      <button class="reset-btn" [disabled]="resetting()" (click)="resetTournament()">
+        {{ resetting() ? 'Reset…' : 'Reset' }}
+      </button>
+    }
+
     @if (d.hasGroupStage) {
       <app-stage-tabs [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
     }
 
     @if (!d.hasGroupStage || activeTab() === 'bracket') {
       <div class="bracket-view">
-        <app-winners-bracket [rounds]="d.winnersBracket" />
-        @if (d.losersBracket.length > 0) {
-          <app-losers-bracket [rounds]="d.losersBracket" />
+        @if (d.status === 'DRAFT') {
+          <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
+            {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+          </button>
         }
+        @if (d.status === 'GROUP_STAGE_COMPLETE') {
+          <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
+            {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+          </button>
+        }
+        @if (d.status === 'IN_PROGRESS' && !d.champion) {
+          <button class="action-btn" [disabled]="simulating()" (click)="simulateTournament()">
+            {{ simulating() ? 'En cours…' : 'Commencer le tournoi' }}
+          </button>
+        }
+
+        <app-bracket-layout #bracketLayoutRef
+          [winnersBracket]="d.winnersBracket"
+          [losersBracket]="d.losersBracket" />
+
         @if (d.grandFinal) {
-          <app-grand-final [grandFinal]="d.grandFinal" [bracketReset]="d.bracketReset" />
+          <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
+          <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
+                           [style.margin-top.px]="gfMarginTop()" />
         }
+
         @if (d.champion) {
+          <app-bracket-connector [matchCount]="1" />
           <app-champion-card [champion]="d.champion" />
         }
       </div>

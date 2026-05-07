@@ -2,8 +2,10 @@ package be.technifutur.tournament.resources;
 
 import be.technifutur.tournament.daos.MatchDAO;
 import be.technifutur.tournament.dtos.MatchDTO;
+import be.technifutur.tournament.dtos.RecordResultDto;
 import be.technifutur.tournament.entities.Match;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import be.technifutur.tournament.services.MatchResultService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,12 +20,18 @@ import static be.technifutur.tournament.dtos.MatchDTO.toDTO;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/matches")
+@ApplicationScoped
 public class MatchResource {
 
     @Inject
     private MatchDAO matchDao;
 
+    @Inject
+    private MatchResultService matchResultService;
+
     @POST
+    @Consumes("application/json")
+    @Produces("application/json")
     public Response create(Match match) {
         Match created = matchDao.save(match);
         return Response.status(Response.Status.CREATED)
@@ -32,6 +40,7 @@ public class MatchResource {
     }
 
     @GET
+    @Produces("application/json")
     public Response findAll() {
         List<MatchDTO> dtos = matchDao.findAllWithRelations()
                 .stream()
@@ -76,5 +85,14 @@ public class MatchResource {
     public Response delete(@PathParam("id") Integer id) {
         matchDao.delete(id);
         return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/{id}/result")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response recordResult(@PathParam("id") int id, RecordResultDto dto) {
+        var bracketData = matchResultService.recordResult(id, dto.player1Score(), dto.player2Score(), dto.finishType());
+        return Response.ok(bracketData).build();
     }
 }

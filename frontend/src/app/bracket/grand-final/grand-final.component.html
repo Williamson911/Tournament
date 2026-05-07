@@ -1,8 +1,4 @@
 <div class="gf-section">
   <div class="gf-label">GRAND FINAL</div>
   <app-bracket-match [match]="grandFinal()" />
-  @if (bracketReset()) {
-    <div class="reset-label">BRACKET RESET</div>
-    <app-bracket-match [match]="bracketReset()!" />
-  }
 </div>

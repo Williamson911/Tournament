@@ -17,6 +17,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,6 @@ public class DataInitializer {
             List<FighterData> fighterDataList = new Gson().fromJson(reader, listType);
 
             Map<String, Fighter> fighterMap = new HashMap<>();
-
             for (FighterData fd : fighterDataList) {
                 Fighter f = Fighter.builder()
                         .name(fd.name())
@@ -58,66 +58,45 @@ public class DataInitializer {
                         .originCountry(fd.originCountry())
                         .image(fd.imageUrl())
                         .build();
-
                 em.persist(f);
                 fighterMap.put(fd.name(), f);
             }
 
-            // =====================
-            // 👤 PLAYERS
-            // =====================
-            Player p1 = Player.builder()
-                    .username("kevin")
-                    .email("kevin@test.be")
-                    .elo("1200")
-                    .age(25)
-                    .fighterMain(fighterMap.get("Jin Kazama"))
-                    .build();
+            // PLAYERS — 32 players, each with a different fighter
+            List<String> fighterNames = List.of(
+                "Jin Kazama", "Kazuya Mishima", "Heihachi Mishima", "King",
+                "Nina Williams", "Paul Phoenix", "Marshall Law", "Yoshimitsu",
+                "Hwoarang", "Ling Xiaoyu", "Eddy Gordo", "Bryan Fury",
+                "Steve Fox", "Craig Marduk", "Christie Monteiro", "Asuka Kazama",
+                "Feng Wei", "Raven", "Devil Jin", "Lars Alexandersson",
+                "Alisa Bosconovitch", "Leo Kliesen", "Zafina", "Lili",
+                "Dragunov", "Anna Williams", "Lee Chaolan", "Jack",
+                "Bob", "Katarina Alves", "Shaheen", "Josie Rizal"
+            );
 
-            Player p2 = Player.builder()
-                    .username("laura")
-                    .email("laura@test.be")
-                    .elo("1250")
-                    .age(23)
-                    .fighterMain(fighterMap.get("Kazuya Mishima"))
-                    .build();
+            List<Player> players = new ArrayList<>();
+            for (int i = 1; i <= 32; i++) {
+                Player p = Player.builder()
+                        .username("player" + i)
+                        .email("player" + i + "@test.be")
+                        .elo("1200")
+                        .age(20 + (i % 20))
+                        .fighterMain(fighterMap.get(fighterNames.get(i - 1)))
+                        .build();
+                em.persist(p);
+                players.add(p);
+            }
 
-            Player p3 = Player.builder()
-                    .username("yassine")
-                    .email("yassine@test.be")
-                    .elo("1300")
-                    .age(27)
-                    .fighterMain(fighterMap.get("King"))
-                    .build();
-
-            Player p4 = Player.builder()
-                    .username("sofia")
-                    .email("sofia@test.be")
-                    .elo("1100")
-                    .age(22)
-                    .fighterMain(fighterMap.get("Heihachi Mishima"))
-                    .build();
-
-            em.persist(p1);
-            em.persist(p2);
-            em.persist(p3);
-            em.persist(p4);
-
-            // =====================
-            // 🏆 TOURNAMENT
-            // =====================
+            // TOURNAMENT — DRAFT, no matches
             Tournament t = Tournament.builder()
                     .name("Tekken 8 Championship")
-                    .status(TournamentStatus.IN_PROGRESS)
+                    .status(TournamentStatus.DRAFT)
                     .startDate(LocalDateTime.now())
                     .build();
-
             em.persist(t);
 
-            // =====================
-            // 📝 REGISTRATIONS
-            // =====================
-            for (Player p : List.of(p1, p2, p3, p4)) {
+            // REGISTRATIONS — 32 CONFIRMED
+            for (Player p : players) {
                 em.persist(Registration.builder()
                         .player(p)
                         .tournament(t)
@@ -125,64 +104,11 @@ public class DataInitializer {
                         .build());
             }
 
-            // =====================
-            // ⚔️ MATCHES
-            // =====================
-            Match m1 = Match.builder()
-                    .tournament(t)
-                    .player1(p1)
-                    .player2(p2)
-                    .numberRounds(3)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.WINNERS_BRACKET)
-                    .roundNumber(1)
-                    .player1Score(2)
-                    .player2Score(1)
-                    .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .startedAt(LocalDateTime.now().minusDays(1))
-                    .finishedAt(LocalDateTime.now().minusDays(1))
-                    .build();
-
-            Match m2 = Match.builder()
-                    .tournament(t)
-                    .player1(p3)
-                    .player2(p4)
-                    .numberRounds(3)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.WINNERS_BRACKET)
-                    .roundNumber(1)
-                    .player1Score(2)
-                    .player2Score(0)
-                    .scheduledAt(LocalDateTime.now().minusDays(1))
-                    .startedAt(LocalDateTime.now().minusDays(1))
-                    .finishedAt(LocalDateTime.now().minusDays(1))
-                    .build();
-
-            Match finale = Match.builder()
-                    .tournament(t)
-                    .player1(p1)
-                    .player2(p3)
-                    .numberRounds(5)
-                    .status(MatchStatus.FINISHED)
-                    .bracketStage(BracketStage.GRAND_FINAL)
-                    .roundNumber(0)
-                    .player1Score(3)
-                    .player2Score(2)
-                    .scheduledAt(LocalDateTime.now())
-                    .startedAt(LocalDateTime.now())
-                    .finishedAt(LocalDateTime.now())
-                    .build();
-
-            em.persist(m1);
-            em.persist(m2);
-            em.persist(finale);
-
             em.getTransaction().commit();
 
         } catch (Exception e) {
             System.err.println("[DataInitializer] ERROR: " + e.getMessage());
             e.printStackTrace();
-
             if (em != null && em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }

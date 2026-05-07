@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,9 +34,7 @@ public class Tournament {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<Registration> registrations;
-//
-//    @OneToMany(mappedBy = "tournament", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<Match> matches;
+    @Getter @Setter
+    @Column(name = "has_group_stage")
+    private boolean hasGroupStage;
 }

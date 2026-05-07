@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @ApplicationScoped
 public class RegistrationDAO extends CrudDao<Registration, Integer> {
@@ -42,6 +43,45 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
                     .setParameter("tid", tournamentId)
                     .setParameter("status", RegistrationStatus.CONFIRMED)
                     .getResultList();
+        }
+    }
+
+    public List<Registration> findByTournamentAndStatus(int tournamentId, RegistrationStatus status) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                            "SELECT r FROM Registration r WHERE r.tournament.id = :tid " +
+                                    "AND r.registrationStatus = :status",
+                            Registration.class)
+                    .setParameter("tid", tournamentId)
+                    .setParameter("status", status)
+                    .getResultList();
+        }
+    }
+
+    public void resetAllStatusForTournament(int tournamentId, RegistrationStatus status) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery(
+                            "UPDATE Registration r SET r.registrationStatus = :status " +
+                                    "WHERE r.tournament.id = :tid")
+                    .setParameter("status", status)
+                    .setParameter("tid", tournamentId)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        }
+    }
+
+    public void updateStatusForPlayers(int tournamentId, Set<Integer> playerIds, RegistrationStatus status) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery(
+                            "UPDATE Registration r SET r.registrationStatus = :status " +
+                                    "WHERE r.tournament.id = :tid AND r.player.id IN :playerIds")
+                    .setParameter("status", status)
+                    .setParameter("tid", tournamentId)
+                    .setParameter("playerIds", playerIds)
+                    .executeUpdate();
+            em.getTransaction().commit();
         }
     }
 
