@@ -49,14 +49,19 @@ public class BracketGenerationService {
             }
         }
 
-        // Grand Final
-        matches.add(buildMatch(tournament, "GF1", null, null, BracketStage.GRAND_FINAL, 1));
+        // Grand Final (best of 5)
+        matches.add(buildMatch(tournament, "GF1", null, null, BracketStage.GRAND_FINAL, 1, 5));
 
         return matches;
     }
 
     private Match buildMatch(Tournament tournament, String pos, Player p1, Player p2,
                               BracketStage stage, int round) {
+        return buildMatch(tournament, pos, p1, p2, stage, round, 3);
+    }
+
+    private Match buildMatch(Tournament tournament, String pos, Player p1, Player p2,
+                              BracketStage stage, int round, int numberRounds) {
         return Match.builder()
             .tournament(tournament)
             .bracketPosition(pos)
@@ -64,7 +69,7 @@ public class BracketGenerationService {
             .roundNumber(round)
             .player1(p1).player2(p2)
             .player1Score(null).player2Score(null)
-            .numberRounds(3)
+            .numberRounds(numberRounds)
             .status(MatchStatus.SCHEDULED)
             .build();
     }

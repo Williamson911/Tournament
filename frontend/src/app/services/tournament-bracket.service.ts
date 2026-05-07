@@ -8,7 +8,7 @@ export class TournamentBracketService {
   private http = inject(HttpClient);
 
   getBracket(tournamentId: number): Observable<TournamentBracketData> {
-    return this.http.get<TournamentBracketData>(`/api/tournaments/${tournamentId}/bracket`);
+    return this.http.get<TournamentBracketData>(`/api/bracket/${tournamentId}/bracket`);
   }
 
   launchGroupStage(tournamentId: number): Observable<any> {
