@@ -1,7 +1,5 @@
 package be.technifutur.tournament.daos;
 
-import be.technifutur.tournament.dtos.MatchDTO;
-import be.technifutur.tournament.entities.Player;
 import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Match;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -20,7 +18,7 @@ public class MatchDAO extends CrudDao<Match, Integer> {
 
     @Override
     public Optional<Match> findById(Integer id) {
-        try(var em = emfProvider.get().createEntityManager()) {
+        try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery("SELECT m FROM Match m JOIN FETCH m.tournament " +
                     "            JOIN FETCH m.player1 " +
                     "            JOIN FETCH m.player2 " +
@@ -28,7 +26,8 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
-    public List<Match> findByTournamentAndRound(int tournamentId, int round) {
+
+        public List<Match> findByTournamentAndRound(int tournamentId, int round) {
         try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid AND m.numberRounds = :round",
@@ -83,4 +82,17 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         }
     }
 
+    public List<Match> findByTournamentWithPlayers(int tournamentId) {
+        try (var em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                "SELECT m FROM Match m " +
+                "JOIN FETCH m.player1 p1 JOIN FETCH p1.fighterMain " +
+                "JOIN FETCH m.player2 p2 JOIN FETCH p2.fighterMain " +
+                "WHERE m.tournament.id = :tid " +
+                "ORDER BY m.roundNumber ASC NULLS LAST, m.id ASC",
+                Match.class)
+                .setParameter("tid", tournamentId)
+                .getResultList();
+        }
+    }
 }

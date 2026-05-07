@@ -26,17 +26,7 @@ public class DataInitializer {
 
     private record FighterData(String name, String style, String originCountry, String imageUrl) {}
 
-    // =====================
-    // 🧠 HELPER RESULT
-    // =====================
-    private void setResult(Match match, int score1, int score2, FinishType type) {
-        match.setPlayer1Score(score1);
-        match.setPlayer2Score(score2);
-        match.setFinishType(type);
-        match.setFinishedAt(LocalDateTime.now());
-    }
-
-    public void init(@Observes Startup startup) throws IOException {
+    public void init(@Observes Startup startup) {
         EntityManager em = null;
 
         try {
@@ -144,11 +134,14 @@ public class DataInitializer {
                     .player2(p2)
                     .numberRounds(3)
                     .status(MatchStatus.FINISHED)
+                    .bracketStage(BracketStage.WINNERS_BRACKET)
+                    .roundNumber(1)
+                    .player1Score(2)
+                    .player2Score(1)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
                     .startedAt(LocalDateTime.now().minusDays(1))
+                    .finishedAt(LocalDateTime.now().minusDays(1))
                     .build();
-
-            setResult(m1, 2, 1, FinishType.KO);
 
             Match m2 = Match.builder()
                     .tournament(t)
@@ -156,11 +149,14 @@ public class DataInitializer {
                     .player2(p4)
                     .numberRounds(3)
                     .status(MatchStatus.FINISHED)
+                    .bracketStage(BracketStage.WINNERS_BRACKET)
+                    .roundNumber(1)
+                    .player1Score(2)
+                    .player2Score(0)
                     .scheduledAt(LocalDateTime.now().minusDays(1))
                     .startedAt(LocalDateTime.now().minusDays(1))
+                    .finishedAt(LocalDateTime.now().minusDays(1))
                     .build();
-
-            setResult(m2, 2, 0, FinishType.PERFECT);
 
             Match finale = Match.builder()
                     .tournament(t)
@@ -168,11 +164,14 @@ public class DataInitializer {
                     .player2(p3)
                     .numberRounds(5)
                     .status(MatchStatus.FINISHED)
+                    .bracketStage(BracketStage.GRAND_FINAL)
+                    .roundNumber(0)
+                    .player1Score(3)
+                    .player2Score(2)
                     .scheduledAt(LocalDateTime.now())
                     .startedAt(LocalDateTime.now())
+                    .finishedAt(LocalDateTime.now())
                     .build();
-
-            setResult(finale, 3, 2, FinishType.SUPER);
 
             em.persist(m1);
             em.persist(m2);
