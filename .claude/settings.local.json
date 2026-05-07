@@ -4,7 +4,8 @@
       "Bash(rm -rf node_modules)",
       "Bash(npm install *)",
       "Bash(npx ng *)",
-      "Bash(mvn compile *)"
+      "Bash(mvn compile *)",
+      "Bash(./mvnw test *)"
     ]
   }
 }
