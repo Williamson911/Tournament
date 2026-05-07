@@ -1,21 +1,21 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TournamentBracketService } from '../../services/tournament-bracket.service';
 import { TournamentBracketData } from '../../models/bracket.models';
 import { BracketTitleComponent } from '../bracket-title/bracket-title.component';
 import { StageTabsComponent, StageTab } from '../stage-tabs/stage-tabs.component';
 import { GroupStageComponent } from '../group-stage/group-stage.component';
-import { WinnersBracketComponent } from '../winners-bracket/winners-bracket.component';
-import { LosersBracketComponent } from '../losers-bracket/losers-bracket.component';
+import { BracketLayoutComponent } from '../bracket-layout/bracket-layout.component';
+import { BracketConnectorComponent } from '../bracket-connector/bracket-connector.component';
 import { GrandFinalComponent } from '../grand-final/grand-final.component';
 import { ChampionCardComponent } from '../champion-card/champion-card.component';
 
 @Component({
   selector: 'app-bracket-page',
   imports: [
-    BracketTitleComponent, StageTabsComponent,
-    GroupStageComponent, WinnersBracketComponent,
-    LosersBracketComponent, GrandFinalComponent, ChampionCardComponent
+    BracketTitleComponent, StageTabsComponent, GroupStageComponent,
+    BracketLayoutComponent, BracketConnectorComponent,
+    GrandFinalComponent, ChampionCardComponent
   ],
   templateUrl: './bracket-page.component.html',
   styleUrl: './bracket-page.component.scss'
@@ -28,6 +28,11 @@ export class BracketPageComponent implements OnInit {
   activeTab = signal<StageTab>('bracket');
   loading = signal(true);
   error = signal<string | null>(null);
+
+  lastWbRoundMatchCount = computed(() => {
+    const wb = this.data()?.winnersBracket ?? [];
+    return wb.length > 0 ? wb[wb.length - 1].matches.length : 0;
+  });
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -44,7 +49,5 @@ export class BracketPageComponent implements OnInit {
     });
   }
 
-  onTabChange(tab: StageTab): void {
-    this.activeTab.set(tab);
-  }
+  onTabChange(tab: StageTab): void { this.activeTab.set(tab); }
 }

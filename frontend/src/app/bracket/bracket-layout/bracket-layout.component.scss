@@ -1,0 +1,12 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.lb-separator {
+  height: 40px;
+  width: 100%;
+  border-top: 1px solid rgba(120, 0, 0, 0.25);
+  margin: 8px 0;
+}

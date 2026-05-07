@@ -31,7 +31,6 @@ export interface BracketMatch {
   participant1: MatchParticipant | null;
   participant2: MatchParticipant | null;
   isComplete: boolean;
-  isBracketReset: boolean;
 }
 
 export interface BracketRound {
@@ -47,7 +46,6 @@ export interface TournamentBracketData {
   groups: TournamentGroup[];
   winnersBracket: BracketRound[];
   losersBracket: BracketRound[];
-  grandFinal: BracketMatch;
-  bracketReset: BracketMatch | null;
+  grandFinal: BracketMatch | null;
   champion: MatchParticipant | null;
 }

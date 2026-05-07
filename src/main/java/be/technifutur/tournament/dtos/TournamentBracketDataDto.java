@@ -10,6 +10,5 @@ public record TournamentBracketDataDto(
     List<BracketRoundDto> winnersBracket,
     List<BracketRoundDto> losersBracket,
     BracketMatchDto grandFinal,
-    BracketMatchDto bracketReset,
     MatchParticipantDto champion
 ) {}

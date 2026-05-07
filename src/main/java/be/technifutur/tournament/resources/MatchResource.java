@@ -2,7 +2,9 @@ package be.technifutur.tournament.resources;
 
 import be.technifutur.tournament.daos.MatchDAO;
 import be.technifutur.tournament.dtos.MatchDTO;
+import be.technifutur.tournament.dtos.RecordResultDto;
 import be.technifutur.tournament.entities.Match;
+import be.technifutur.tournament.services.MatchResultService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,6 +20,9 @@ public class MatchResource {
 
     @Inject
     private MatchDAO matchDao;
+
+    @Inject
+    private MatchResultService matchResultService;
 
     @POST
     @Consumes("application/json")
@@ -87,5 +92,14 @@ public class MatchResource {
     public Response delete(@PathParam("id") Integer id) {
         matchDao.delete(id);
         return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/{id}/result")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response recordResult(@PathParam("id") int id, RecordResultDto dto) {
+        var bracketData = matchResultService.recordResult(id, dto.player1Score(), dto.player2Score(), dto.finishType());
+        return Response.ok(bracketData).build();
     }
 }

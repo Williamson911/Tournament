@@ -10,5 +10,4 @@ import { BracketMatch } from '../../models/bracket.models';
 })
 export class GrandFinalComponent {
   grandFinal = input.required<BracketMatch>();
-  bracketReset = input<BracketMatch | null>(null);
 }

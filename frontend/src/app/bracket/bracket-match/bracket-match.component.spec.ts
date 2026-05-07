@@ -6,7 +6,7 @@ const MATCH: BracketMatch = {
   matchId: 1,
   participant1: { playerId: 1, playerName: 'MaxCombo', fighterName: 'Jin Kazama', fighterImageUrl: '', score: 2, isWinner: true, isEliminated: false },
   participant2: { playerId: 2, playerName: 'DevilFist', fighterName: 'Kazuya', fighterImageUrl: '', score: 1, isWinner: false, isEliminated: false },
-  isComplete: true, isBracketReset: false
+  isComplete: true
 };
 
 const TBD: BracketMatch = {

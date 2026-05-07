@@ -13,14 +13,17 @@
 
     @if (!d.hasGroupStage || activeTab() === 'bracket') {
       <div class="bracket-view">
-        <app-winners-bracket [rounds]="d.winnersBracket" />
-        @if (d.losersBracket.length > 0) {
-          <app-losers-bracket [rounds]="d.losersBracket" />
+        <app-bracket-layout
+          [winnersBracket]="d.winnersBracket"
+          [losersBracket]="d.losersBracket" />
+
+        @if (d.grandFinal && lastWbRoundMatchCount() > 0) {
+          <app-bracket-connector [matchCount]="lastWbRoundMatchCount()" />
+          <app-grand-final [grandFinal]="d.grandFinal" />
         }
-        @if (d.grandFinal) {
-          <app-grand-final [grandFinal]="d.grandFinal" [bracketReset]="d.bracketReset" />
-        }
+
         @if (d.champion) {
+          <app-bracket-connector [matchCount]="2" />
           <app-champion-card [champion]="d.champion" />
         }
       </div>

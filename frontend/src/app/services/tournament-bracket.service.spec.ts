@@ -15,7 +15,7 @@ const MOCK: TournamentBracketData = {
       matchId: 1,
       participant1: { playerId: 1, playerName: 'MaxCombo', fighterName: 'Jin Kazama', fighterImageUrl: '', score: 2, isWinner: true, isEliminated: false },
       participant2: { playerId: 2, playerName: 'DevilFist', fighterName: 'Kazuya', fighterImageUrl: '', score: 1, isWinner: false, isEliminated: false },
-      isComplete: true, isBracketReset: false
+      isComplete: true
     }]
   }],
   losersBracket: [],
@@ -23,9 +23,8 @@ const MOCK: TournamentBracketData = {
     matchId: 10,
     participant1: { playerId: 1, playerName: 'MaxCombo', fighterName: 'Jin Kazama', fighterImageUrl: '', score: 3, isWinner: true, isEliminated: false },
     participant2: { playerId: 3, playerName: 'JaggedMask', fighterName: 'King', fighterImageUrl: '', score: 2, isWinner: false, isEliminated: false },
-    isComplete: true, isBracketReset: false
+    isComplete: true
   },
-  bracketReset: null,
   champion: { playerId: 1, playerName: 'MaxCombo', fighterName: 'Jin Kazama', fighterImageUrl: '', score: 3, isWinner: true, isEliminated: false }
 };
 

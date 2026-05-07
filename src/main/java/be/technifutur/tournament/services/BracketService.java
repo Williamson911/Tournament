@@ -43,7 +43,7 @@ public class BracketService {
         BracketMatchDto grandFinal = gfMatch.map(this::toMatchDto).orElse(null);
         MatchParticipantDto champion = gfMatch
             .filter(m -> m.getStatus() == MatchStatus.FINISHED)
-            .map(m -> m.getPlayer1Score() >= m.getPlayer2Score()
+            .map(m -> m.getPlayer1Score() > m.getPlayer2Score()
                 ? toParticipantDto(m.getPlayer1(), m.getPlayer1Score(), true, false)
                 : toParticipantDto(m.getPlayer2(), m.getPlayer2Score(), true, false))
             .orElse(null);
@@ -54,7 +54,7 @@ public class BracketService {
         return new TournamentBracketDataDto(
             tournament.getId(), tournament.getName(), hasGroupStage,
             groups, winnersBracket, losersBracket,
-            grandFinal, null, champion
+            grandFinal, champion
         );
     }
 
@@ -90,19 +90,19 @@ public class BracketService {
         boolean p1Wins = m.getPlayer1Score() != null && m.getPlayer2Score() != null
             && m.getPlayer1Score() > m.getPlayer2Score();
 
-        MatchParticipantDto p1 = toParticipantDto(
-            m.getPlayer1(),
-            m.getPlayer1Score() != null ? m.getPlayer1Score() : 0,
-            complete && p1Wins,
-            complete && isEliminated(stage, !p1Wins)
-        );
-        MatchParticipantDto p2 = toParticipantDto(
-            m.getPlayer2(),
-            m.getPlayer2Score() != null ? m.getPlayer2Score() : 0,
-            complete && !p1Wins,
-            complete && isEliminated(stage, p1Wins)
-        );
-        return new BracketMatchDto(m.getId(), p1, p2, complete, false);
+        MatchParticipantDto p1 = m.getPlayer1() != null
+            ? toParticipantDto(m.getPlayer1(),
+                m.getPlayer1Score() != null ? m.getPlayer1Score() : 0,
+                complete && p1Wins,
+                complete && isEliminated(stage, !p1Wins))
+            : null;
+        MatchParticipantDto p2 = m.getPlayer2() != null
+            ? toParticipantDto(m.getPlayer2(),
+                m.getPlayer2Score() != null ? m.getPlayer2Score() : 0,
+                complete && !p1Wins,
+                complete && isEliminated(stage, p1Wins))
+            : null;
+        return new BracketMatchDto(m.getId(), p1, p2, complete);
     }
 
     private boolean isEliminated(BracketStage stage, boolean isLoser) {
