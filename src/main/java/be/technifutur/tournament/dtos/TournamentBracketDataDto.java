@@ -5,6 +5,7 @@ import java.util.List;
 public record TournamentBracketDataDto(
     int tournamentId,
     String tournamentName,
+    String status,
     boolean hasGroupStage,
     List<TournamentGroupDto> groups,
     List<BracketRoundDto> winnersBracket,

@@ -42,6 +42,7 @@ export interface BracketRound {
 export interface TournamentBracketData {
   tournamentId: number;
   tournamentName: string;
+  status: string;
   hasGroupStage: boolean;
   groups: TournamentGroup[];
   winnersBracket: BracketRound[];

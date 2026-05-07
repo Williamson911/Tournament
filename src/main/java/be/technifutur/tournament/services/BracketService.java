@@ -48,11 +48,11 @@ public class BracketService {
                 : toParticipantDto(m.getPlayer2(), m.getPlayer2Score(), true, false))
             .orElse(null);
 
-        boolean hasGroupStage = !groupMatches.isEmpty();
+        boolean hasGroupStage = tournament.isHasGroupStage();
         List<TournamentGroupDto> groups = buildGroups(groupMatches);
 
         return new TournamentBracketDataDto(
-            tournament.getId(), tournament.getName(), hasGroupStage,
+            tournament.getId(), tournament.getName(), tournament.getStatus().name(), hasGroupStage,
             groups, winnersBracket, losersBracket,
             grandFinal, champion
         );

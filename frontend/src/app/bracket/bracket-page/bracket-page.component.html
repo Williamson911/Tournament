@@ -13,6 +13,17 @@
 
     @if (!d.hasGroupStage || activeTab() === 'bracket') {
       <div class="bracket-view">
+        @if (d.status === 'DRAFT') {
+          <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
+            {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+          </button>
+        }
+        @if (d.status === 'GROUP_STAGE_COMPLETE') {
+          <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
+            {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+          </button>
+        }
+
         <app-bracket-layout #bracketLayoutRef
           [winnersBracket]="d.winnersBracket"
           [losersBracket]="d.losersBracket" />

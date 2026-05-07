@@ -31,29 +31,59 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
   activeTab = signal<StageTab>('bracket');
   loading = signal(true);
   error = signal<string | null>(null);
+  launching = signal(false);
+  generating = signal(false);
   gfSvgH = signal<number | null>(null);
   gfTopLineY = signal<number | null>(null);
   gfBottomLineY = signal<number | null>(null);
   gfMarginTop = signal<number | null>(null);
 
+  private tournamentId = 0;
+
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.service.getBracket(id).subscribe({
+    this.tournamentId = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadBracket();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.measureGfConnector());
+  }
+
+  launchGroupStage(): void {
+    this.launching.set(true);
+    this.service.launchGroupStage(this.tournamentId).subscribe({
+      next: () => this.loadBracket(),
+      error: () => this.launching.set(false)
+    });
+  }
+
+  generateBracket(): void {
+    this.generating.set(true);
+    this.service.generateBracket(this.tournamentId).subscribe({
+      next: () => this.loadBracket(),
+      error: () => this.generating.set(false)
+    });
+  }
+
+  private loadBracket(): void {
+    this.service.getBracket(this.tournamentId).subscribe({
       next: d => {
         this.data.set(d);
         this.loading.set(false);
-        if (d.hasGroupStage) this.activeTab.set('groups');
+        this.launching.set(false);
+        this.generating.set(false);
+        if (d.hasGroupStage && d.status !== 'IN_PROGRESS') {
+          this.activeTab.set('groups');
+        }
         setTimeout(() => this.measureGfConnector());
       },
       error: () => {
         this.error.set('Impossible de charger le bracket.');
         this.loading.set(false);
+        this.launching.set(false);
+        this.generating.set(false);
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => this.measureGfConnector());
   }
 
   private measureGfConnector(): void {
@@ -68,7 +98,6 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
     const lastLbRound = lbRounds[lbRounds.length - 1] as HTMLElement | undefined;
     if (!lastWbRound || !lastLbRound) return;
 
-    // Use the last app-bracket-match within each round to hit the VS-level center
     const wbMatches = lastWbRound.querySelectorAll('app-bracket-match');
     const lbMatches = lastLbRound.querySelectorAll('app-bracket-match');
     const wbEl = (wbMatches[wbMatches.length - 1] as HTMLElement | undefined) ?? lastWbRound;
@@ -83,7 +112,6 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
     this.gfTopLineY.set(topY);
     this.gfBottomLineY.set(botY);
 
-    // Align GF so its VS separator sits exactly at the convergence midpoint
     const mid = (topY + botY) / 2;
     const gfHost = this.grandFinalRef?.nativeElement as HTMLElement | undefined;
     if (gfHost) {

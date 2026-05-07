@@ -6,7 +6,13 @@
       "Bash(npx ng *)",
       "Bash(mvn compile *)",
       "Bash(./mvnw test *)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\lemet\\\\Documents\\\\tournament_fresh\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(python *)",
+      "Bash(./mvnw compile *)",
+      "Bash(mvn test *)",
+      "Bash(npx tsc *)"
     ]
   }
 }

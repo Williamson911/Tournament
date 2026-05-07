@@ -18,6 +18,8 @@ import jakarta.ws.rs.WebApplicationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TournamentService {
@@ -28,6 +30,31 @@ public class TournamentService {
     @Inject MatchDAO matchDAO;
     @Inject BracketGenerationService generationService;
     @Inject BracketService bracketService;
+    @Inject GroupStageService groupStageService;
+
+    public List<Tournament> findAll() {
+        return tournamentDAO.findAll();
+    }
+
+    public Tournament findById(int id) {
+        return tournamentDAO.findById(id)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+    }
+
+    public Tournament update(int id, String name, LocalDateTime startDate) {
+        Tournament t = tournamentDAO.findById(id)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        t.setName(name);
+        t.setStartDate(startDate);
+        tournamentDAO.update(t);
+        return t;
+    }
+
+    public void delete(int id) {
+        tournamentDAO.findById(id)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        tournamentDAO.delete(id);
+    }
 
     public Tournament create(String name, LocalDateTime startDate) {
         Tournament t = Tournament.builder()
@@ -57,10 +84,46 @@ public class TournamentService {
         registrationDAO.delete(reg.getId());
     }
 
+    public List<Player> launchGroupStage(int tournamentId) {
+        Tournament t = tournamentDAO.findById(tournamentId)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        if (t.getStatus() != TournamentStatus.DRAFT)
+            throw new BadRequestException("Tournament must be in DRAFT status");
+
+        List<Registration> registrations = registrationDAO.findByTournamentWithStatus(tournamentId);
+        int n = registrations.size();
+        if (n % 4 != 0)
+            throw new BadRequestException("Player count must be divisible by 4");
+        int half = n / 2;
+        if (half < 2 || (half & (half - 1)) != 0)
+            throw new BadRequestException("N/2 must be a power of 2 (result must be 4, 8, 16...)");
+
+        List<Player> players = registrations.stream().map(Registration::getPlayer).toList();
+        List<Player> qualifiers = groupStageService.selectQualifiers(players);
+
+        Set<Integer> qualifierIds = qualifiers.stream().map(Player::getId).collect(Collectors.toSet());
+        registrationDAO.updateStatusForPlayers(tournamentId, qualifierIds, RegistrationStatus.QUALIFIED);
+
+        t.setHasGroupStage(true);
+        t.setStatus(TournamentStatus.GROUP_STAGE_COMPLETE);
+        tournamentDAO.update(t);
+
+        return qualifiers;
+    }
+
     public TournamentBracketDataDto generateBracket(int tournamentId) {
         Tournament t = tournamentDAO.findById(tournamentId)
             .orElseThrow(() -> new NotFoundException("Tournament not found"));
-        List<Registration> registrations = registrationDAO.findByTournamentWithStatus(tournamentId);
+
+        List<Registration> registrations;
+        if (t.getStatus() == TournamentStatus.GROUP_STAGE_COMPLETE) {
+            registrations = registrationDAO.findByTournamentAndStatus(tournamentId, RegistrationStatus.QUALIFIED);
+        } else if (t.getStatus() == TournamentStatus.DRAFT) {
+            registrations = registrationDAO.findByTournamentWithStatus(tournamentId);
+        } else {
+            throw new BadRequestException("Tournament must be in DRAFT or GROUP_STAGE_COMPLETE status");
+        }
+
         int n = registrations.size();
         if (n < 4 || (n & (n - 1)) != 0)
             throw new BadRequestException("Player count must be a power of 2 (4, 8, 16...)");
