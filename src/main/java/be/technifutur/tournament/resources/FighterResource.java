@@ -4,12 +4,17 @@ import be.technifutur.tournament.daos.FighterDao;
 import be.technifutur.tournament.entities.Fighter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Tag(name ="Fighter", description = "crud Fighter")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/fighterResource")
 public class FighterResource {
 
@@ -18,8 +23,6 @@ public class FighterResource {
 
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Create fighter")
     @ApiResponse(responseCode = "201", description = "Fighter created")
     public Response create(Fighter fighter){
@@ -28,7 +31,6 @@ public class FighterResource {
     }
 
     @GET
-    @Produces("application/json")
     @Operation(summary = "Get all fighters")
     public Response findAll(){
         List<Fighter> allFighters = fighterDao.findAll();
@@ -40,7 +42,6 @@ public class FighterResource {
 
     @GET
     @Path("/id/{id}")
-    @Produces("application/json")
     @Operation(summary = "Get fighter by id")
     public Response findByName(@PathParam("id") Integer id){
         Fighter fighter = fighterDao.findById(id).orElseThrow();
@@ -50,7 +51,6 @@ public class FighterResource {
 
     @GET
     @Path("/name/{name}")
-    @Produces("application/json")
     @Operation(summary = "Get fighter by name")
     public Response findByName(@PathParam("name") String name){
         Fighter fighter = fighterDao.getFighterByName(name);
@@ -60,8 +60,6 @@ public class FighterResource {
 
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Update fighter")
     @ApiResponse(responseCode = "200", description = "Fighter updated")
     @ApiResponse(responseCode = "404", description = "Fighter not found")

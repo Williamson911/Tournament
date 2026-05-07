@@ -6,12 +6,17 @@ import be.technifutur.tournament.entities.Fighter;
 import be.technifutur.tournament.entities.Player;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Tag(name ="Player", description = "crud Player")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/playerResource")
 public class PlayerResource {
 
@@ -23,8 +28,6 @@ public class PlayerResource {
 
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Create player")
     @ApiResponse(responseCode = "201", description = "Player created")
     public Response create(Player player){
@@ -33,7 +36,6 @@ public class PlayerResource {
     }
 
     @GET
-    @Produces("application/json")
     @Operation(summary = "Get all Players")
     public Response findAllWithFighter(){
         List<Player> allPlayers = playerDao.findAll();
@@ -43,7 +45,6 @@ public class PlayerResource {
 
     @GET
     @Path("/id/{id}")
-    @Produces("application/json")
     @Operation(summary = "Get Player by id")
     public Response findByIdWithFighter(@PathParam("id") Integer id){
         Player player = playerDao.findByIdWithFighter(id).orElseThrow();
@@ -53,7 +54,6 @@ public class PlayerResource {
 
     @GET
     @Path("/username/{username}")
-    @Produces("application/json")
     @Operation(summary = "Get Player by username")
     public Response findByUsernameWithFighter(@PathParam("username") String username){
         Player player = playerDao.findByUsernameWithFighter(username).orElseThrow();
@@ -63,8 +63,6 @@ public class PlayerResource {
 
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Update player")
     @ApiResponse(responseCode = "200", description = "Player updated")
     @ApiResponse(responseCode = "404", description = "Player not found")

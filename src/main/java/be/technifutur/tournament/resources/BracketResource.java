@@ -1,15 +1,17 @@
 package be.technifutur.tournament.resources;
 
 import be.technifutur.tournament.services.BracketService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/tournaments")
-@ApplicationScoped
+@Tag(name ="Bracket", description = "crud Bracket")
+@Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Path("/bracket")
 public class BracketResource {
 
     @Inject

@@ -1,17 +1,21 @@
 package be.technifutur.tournament.resources;
 
-import be.technifutur.tournament.daos.FighterDao;
+
 import be.technifutur.tournament.daos.TournamentDAO;
-import be.technifutur.tournament.entities.Fighter;
 import be.technifutur.tournament.entities.Tournament;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Tag(name ="Tournament", description = "crud tournament")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/tournamentResource")
 public class TournamentResource {
 
@@ -19,8 +23,6 @@ public class TournamentResource {
     private TournamentDAO tournamentDAO;
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Create tournament")
     @ApiResponse(responseCode = "201", description = "Tournament created")
     public Response create(Tournament tour){
@@ -29,7 +31,6 @@ public class TournamentResource {
     }
 
     @GET
-    @Produces("application/json")
     @Operation(summary = "Get all tournament")
     public Response findAll(){
         List<Tournament> allTournaments = tournamentDAO.findAll();
@@ -41,7 +42,6 @@ public class TournamentResource {
 
     @GET
     @Path("/id/{id}")
-    @Produces("application/json")
     @Operation(summary = "Get tournament by id")
     public Response findByName(@PathParam("id") Integer id){
         Tournament tournament = tournamentDAO.findById(id).orElseThrow();
@@ -51,8 +51,6 @@ public class TournamentResource {
 
     @PUT
     @Path("/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Update tournament")
     @ApiResponse(responseCode = "200", description = "tournament updated")
     @ApiResponse(responseCode = "404", description = "tournament not found")

@@ -4,12 +4,17 @@ import be.technifutur.tournament.daos.RegistrationDAO;
 import be.technifutur.tournament.entities.Registration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+@Tag(name ="Registration", description = "crud Registration")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 @Path("/registrationResource")
 public class RegistrationResources {
 
@@ -17,8 +22,6 @@ public class RegistrationResources {
     private RegistrationDAO registrationDAO;
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Create a new registration", description = "Creates a new registration for a player in a tournament.")
     @ApiResponse(responseCode = "201", description = "Registration created successfully" )
     public Response create(Registration registration) {
@@ -30,8 +33,6 @@ public class RegistrationResources {
 
     @GET
     @Path("/id/{id}")
-    @Produces("application/json")
-    @Consumes("application/json")
     @Operation(summary = "Get a registration by ID", description = "Retrieves a registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration retrieved successfully" )
     public Response findById(@PathParam("id") Integer id) {
@@ -42,7 +43,6 @@ public class RegistrationResources {
     }
 
     @GET
-    @Produces("application/json")
     @Operation(summary = "Get all registrations", description = "Retrieves all registrations.")
 //    @ApiResponse(responseCode = "200", description = "Registrations retrieved successfully" )
     public Response findAll(){
@@ -54,8 +54,6 @@ public class RegistrationResources {
 
     @PUT
     @Path("/id/{id}")
-    @Consumes("application/json")
-    @Produces("application/json")
     @Operation(summary = "Update a registration", description = "Updates an existing registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration updated successfully")
     public Response update(@PathParam("id") Integer id, Registration registration){
