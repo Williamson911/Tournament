@@ -10,6 +10,8 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
+import static be.technifutur.tournament.dtos.MatchDTO.toDTO;
+
 @Path("/matches")
 @ApplicationScoped
 public class MatchResource {
@@ -32,7 +34,7 @@ public class MatchResource {
     public Response findAll() {
         List<MatchDTO> dtos = matchDao.findAllWithRelations()
                 .stream()
-                .map(this::toDTO)
+                .map(MatchDTO::toDTO)
                 .toList();
 
         return Response.ok(dtos).build();
@@ -47,12 +49,37 @@ public class MatchResource {
 
     @PUT
     @Path("/{id}")
+    @Consumes("application/json")
+    @Produces("application/json")
     public Response update(@PathParam("id") Integer id, Match match) {
+
         Match existing = matchDao.findById(id).orElseThrow();
+
         existing.setNumberRounds(match.getNumberRounds());
+        existing.setBracketStage(match.getBracketStage());
+        existing.setBracketPosition(match.getBracketPosition());
+
+        existing.setPlayer1(match.getPlayer1());
+        existing.setPlayer2(match.getPlayer2());
+
+        existing.setPlayer1Score(match.getPlayer1Score());
+        existing.setPlayer2Score(match.getPlayer2Score());
+
+        existing.setScheduledAt(match.getScheduledAt());
+        existing.setStartedAt(match.getStartedAt());
+        existing.setFinishedAt(match.getFinishedAt());
+
+        existing.setFinishType(match.getFinishType());
+
+        existing.setRoundNumber(match.getRoundNumber());
+
+        existing.setTournament(match.getTournament());
+
+        existing.setStatus(match.getStatus());
 
         Match updated = matchDao.update(existing);
-        return Response.ok(toDTO(updated)).build();
+
+        return Response.ok(MatchDTO.toDTO(updated)).build();
     }
 
     @DELETE
@@ -60,17 +87,5 @@ public class MatchResource {
     public Response delete(@PathParam("id") Integer id) {
         matchDao.delete(id);
         return Response.noContent().build();
-    }
-
-    private MatchDTO toDTO(Match m) {
-        return new MatchDTO(
-                m.getId(),
-                m.getStatus().name(),
-                m.getTournament() != null ? m.getTournament().getName() : null,
-                m.getPlayer1() != null ? m.getPlayer1().getId() : null,
-                m.getPlayer2() != null ? m.getPlayer2().getId() : null,
-                m.getPlayer1Score(),
-                m.getPlayer2Score()
-        );
     }
 }

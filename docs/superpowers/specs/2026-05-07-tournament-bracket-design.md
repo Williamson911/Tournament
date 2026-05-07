@@ -77,7 +77,7 @@ LB R2 : L21, L22             ← slots vides (WB R2 losers vs LB R1 winners)
 LB R3 : L31                  ← slot vide
 LB Final : L41               ← slot vide
 
-GF : GF1                     ← slot vide
+GF : GF1                     ← slot vide (pas de bracket reset)
 ```
 
 ### Table de routing (calculée algorithmiquement)
@@ -92,9 +92,7 @@ Gagnant L2x → L31               (perdant éliminé)
 Gagnant L31 → L41               (perdant éliminé)
 Gagnant L41 → GF1 (slot2)       (perdant éliminé)
 
-Gagnant GF1 → CHAMPION
-Si joueur LB gagne GF1 → créer GF2 (bracket reset) : WB player = player1, LB player = player2
-Gagnant GF2 → CHAMPION
+Gagnant GF1 → CHAMPION (perdant éliminé, pas de bracket reset)
 ```
 
 ### Services
@@ -119,8 +117,7 @@ Chaque service a une responsabilité unique et est indépendant.
 7. Trouver les matchs cibles par `bracket_position` + `tournamentId`
 8. Placer gagnant dans le slot libre du match suivant
 9. Si WB match → placer perdant dans le slot LB correspondant
-10. Si `GF1` et joueur LB gagne → créer `GF2` avec les 2 joueurs
-11. Si `GF1`/`GF2` terminé → enregistrer le champion
+10. Si `GF1` terminé → enregistrer le champion (gagnant), perdant éliminé
 
 ---
 
@@ -168,5 +165,6 @@ Remplacement des connecteurs CSS pseudo-éléments actuels par des SVG dynamique
 
 - Seeding (les joueurs sont assignés dans l'ordre d'inscription au WB R1)
 - Byes (nombre de joueurs doit être exactement une puissance de 2)
+- Bracket reset (GF simplifié : 1 seul match, perdant éliminé directement)
 - Notifications temps réel (WebSocket)
 - Interface d'administration graphique (les appels API suffisent pour l'instant)

@@ -1,6 +1,5 @@
 package be.technifutur.tournament.daos;
 
-import be.technifutur.tournament.dtos.MatchDTO;
 import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.entities.Match;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -17,7 +16,18 @@ public class MatchDAO extends CrudDao<Match, Integer> {
         super(emfProvider);
     }
 
-    public List<Match> findByTournamentAndRound(int tournamentId, int round) {
+    @Override
+    public Optional<Match> findById(Integer id) {
+        try (var em = emfProvider.get().createEntityManager()) {
+            return em.createQuery("SELECT m FROM Match m JOIN FETCH m.tournament " +
+                    "            JOIN FETCH m.player1 " +
+                    "            JOIN FETCH m.player2 " +
+                    "   WHERE m.id = :id", Match.class).setParameter("id", id).getResultStream().findFirst();
+        }
+    }
+
+
+        public List<Match> findByTournamentAndRound(int tournamentId, int round) {
         try (var em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
                             "SELECT m FROM Match m WHERE m.tournament.id = :tid AND m.numberRounds = :round",

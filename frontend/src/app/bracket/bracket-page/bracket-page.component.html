@@ -17,7 +17,9 @@
         @if (d.losersBracket.length > 0) {
           <app-losers-bracket [rounds]="d.losersBracket" />
         }
-        <app-grand-final [grandFinal]="d.grandFinal" [bracketReset]="d.bracketReset" />
+        @if (d.grandFinal) {
+          <app-grand-final [grandFinal]="d.grandFinal" [bracketReset]="d.bracketReset" />
+        }
         @if (d.champion) {
           <app-champion-card [champion]="d.champion" />
         }
