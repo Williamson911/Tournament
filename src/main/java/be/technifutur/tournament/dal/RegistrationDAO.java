@@ -96,6 +96,16 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
+    public long countByTournament(int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                            "SELECT count(r) FROM Registration r WHERE r.tournament.id = :tid",
+                            Long.class)
+                    .setParameter("tid", tournamentId)
+                    .getSingleResult();
+        }
+    }
+
     //Verifie si le joueur est déjà inscrit à un tournoi
     public boolean existsByPlayerAndTournament(int playerId, int tournamentId) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {

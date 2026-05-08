@@ -32,7 +32,9 @@ public class TournamentResource {
     @Operation(summary = "Create tournament")
     @ApiResponse(responseCode = "201", description = "Tournament created")
     public Response create(CreateTournamentDto dto) {
-        var tournament = tournamentService.create(dto.name(), dto.startDate());
+        var tournament = tournamentService.create(
+                dto.name(), dto.startDate(),
+                dto.registrationEndDate(), dto.maxParticipants());
         return Response.status(Response.Status.CREATED).entity(tournament).build();
     }
 
@@ -55,7 +57,9 @@ public class TournamentResource {
     @ApiResponse(responseCode = "200", description = "Tournament updated")
     @ApiResponse(responseCode = "404", description = "Tournament not found")
     public Response update(@PathParam("id") int id, CreateTournamentDto dto) {
-        var updated = tournamentService.update(id, dto.name(), dto.startDate());
+        var updated = tournamentService.update(
+                id, dto.name(), dto.startDate(),
+                dto.registrationEndDate(), dto.maxParticipants());
         return Response.ok(updated).build();
     }
 

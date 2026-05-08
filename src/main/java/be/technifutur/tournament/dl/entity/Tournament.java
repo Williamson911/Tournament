@@ -35,6 +35,14 @@ public class Tournament {
     private LocalDateTime endDate;
 
     @Getter @Setter
+    @Column(name = "registration_end_date")
+    private LocalDateTime registrationEndDate;
+
+    @Getter @Setter
+    @Column(name = "max_participants")
+    private Integer maxParticipants;
+
+    @Getter @Setter
     @Column(name = "has_group_stage")
     private boolean hasGroupStage;
 }
