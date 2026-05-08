@@ -68,6 +68,10 @@
       </div>
     }
 
+    @if (d.grandFinal && !d.champion) {
+      <app-grand-final-popup [grandFinal]="d.grandFinal" />
+    }
+
     @if (d.champion) {
       <app-champion-card [champion]="d.champion" />
     }
