@@ -112,6 +112,14 @@ public class TournamentResource {
     }
 
     @POST
+    @Path("/{id}/simulate-one-match")
+    @Operation(summary = "Auto-simulate a single ready match")
+    public Response simulateOneMatch(@PathParam("id") int id) {
+        var data = simulationService.simulateOneMatch(id);
+        return Response.ok(data).build();
+    }
+
+    @POST
     @Path("/{id}/reset")
     @Operation(summary = "Reset tournament to DRAFT (delete matches, restore registrations)")
     public Response reset(@PathParam("id") int id) {

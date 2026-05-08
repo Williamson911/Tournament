@@ -23,6 +23,10 @@ export class TournamentBracketService {
     return this.http.post<TournamentBracketData>(`/api/tournaments/${tournamentId}/simulate-next-round`, {});
   }
 
+  simulateOneMatch(tournamentId: number): Observable<TournamentBracketData> {
+    return this.http.post<TournamentBracketData>(`/api/tournaments/${tournamentId}/simulate-one-match`, {});
+  }
+
   resetTournament(tournamentId: number): Observable<any> {
     return this.http.post(`/api/tournaments/${tournamentId}/reset`, {});
   }

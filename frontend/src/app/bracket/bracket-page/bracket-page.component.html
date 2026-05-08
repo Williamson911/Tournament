@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" [class.fighting]="fighting()">
   @if (loading()) {
     <div class="state-msg">Chargement…</div>
   } @else if (error()) {
@@ -29,9 +29,24 @@
         </button>
       }
       @if (d.status === 'IN_PROGRESS' && !d.champion) {
-        <button class="action-btn" [disabled]="simulating()" (click)="simulateRound()">
-          {{ simulating() ? 'En cours…' : 'Fight' }}
-        </button>
+        <div class="action-row">
+          <button class="action-btn fight-btn" [class.punching]="fighting()"
+                  [disabled]="simulating()" (click)="simulateRound()">
+            @if (simulating()) {
+              En cours…
+            } @else {
+              Fight <span class="key-hint">(F)</span>
+            }
+          </button>
+          <button class="action-btn fight-btn" [class.punching]="fighting()"
+                  [disabled]="simulating()" (click)="simulateMatch()">
+            @if (simulating()) {
+              En cours…
+            } @else {
+              Combat <span class="key-hint">(C)</span>
+            }
+          </button>
+        </div>
       }
       <div class="bracket-clipper" #bracketClipperRef>
         <div class="bracket-view" #bracketViewRef
@@ -46,15 +61,15 @@
                              [style.margin-top.px]="gfMarginTop()" />
           }
 
-          @if (d.champion) {
-            <app-bracket-connector [matchCount]="1" />
-            <app-champion-card [champion]="d.champion" />
-          }
         </div>
       </div>
       <div class="sticky-scrollbar" #stickyScrollRef>
         <div class="sticky-scrollbar-inner" [style.width.px]="contentWidth()"></div>
       </div>
+    }
+
+    @if (d.champion) {
+      <app-champion-card [champion]="d.champion" />
     }
 
     @if (d.hasGroupStage && activeTab() === 'groups') {

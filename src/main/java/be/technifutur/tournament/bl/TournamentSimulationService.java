@@ -35,7 +35,7 @@ public class TournamentSimulationService {
         if (t.getStatus() != TournamentStatus.IN_PROGRESS)
             throw new BadRequestException("Tournament must be in IN_PROGRESS status");
 
-        boolean anyResolved = resolveReadyMatches(tournamentId);
+        boolean anyResolved = resolveReadyMatches(tournamentId, Integer.MAX_VALUE);
 
         if (!anyResolved) {
             t.setStatus(TournamentStatus.FINISHED);
@@ -45,7 +45,23 @@ public class TournamentSimulationService {
         return bracketService.buildBracketData(tournamentId);
     }
 
-    private boolean resolveReadyMatches(int tournamentId) {
+    public TournamentBracketDataDto simulateOneMatch(int tournamentId) {
+        Tournament t = tournamentDAO.findById(tournamentId)
+            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        if (t.getStatus() != TournamentStatus.IN_PROGRESS)
+            throw new BadRequestException("Tournament must be in IN_PROGRESS status");
+
+        boolean anyResolved = resolveReadyMatches(tournamentId, 1);
+
+        if (!anyResolved) {
+            t.setStatus(TournamentStatus.FINISHED);
+            tournamentDAO.update(t);
+        }
+
+        return bracketService.buildBracketData(tournamentId);
+    }
+
+    private boolean resolveReadyMatches(int tournamentId, int maxMatches) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
             em.getTransaction().begin();
 
@@ -59,6 +75,7 @@ public class TournamentSimulationService {
                 Match.class)
                 .setParameter("tid", tournamentId)
                 .setParameter("finished", MatchStatus.FINISHED)
+                .setMaxResults(maxMatches)
                 .getResultList();
 
             if (ready.isEmpty()) {

@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, inject, signal, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, signal, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TournamentBracketService } from '../../services/tournament-bracket.service';
-import { TournamentBracketData } from '../../models/bracket.models';
+import { BattleEffectsService } from '../../services/battle-effects.service';
+import { TournamentBracketData, BracketMatch } from '../../models/bracket.models';
 import { BracketTitleComponent } from '../bracket-title/bracket-title.component';
 import { StageTabsComponent, StageTab } from '../stage-tabs/stage-tabs.component';
 import { GroupStageComponent } from '../group-stage/group-stage.component';
@@ -23,6 +24,7 @@ import { ChampionCardComponent } from '../champion-card/champion-card.component'
 export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private service = inject(TournamentBracketService);
+  private battleEffects = inject(BattleEffectsService);
 
   @ViewChild('bracketLayoutRef', { read: ElementRef }) private bracketLayoutRef?: ElementRef;
   @ViewChild('grandFinalRef', { read: ElementRef }) private grandFinalRef?: ElementRef;
@@ -38,6 +40,7 @@ export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
   generating = signal(false);
   simulating = signal(false);
   resetting = signal(false);
+  fighting = signal(false);
   gfSvgH = signal<number | null>(null);
   gfTopLineY = signal<number | null>(null);
   gfBottomLineY = signal<number | null>(null);
@@ -114,16 +117,84 @@ export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  @HostListener('window:keydown', ['$event'])
+  onShortcutKey(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const target = event.target as HTMLElement | null;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+    const d = this.data();
+    if (!d || d.status !== 'IN_PROGRESS' || d.champion || this.simulating()) return;
+    const key = event.key.toLowerCase();
+    if (key === 'f') { event.preventDefault(); this.simulateRound(); }
+    else if (key === 'c') { event.preventDefault(); this.simulateMatch(); }
+  }
+
   simulateRound(): void {
+    const before = this.snapshotMatches(this.data());
     this.simulating.set(true);
+    this.fighting.set(true);
+    setTimeout(() => this.fighting.set(false), 600);
     this.service.simulateNextRound(this.tournamentId).subscribe({
       next: d => {
+        const { resolvedIds, arrivingKeys } = this.diffMatches(before, d);
         this.data.set(d);
+        this.battleEffects.trigger(resolvedIds, arrivingKeys);
         this.simulating.set(false);
         setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
       },
       error: () => this.simulating.set(false)
     });
+  }
+
+  simulateMatch(): void {
+    const before = this.snapshotMatches(this.data());
+    this.simulating.set(true);
+    this.fighting.set(true);
+    setTimeout(() => this.fighting.set(false), 600);
+    this.service.simulateOneMatch(this.tournamentId).subscribe({
+      next: d => {
+        const { resolvedIds, arrivingKeys } = this.diffMatches(before, d);
+        this.data.set(d);
+        this.battleEffects.trigger(resolvedIds, arrivingKeys);
+        this.simulating.set(false);
+        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
+      },
+      error: () => this.simulating.set(false)
+    });
+  }
+
+  private snapshotMatches(d: TournamentBracketData | null): Map<number, { complete: boolean; p1: boolean; p2: boolean }> {
+    const map = new Map<number, { complete: boolean; p1: boolean; p2: boolean }>();
+    if (!d) return map;
+    const all: BracketMatch[] = [];
+    d.winnersBracket.forEach(r => all.push(...r.matches));
+    d.losersBracket.forEach(r => all.push(...r.matches));
+    if (d.grandFinal) all.push(d.grandFinal);
+    all.forEach(m => map.set(m.matchId, {
+      complete: m.isComplete,
+      p1: m.participant1 !== null,
+      p2: m.participant2 !== null,
+    }));
+    return map;
+  }
+
+  private diffMatches(
+    before: Map<number, { complete: boolean; p1: boolean; p2: boolean }>,
+    after: TournamentBracketData,
+  ): { resolvedIds: number[]; arrivingKeys: string[] } {
+    const resolvedIds: number[] = [];
+    const arrivingKeys: string[] = [];
+    const all: BracketMatch[] = [];
+    after.winnersBracket.forEach(r => all.push(...r.matches));
+    after.losersBracket.forEach(r => all.push(...r.matches));
+    if (after.grandFinal) all.push(after.grandFinal);
+    all.forEach(m => {
+      const prev = before.get(m.matchId);
+      if (m.isComplete && (!prev || !prev.complete)) resolvedIds.push(m.matchId);
+      if (m.participant1 !== null && (!prev || !prev.p1)) arrivingKeys.push(`${m.matchId}-1`);
+      if (m.participant2 !== null && (!prev || !prev.p2)) arrivingKeys.push(`${m.matchId}-2`);
+    });
+    return { resolvedIds, arrivingKeys };
   }
 
   resetTournament(): void {

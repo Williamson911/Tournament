@@ -20,7 +20,11 @@
       "Bash(curl *)",
       "PowerShell(Get-Process *)",
       "PowerShell(Get-NetTCPConnection *)",
-      "PowerShell(Stop-Process *)"
+      "PowerShell(Stop-Process *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ST1901-04\\\\Documents\\\\Technifutur\\\\Tournament\\\\src\" -Recurse -Directory -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch 'node_modules|\\\\.angular|target' } | Select-Object FullName)",
+      "Bash(grep -rn *)",
+      "Bash(grep -n *)",
+      "Bash(echo \"exit=$?\")"
     ]
   }
 }
