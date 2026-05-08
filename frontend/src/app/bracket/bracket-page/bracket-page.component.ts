@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, signal, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, signal, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TournamentBracketService } from '../../services/tournament-bracket.service';
 import { TournamentBracketData } from '../../models/bracket.models';
@@ -124,6 +124,30 @@ export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       error: () => this.simulating.set(false)
     });
+  }
+
+  simulateMatch(): void {
+    this.simulating.set(true);
+    this.service.simulateOneMatch(this.tournamentId).subscribe({
+      next: d => {
+        this.data.set(d);
+        this.simulating.set(false);
+        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
+      },
+      error: () => this.simulating.set(false)
+    });
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onShortcutKey(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    const target = event.target as HTMLElement | null;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) return;
+    const d = this.data();
+    if (!d || d.status !== 'IN_PROGRESS' || d.champion || this.simulating()) return;
+    const key = event.key.toLowerCase();
+    if (key === 'f') { event.preventDefault(); this.simulateRound(); }
+    else if (key === 'c') { event.preventDefault(); this.simulateMatch(); }
   }
 
   resetTournament(): void {

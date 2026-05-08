@@ -29,9 +29,14 @@
         </button>
       }
       @if (d.status === 'IN_PROGRESS' && !d.champion) {
-        <button class="action-btn" [disabled]="simulating()" (click)="simulateRound()">
-          {{ simulating() ? 'En cours…' : 'Fight' }}
-        </button>
+        <div class="action-row">
+          <button class="action-btn" [disabled]="simulating()" (click)="simulateRound()">
+            {{ simulating() ? 'En cours…' : 'Fight (F)' }}
+          </button>
+          <button class="action-btn" [disabled]="simulating()" (click)="simulateMatch()">
+            {{ simulating() ? 'En cours…' : 'Combat (C)' }}
+          </button>
+        </div>
       }
       <div class="bracket-clipper" #bracketClipperRef>
         <div class="bracket-view" #bracketViewRef
