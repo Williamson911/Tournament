@@ -5,8 +5,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+app-root { display: block; }
+
 body {
   min-height: 100vh;
+  overflow-x: hidden;
   background-image: url('https://www.gamewallpapers.com/wallpapers_slechte_compressie/wallpaper_tekken_8_01_1920x1080.jpg');
   background-size: cover;
   background-position: center;

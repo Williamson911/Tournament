@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, signal, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, signal, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TournamentBracketService } from '../../services/tournament-bracket.service';
 import { TournamentBracketData } from '../../models/bracket.models';
@@ -20,12 +20,15 @@ import { ChampionCardComponent } from '../champion-card/champion-card.component'
   templateUrl: './bracket-page.component.html',
   styleUrl: './bracket-page.component.scss'
 })
-export class BracketPageComponent implements OnInit, AfterViewInit {
+export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private service = inject(TournamentBracketService);
 
   @ViewChild('bracketLayoutRef', { read: ElementRef }) private bracketLayoutRef?: ElementRef;
   @ViewChild('grandFinalRef', { read: ElementRef }) private grandFinalRef?: ElementRef;
+  @ViewChild('bracketClipperRef', { read: ElementRef }) private bracketClipperRef?: ElementRef;
+  @ViewChild('bracketViewRef', { read: ElementRef }) private bracketViewRef?: ElementRef;
+  @ViewChild('stickyScrollRef', { read: ElementRef }) private stickyScrollRef?: ElementRef;
 
   data = signal<TournamentBracketData | null>(null);
   activeTab = signal<StageTab>('bracket');
@@ -39,8 +42,12 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
   gfTopLineY = signal<number | null>(null);
   gfBottomLineY = signal<number | null>(null);
   gfMarginTop = signal<number | null>(null);
+  scrollX = signal(0);
+  contentWidth = signal(0);
 
   private tournamentId = 0;
+  private stickyScrollWired = false;
+  private resizeObserver?: ResizeObserver;
 
   ngOnInit(): void {
     this.tournamentId = Number(this.route.snapshot.paramMap.get('id'));
@@ -48,7 +55,47 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.measureGfConnector());
+    setTimeout(() => {
+      this.measureGfConnector();
+      this.wireStickyScroll();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
+  }
+
+  private wireStickyScroll(): void {
+    const view = this.bracketViewRef?.nativeElement as HTMLElement | undefined;
+    const sticky = this.stickyScrollRef?.nativeElement as HTMLElement | undefined;
+    const clipper = this.bracketClipperRef?.nativeElement as HTMLElement | undefined;
+    if (!view || !sticky || !clipper) return;
+
+    const updateWidths = () => this.contentWidth.set(view.scrollWidth);
+    updateWidths();
+
+    if (!this.resizeObserver) {
+      this.resizeObserver = new ResizeObserver(updateWidths);
+      this.resizeObserver.observe(view);
+      this.resizeObserver.observe(clipper);
+    }
+
+    if (this.stickyScrollWired) return;
+    this.stickyScrollWired = true;
+
+    sticky.addEventListener('scroll', () => {
+      const max = Math.max(0, view.scrollWidth - clipper.clientWidth);
+      this.scrollX.set(Math.min(sticky.scrollLeft, max));
+    });
+
+    clipper.addEventListener('wheel', (e: WheelEvent) => {
+      const dx = e.shiftKey ? e.deltaY : e.deltaX;
+      if (!dx) return;
+      const max = Math.max(0, view.scrollWidth - clipper.clientWidth);
+      if (max <= 0) return;
+      e.preventDefault();
+      sticky.scrollLeft = Math.max(0, Math.min(max, sticky.scrollLeft + dx));
+    }, { passive: false });
   }
 
   launchGroupStage(): void {
@@ -85,7 +132,7 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
     this.service.simulateNextRound(this.tournamentId).subscribe({
       next: d => {
         this.data.set(d);
-        setTimeout(() => this.measureGfConnector());
+        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
         if (d.status === 'IN_PROGRESS') {
           setTimeout(() => this.simulateLoop(), 800);
         } else {
@@ -105,7 +152,7 @@ export class BracketPageComponent implements OnInit, AfterViewInit {
         this.generating.set(false);
         this.simulating.set(false);
         this.resetting.set(false);
-        setTimeout(() => this.measureGfConnector());
+        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
       },
       error: () => {
         this.error.set('Impossible de charger le bracket.');

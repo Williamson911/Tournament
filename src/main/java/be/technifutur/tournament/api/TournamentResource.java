@@ -10,6 +10,7 @@ import be.technifutur.tournament.bl.TournamentSimulationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,43 +18,37 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Tag(name ="Tournament", description = "crud tournament")
-@Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "Tournament", description = "crud tournament")
+@ApplicationScoped
+@Path("/tournaments")
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/tournamentResource")
+@Consumes(MediaType.APPLICATION_JSON)
 public class TournamentResource {
 
     @Inject TournamentService tournamentService;
     @Inject TournamentSimulationService simulationService;
-    @Inject
-    private TournamentDAO tournamentDAO;
 
     @POST
     @Operation(summary = "Create tournament")
     @ApiResponse(responseCode = "201", description = "Tournament created")
-
     public Response create(CreateTournamentDto dto) {
-        var tournament = tournamentService.create(dto.name(), dto.startDate());
+        var tournament = tournamentService.create(
+                dto.name(), dto.startDate(),
+                dto.registrationEndDate(), dto.maxParticipants());
         return Response.status(Response.Status.CREATED).entity(tournament).build();
     }
 
     @GET
     @Operation(summary = "Get all tournament")
-    public Response findAll(){
-        List<Tournament> allTournaments = tournamentDAO.findAll();
-
-        return Response.ok()
-                .entity(allTournaments)
-                .build();
+    public Response findAll() {
+        return Response.ok(tournamentService.findAll()).build();
     }
 
     @GET
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Get tournament by id")
-    public Response findByName(@PathParam("id") Integer id){
-        Tournament tournament = tournamentDAO.findById(id).orElseThrow();
-
-        return Response.ok().entity(tournament).build();
+    public Response findById(@PathParam("id") int id) {
+        return Response.ok(tournamentService.findById(id)).build();
     }
 
     @PUT
@@ -62,7 +57,9 @@ public class TournamentResource {
     @ApiResponse(responseCode = "200", description = "Tournament updated")
     @ApiResponse(responseCode = "404", description = "Tournament not found")
     public Response update(@PathParam("id") int id, CreateTournamentDto dto) {
-        var updated = tournamentService.update(id, dto.name(), dto.startDate());
+        var updated = tournamentService.update(
+                id, dto.name(), dto.startDate(),
+                dto.registrationEndDate(), dto.maxParticipants());
         return Response.ok(updated).build();
     }
 
