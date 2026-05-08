@@ -1,7 +1,6 @@
 package be.technifutur.tournament.api;
 
 import be.technifutur.tournament.dal.MatchDAO;
-import be.technifutur.tournament.dtl.MatchDTO;
 import be.technifutur.tournament.dtl.RecordResultDto;
 import be.technifutur.tournament.dl.entity.Match;
 import be.technifutur.tournament.dal.MatchDAO;
