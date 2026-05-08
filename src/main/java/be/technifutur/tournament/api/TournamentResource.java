@@ -10,6 +10,7 @@ import be.technifutur.tournament.bl.TournamentSimulationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -20,7 +21,8 @@ import java.util.List;
 @Tag(name ="Tournament", description = "crud tournament")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/tournamentResource")
+@Path("/tournaments")
+@ApplicationScoped
 public class TournamentResource {
 
     @Inject TournamentService tournamentService;

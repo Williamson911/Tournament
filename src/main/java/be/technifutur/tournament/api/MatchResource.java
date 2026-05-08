@@ -22,6 +22,7 @@ import static be.technifutur.tournament.dtl.match.MatchDTO.toDTO;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/matches")
+@ApplicationScoped
 public class MatchResource {
 
     @Inject

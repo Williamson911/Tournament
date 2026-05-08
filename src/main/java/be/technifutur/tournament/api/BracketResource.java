@@ -2,6 +2,7 @@ package be.technifutur.tournament.api;
 
 import be.technifutur.tournament.bl.BracketService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/bracket")
+@ApplicationScoped
 public class BracketResource {
 
     @Inject
