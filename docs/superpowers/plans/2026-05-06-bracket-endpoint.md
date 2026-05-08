@@ -40,7 +40,7 @@
 - [ ] **Étape 1 : Créer l'enum**
 
 ```java
-package be.technifutur.tournament.enums;
+package be.technifutur.tournament.dl.enums;
 
 public enum BracketStage {
     WINNERS_BRACKET,
@@ -80,7 +80,7 @@ private BracketStage bracketStage;
 private Integer roundNumber;
 ```
 
-L'import nécessaire : `import be.technifutur.tournament.enums.BracketStage;`
+L'import nécessaire : `import be.technifutur.tournament.dl.enums.BracketStage;`
 
 - [ ] **Étape 2 : Passer `hbm2ddl.auto` en `update` pour créer les colonnes**
 
@@ -170,111 +170,121 @@ git commit -m "feat: add findByTournamentWithPlayers to MatchDAO"
 - [ ] **Étape 1 : TournamentParticipantDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
 public record TournamentParticipantDto(
-    int playerId,
-    String playerName,
-    String fighterName,
-    String fighterImageUrl
-) {}
+        int playerId,
+        String playerName,
+        String fighterName,
+        String fighterImageUrl
+) {
+}
 ```
 
 - [ ] **Étape 2 : MatchParticipantDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record MatchParticipantDto(
-    int playerId,
-    String playerName,
-    String fighterName,
-    String fighterImageUrl,
-    int score,
-    @JsonProperty("isWinner") boolean isWinner,
-    @JsonProperty("isEliminated") boolean isEliminated
-) {}
+        int playerId,
+        String playerName,
+        String fighterName,
+        String fighterImageUrl,
+        int score,
+        @JsonProperty("isWinner") boolean isWinner,
+        @JsonProperty("isEliminated") boolean isEliminated
+) {
+}
 ```
 
 - [ ] **Étape 3 : BracketMatchDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
+import be.technifutur.tournament.dtl.match.MatchParticipantDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record BracketMatchDto(
-    int matchId,
-    MatchParticipantDto participant1,
-    MatchParticipantDto participant2,
-    @JsonProperty("isComplete") boolean isComplete,
-    @JsonProperty("isBracketReset") boolean isBracketReset
-) {}
+        int matchId,
+        MatchParticipantDto participant1,
+        MatchParticipantDto participant2,
+        @JsonProperty("isComplete") boolean isComplete,
+        @JsonProperty("isBracketReset") boolean isBracketReset
+) {
+}
 ```
 
 - [ ] **Étape 4 : BracketRoundDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
 import java.util.List;
 
 public record BracketRoundDto(
-    int roundId,
-    String label,
-    List<BracketMatchDto> matches
-) {}
+        int roundId,
+        String label,
+        List<BracketMatchDto> matches
+) {
+}
 ```
 
 - [ ] **Étape 5 : GroupStandingDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
 public record GroupStandingDto(
-    int rank,
-    TournamentParticipantDto participant,
-    int wins,
-    int losses,
-    int points,
-    boolean qualified
-) {}
+        int rank,
+        TournamentParticipantDto participant,
+        int wins,
+        int losses,
+        int points,
+        boolean qualified
+) {
+}
 ```
 
 - [ ] **Étape 6 : TournamentGroupDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
 
 import java.util.List;
 
 public record TournamentGroupDto(
-    int groupId,
-    String name,
-    List<GroupStandingDto> standings
-) {}
+        int groupId,
+        String name,
+        List<GroupStandingDto> standings
+) {
+}
 ```
 
 - [ ] **Étape 7 : TournamentBracketDataDto**
 
 ```java
-package be.technifutur.tournament.dtos;
+package be.technifutur.tournament.dtl;
+
+import be.technifutur.tournament.dtl.match.MatchParticipantDto;
 
 import java.util.List;
 
 public record TournamentBracketDataDto(
-    int tournamentId,
-    String tournamentName,
-    boolean hasGroupStage,
-    List<TournamentGroupDto> groups,
-    List<BracketRoundDto> winnersBracket,
-    List<BracketRoundDto> losersBracket,
-    BracketMatchDto grandFinal,
-    BracketMatchDto bracketReset,
-    MatchParticipantDto champion
-) {}
+        int tournamentId,
+        String tournamentName,
+        boolean hasGroupStage,
+        List<TournamentGroupDto> groups,
+        List<BracketRoundDto> winnersBracket,
+        List<BracketRoundDto> losersBracket,
+        BracketMatchDto grandFinal,
+        BracketMatchDto bracketReset,
+        MatchParticipantDto champion
+) {
+}
 ```
 
 - [ ] **Étape 8 : Compiler**
@@ -301,15 +311,16 @@ git commit -m "feat: add bracket DTOs"
 - [ ] **Étape 1 : Créer le service**
 
 ```java
-package be.technifutur.tournament.services;
+package be.technifutur.tournament.bl;
 
-import be.technifutur.tournament.daos.MatchDAO;
-import be.technifutur.tournament.daos.TournamentDAO;
-import be.technifutur.tournament.dtos.*;
-import be.technifutur.tournament.entities.Match;
-import be.technifutur.tournament.entities.Player;
-import be.technifutur.tournament.enums.BracketStage;
-import be.technifutur.tournament.enums.MatchStatus;
+import be.technifutur.tournament.dal.MatchDAO;
+import be.technifutur.tournament.dal.TournamentDAO;
+import be.technifutur.tournament.dtl.*;
+import be.technifutur.tournament.dtl.match.MatchParticipantDto;
+import be.technifutur.tournament.dl.entities.Match;
+import be.technifutur.tournament.dl.entities.Player;
+import be.technifutur.tournament.dl.enums.BracketStage;
+import be.technifutur.tournament.dl.enums.MatchStatus;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -328,36 +339,36 @@ public class BracketService {
 
     public TournamentBracketDataDto buildBracketData(int tournamentId) {
         var tournament = tournamentDAO.findById(tournamentId)
-            .orElseThrow(() -> new NotFoundException("Tournament " + tournamentId + " not found"));
+                .orElseThrow(() -> new NotFoundException("Tournament " + tournamentId + " not found"));
 
         List<Match> matches = matchDAO.findByTournamentWithPlayers(tournamentId);
 
         List<Match> wbMatches = matches.stream()
-            .filter(m -> m.getBracketStage() == BracketStage.WINNERS_BRACKET).toList();
+                .filter(m -> m.getBracketStage() == BracketStage.WINNERS_BRACKET).toList();
         List<Match> lbMatches = matches.stream()
-            .filter(m -> m.getBracketStage() == BracketStage.LOSERS_BRACKET).toList();
+                .filter(m -> m.getBracketStage() == BracketStage.LOSERS_BRACKET).toList();
         Optional<Match> gfMatch = matches.stream()
-            .filter(m -> m.getBracketStage() == BracketStage.GRAND_FINAL).findFirst();
+                .filter(m -> m.getBracketStage() == BracketStage.GRAND_FINAL).findFirst();
         List<Match> groupMatches = matches.stream()
-            .filter(m -> m.getBracketStage() == BracketStage.GROUP_STAGE).toList();
+                .filter(m -> m.getBracketStage() == BracketStage.GROUP_STAGE).toList();
 
         List<BracketRoundDto> winnersBracket = buildRounds(wbMatches, "WB");
-        List<BracketRoundDto> losersBracket  = buildRounds(lbMatches, "LB");
+        List<BracketRoundDto> losersBracket = buildRounds(lbMatches, "LB");
         BracketMatchDto grandFinal = gfMatch.map(this::toMatchDto).orElse(null);
         MatchParticipantDto champion = gfMatch
-            .filter(m -> m.getStatus() == MatchStatus.FINISHED)
-            .map(m -> m.getPlayer1Score() >= m.getPlayer2Score()
-                ? toParticipantDto(m.getPlayer1(), m.getPlayer1Score(), true, false)
-                : toParticipantDto(m.getPlayer2(), m.getPlayer2Score(), true, false))
-            .orElse(null);
+                .filter(m -> m.getStatus() == MatchStatus.FINISHED)
+                .map(m -> m.getPlayer1Score() >= m.getPlayer2Score()
+                        ? toParticipantDto(m.getPlayer1(), m.getPlayer1Score(), true, false)
+                        : toParticipantDto(m.getPlayer2(), m.getPlayer2Score(), true, false))
+                .orElse(null);
 
         boolean hasGroupStage = !groupMatches.isEmpty();
         List<TournamentGroupDto> groups = buildGroups(groupMatches);
 
         return new TournamentBracketDataDto(
-            tournament.getId(), tournament.getName(), hasGroupStage,
-            groups, winnersBracket, losersBracket,
-            grandFinal, null, champion
+                tournament.getId(), tournament.getName(), hasGroupStage,
+                groups, winnersBracket, losersBracket,
+                grandFinal, null, champion
         );
     }
 
@@ -365,20 +376,20 @@ public class BracketService {
         if (matches.isEmpty()) return List.of();
 
         Map<Integer, List<Match>> byRound = matches.stream()
-            .collect(Collectors.groupingBy(m -> m.getRoundNumber() != null ? m.getRoundNumber() : 0));
+                .collect(Collectors.groupingBy(m -> m.getRoundNumber() != null ? m.getRoundNumber() : 0));
 
         int maxRound = byRound.keySet().stream().mapToInt(i -> i).max().orElse(0);
 
         return byRound.entrySet().stream()
-            .sorted(Map.Entry.comparingByKey())
-            .map(e -> {
-                int r = e.getKey();
-                String label = prefix + " " + roundLabel(r, maxRound);
-                List<BracketMatchDto> matchDtos = e.getValue().stream()
-                    .map(this::toMatchDto).toList();
-                return new BracketRoundDto(r, label, matchDtos);
-            })
-            .toList();
+                .sorted(Map.Entry.comparingByKey())
+                .map(e -> {
+                    int r = e.getKey();
+                    String label = prefix + " " + roundLabel(r, maxRound);
+                    List<BracketMatchDto> matchDtos = e.getValue().stream()
+                            .map(this::toMatchDto).toList();
+                    return new BracketRoundDto(r, label, matchDtos);
+                })
+                .toList();
     }
 
     private String roundLabel(int round, int max) {
@@ -391,19 +402,19 @@ public class BracketService {
         boolean complete = m.getStatus() == MatchStatus.FINISHED;
         BracketStage stage = m.getBracketStage();
         boolean p1Wins = m.getPlayer1Score() != null && m.getPlayer2Score() != null
-            && m.getPlayer1Score() > m.getPlayer2Score();
+                && m.getPlayer1Score() > m.getPlayer2Score();
 
         MatchParticipantDto p1 = toParticipantDto(
-            m.getPlayer1(),
-            m.getPlayer1Score() != null ? m.getPlayer1Score() : 0,
-            complete && p1Wins,
-            complete && isEliminated(stage, !p1Wins)
+                m.getPlayer1(),
+                m.getPlayer1Score() != null ? m.getPlayer1Score() : 0,
+                complete && p1Wins,
+                complete && isEliminated(stage, !p1Wins)
         );
         MatchParticipantDto p2 = toParticipantDto(
-            m.getPlayer2(),
-            m.getPlayer2Score() != null ? m.getPlayer2Score() : 0,
-            complete && !p1Wins,
-            complete && isEliminated(stage, p1Wins)
+                m.getPlayer2(),
+                m.getPlayer2Score() != null ? m.getPlayer2Score() : 0,
+                complete && !p1Wins,
+                complete && isEliminated(stage, p1Wins)
         );
         return new BracketMatchDto(m.getId(), p1, p2, complete, false);
     }
@@ -414,26 +425,26 @@ public class BracketService {
     }
 
     private MatchParticipantDto toParticipantDto(Player player, int score,
-                                                  boolean isWinner, boolean isEliminated) {
+                                                 boolean isWinner, boolean isEliminated) {
         var fighter = player.getFighterMain();
         return new MatchParticipantDto(
-            player.getId(), player.getUsername(),
-            fighter.getName(), fighter.getImage(),
-            score, isWinner, isEliminated
+                player.getId(), player.getUsername(),
+                fighter.getName(), fighter.getImage(),
+                score, isWinner, isEliminated
         );
     }
 
     private List<TournamentGroupDto> buildGroups(List<Match> groupMatches) {
         Map<String, List<Match>> byGroup = groupMatches.stream()
-            .collect(Collectors.groupingBy(m ->
-                m.getBracketPosition() != null ? m.getBracketPosition() : "GROUP_A"));
+                .collect(Collectors.groupingBy(m ->
+                        m.getBracketPosition() != null ? m.getBracketPosition() : "GROUP_A"));
 
         int idCounter = 1;
         List<TournamentGroupDto> result = new ArrayList<>();
         for (var entry : byGroup.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey()).toList()) {
             result.add(new TournamentGroupDto(
-                idCounter++, entry.getKey(), computeStandings(entry.getValue())));
+                    idCounter++, entry.getKey(), computeStandings(entry.getValue())));
         }
         return result;
     }
@@ -448,7 +459,7 @@ public class BracketService {
 
             boolean p1Wins = m.getPlayer1Score() > m.getPlayer2Score();
             Player winner = p1Wins ? m.getPlayer1() : m.getPlayer2();
-            Player loser  = p1Wins ? m.getPlayer2() : m.getPlayer1();
+            Player loser = p1Wins ? m.getPlayer2() : m.getPlayer1();
 
             stats.get(winner)[0]++;      // wins
             stats.get(winner)[2] += 3;   // points
@@ -456,19 +467,19 @@ public class BracketService {
         }
 
         var sorted = stats.entrySet().stream()
-            .sorted((a, b) -> {
-                int cmp = Integer.compare(b.getValue()[2], a.getValue()[2]);
-                return cmp != 0 ? cmp : Integer.compare(b.getValue()[0], a.getValue()[0]);
-            })
-            .toList();
+                .sorted((a, b) -> {
+                    int cmp = Integer.compare(b.getValue()[2], a.getValue()[2]);
+                    return cmp != 0 ? cmp : Integer.compare(b.getValue()[0], a.getValue()[0]);
+                })
+                .toList();
 
         List<GroupStandingDto> standings = new ArrayList<>();
         for (int i = 0; i < sorted.size(); i++) {
             Player p = sorted.get(i).getKey();
             int[] s = sorted.get(i).getValue();
             var participant = new TournamentParticipantDto(
-                p.getId(), p.getUsername(),
-                p.getFighterMain().getName(), p.getFighterMain().getImage()
+                    p.getId(), p.getUsername(),
+                    p.getFighterMain().getName(), p.getFighterMain().getImage()
             );
             standings.add(new GroupStandingDto(i + 1, participant, s[0], s[1], s[2], i < 2));
         }
@@ -501,9 +512,9 @@ git commit -m "feat: add BracketService"
 - [ ] **Étape 1 : Créer la resource**
 
 ```java
-package be.technifutur.tournament.resources;
+package be.technifutur.tournament.api;
 
-import be.technifutur.tournament.services.BracketService;
+import be.technifutur.tournament.bl.BracketService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -523,8 +534,8 @@ public class BracketResource {
             return Response.ok(bracketService.buildBracketData(id)).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND)
-                .entity("{\"error\":\"" + e.getMessage() + "\"}")
-                .build();
+                    .entity("{\"error\":\"" + e.getMessage() + "\"}")
+                    .build();
         }
     }
 }
@@ -569,8 +580,8 @@ Bugs corrigés par rapport au code commenté :
 ```java
 package be.technifutur.tournament.utils;
 
-import be.technifutur.tournament.entities.*;
-import be.technifutur.tournament.enums.*;
+import be.technifutur.tournament.dl.entities.*;
+import be.technifutur.tournament.dl.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -591,7 +602,8 @@ import java.util.Map;
 @ApplicationScoped
 public class DataInitializer {
 
-    private record FighterData(String name, String style, String originCountry, String imageUrl) {}
+    private record FighterData(String name, String style, String originCountry, String imageUrl) {
+    }
 
     public void init(@Observes Startup startup) {
         EntityManager em = null;
@@ -606,35 +618,36 @@ public class DataInitializer {
             // FIGHTERS
             InputStream is = getClass().getClassLoader().getResourceAsStream("fighters.json");
             Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
-            Type listType = new TypeToken<List<FighterData>>() {}.getType();
+            Type listType = new TypeToken<List<FighterData>>() {
+            }.getType();
             List<FighterData> fighterDataList = new Gson().fromJson(reader, listType);
 
             Map<String, Fighter> fighterMap = new HashMap<>();
             for (FighterData fd : fighterDataList) {
                 Fighter f = Fighter.builder()
-                    .name(fd.name())
-                    .style(fd.style())
-                    .originCountry(fd.originCountry())
-                    .image(fd.imageUrl())
-                    .build();
+                        .name(fd.name())
+                        .style(fd.style())
+                        .originCountry(fd.originCountry())
+                        .image(fd.imageUrl())
+                        .build();
                 em.persist(f);
                 fighterMap.put(fd.name(), f);
             }
 
-            Fighter jin    = fighterMap.get("Jin Kazama");
+            Fighter jin = fighterMap.get("Jin Kazama");
             Fighter kazuya = fighterMap.get("Kazuya Mishima");
-            Fighter king   = fighterMap.get("King");
-            Fighter nina   = fighterMap.get("Nina Williams");
+            Fighter king = fighterMap.get("King");
+            Fighter nina = fighterMap.get("Nina Williams");
 
             // PLAYERS
             Player p1 = Player.builder().username("kevin").email("kevin@test.be")
-                .elo("1200").age(25).fighterMain(jin).build();
+                    .elo("1200").age(25).fighterMain(jin).build();
             Player p2 = Player.builder().username("laura").email("laura@test.be")
-                .elo("1250").age(23).fighterMain(kazuya).build();
+                    .elo("1250").age(23).fighterMain(kazuya).build();
             Player p3 = Player.builder().username("yassine").email("yassine@test.be")
-                .elo("1300").age(27).fighterMain(king).build();
+                    .elo("1300").age(27).fighterMain(king).build();
             Player p4 = Player.builder().username("sofia").email("sofia@test.be")
-                .elo("1100").age(22).fighterMain(nina).build();
+                    .elo("1100").age(22).fighterMain(nina).build();
 
             em.persist(p1);
             em.persist(p2);
@@ -643,56 +656,56 @@ public class DataInitializer {
 
             // TOURNAMENT
             Tournament t = Tournament.builder()
-                .name("Tekken 8 Championship")
-                .status(TournamentStatus.IN_PROGRESS)
-                .startDate(LocalDateTime.now())
-                .build();
+                    .name("Tekken 8 Championship")
+                    .status(TournamentStatus.IN_PROGRESS)
+                    .startDate(LocalDateTime.now())
+                    .build();
             em.persist(t);
 
             // REGISTRATIONS
             em.persist(Registration.builder()
-                .player(p1).tournament(t)
-                .registrationStatus(RegistrationStatus.CONFIRMED).build());
+                    .player(p1).tournament(t)
+                    .registrationStatus(RegistrationStatus.CONFIRMED).build());
             em.persist(Registration.builder()
-                .player(p2).tournament(t)
-                .registrationStatus(RegistrationStatus.CONFIRMED).build());
+                    .player(p2).tournament(t)
+                    .registrationStatus(RegistrationStatus.CONFIRMED).build());
             em.persist(Registration.builder()
-                .player(p3).tournament(t)
-                .registrationStatus(RegistrationStatus.CONFIRMED).build());
+                    .player(p3).tournament(t)
+                    .registrationStatus(RegistrationStatus.CONFIRMED).build());
             em.persist(Registration.builder()
-                .player(p4).tournament(t)
-                .registrationStatus(RegistrationStatus.CONFIRMED).build());
+                    .player(p4).tournament(t)
+                    .registrationStatus(RegistrationStatus.CONFIRMED).build());
 
             // MATCHES — WB semi-finals
             Match m1 = Match.builder()
-                .tournament(t).player1(p1).player2(p2)
-                .status(MatchStatus.FINISHED)
-                .numberRounds(3)
-                .bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
-                .player1Score(2).player2Score(1)
-                .scheduledAt(LocalDateTime.now().minusDays(1))
-                .finishedAt(LocalDateTime.now().minusDays(1))
-                .build();
+                    .tournament(t).player1(p1).player2(p2)
+                    .status(MatchStatus.FINISHED)
+                    .numberRounds(3)
+                    .bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
+                    .player1Score(2).player2Score(1)
+                    .scheduledAt(LocalDateTime.now().minusDays(1))
+                    .finishedAt(LocalDateTime.now().minusDays(1))
+                    .build();
 
             Match m2 = Match.builder()
-                .tournament(t).player1(p3).player2(p4)
-                .status(MatchStatus.FINISHED)
-                .numberRounds(3)
-                .bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
-                .player1Score(2).player2Score(0)
-                .scheduledAt(LocalDateTime.now().minusDays(1))
-                .finishedAt(LocalDateTime.now().minusDays(1))
-                .build();
+                    .tournament(t).player1(p3).player2(p4)
+                    .status(MatchStatus.FINISHED)
+                    .numberRounds(3)
+                    .bracketStage(BracketStage.WINNERS_BRACKET).roundNumber(1)
+                    .player1Score(2).player2Score(0)
+                    .scheduledAt(LocalDateTime.now().minusDays(1))
+                    .finishedAt(LocalDateTime.now().minusDays(1))
+                    .build();
 
             Match finale = Match.builder()
-                .tournament(t).player1(p1).player2(p3)
-                .status(MatchStatus.FINISHED)
-                .numberRounds(5)
-                .bracketStage(BracketStage.GRAND_FINAL).roundNumber(0)
-                .player1Score(3).player2Score(2)
-                .scheduledAt(LocalDateTime.now())
-                .finishedAt(LocalDateTime.now())
-                .build();
+                    .tournament(t).player1(p1).player2(p3)
+                    .status(MatchStatus.FINISHED)
+                    .numberRounds(5)
+                    .bracketStage(BracketStage.GRAND_FINAL).roundNumber(0)
+                    .player1Score(3).player2Score(2)
+                    .scheduledAt(LocalDateTime.now())
+                    .finishedAt(LocalDateTime.now())
+                    .build();
 
             em.persist(m1);
             em.persist(m2);

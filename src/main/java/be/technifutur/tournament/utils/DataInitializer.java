@@ -1,7 +1,7 @@
 package be.technifutur.tournament.utils;
 
-import be.technifutur.tournament.entities.*;
-import be.technifutur.tournament.enums.*;
+import be.technifutur.tournament.dl.entities.*;
+import be.technifutur.tournament.dl.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -69,7 +69,7 @@ public class DataInitializer {
             Player p1 = Player.builder()
                     .username("kevin")
                     .email("kevin@test.be")
-                    .elo("1200")
+                    .elo(1200)
                     .age(25)
                     .fighterMain(fighterMap.get("Jin Kazama"))
                     .build();
@@ -77,7 +77,7 @@ public class DataInitializer {
             Player p2 = Player.builder()
                     .username("laura")
                     .email("laura@test.be")
-                    .elo("1250")
+                    .elo(1250)
                     .age(23)
                     .fighterMain(fighterMap.get("Kazuya Mishima"))
                     .build();
@@ -85,7 +85,7 @@ public class DataInitializer {
             Player p3 = Player.builder()
                     .username("yassine")
                     .email("yassine@test.be")
-                    .elo("1300")
+                    .elo(1300)
                     .age(27)
                     .fighterMain(fighterMap.get("King"))
                     .build();
@@ -93,7 +93,7 @@ public class DataInitializer {
             Player p4 = Player.builder()
                     .username("sofia")
                     .email("sofia@test.be")
-                    .elo("1100")
+                    .elo(1100)
                     .age(22)
                     .fighterMain(fighterMap.get("Heihachi Mishima"))
                     .build();
