@@ -3,8 +3,6 @@ package be.technifutur.tournament.dl.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,5 +1,6 @@
 package be.technifutur.tournament.dtl;
 
+import be.technifutur.tournament.dtl.match.MatchParticipantDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record BracketMatchDto(

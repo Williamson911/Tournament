@@ -3,9 +3,6 @@ package be.technifutur.tournament.dl.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +26,7 @@ public class Player {
     private int age;
 
     @Getter @Setter
-    private String elo;
+    private int elo;
 
     @Getter @Setter
     private String image;

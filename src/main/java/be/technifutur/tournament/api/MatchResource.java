@@ -4,6 +4,9 @@ import be.technifutur.tournament.dal.MatchDAO;
 import be.technifutur.tournament.dtl.MatchDTO;
 import be.technifutur.tournament.dtl.RecordResultDto;
 import be.technifutur.tournament.dl.entity.Match;
+import be.technifutur.tournament.dal.MatchDAO;
+import be.technifutur.tournament.dtl.match.MatchDTO;
+import be.technifutur.tournament.dl.entity.Match;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import be.technifutur.tournament.bl.MatchResultService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,13 +17,12 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-import static be.technifutur.tournament.dtl.MatchDTO.toDTO;
+import static be.technifutur.tournament.dtl.match.MatchDTO.toDTO;
 
 @Tag(name ="Match", description = "crud Match")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/matches")
-@ApplicationScoped
 public class MatchResource {
 
     @Inject
@@ -30,8 +32,6 @@ public class MatchResource {
     private MatchResultService matchResultService;
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
     public Response create(Match match) {
         Match created = matchDao.save(match);
         return Response.status(Response.Status.CREATED)
@@ -40,21 +40,20 @@ public class MatchResource {
     }
 
     @GET
-    @Produces("application/json")
     public Response findAll() {
         List<MatchDTO> dtos = matchDao.findAllWithRelations()
                 .stream()
                 .map(MatchDTO::toDTO)
                 .toList();
 
-        return Response.ok(dtos).build();
+        return Response.ok().entity(dtos).build();
     }
 
     @GET
     @Path("/id/{id}")
     public Response findByID(@PathParam("id") Integer id) {
         Match match = matchDao.findById(id).orElseThrow();
-        return Response.ok(toDTO(match)).build();
+        return Response.ok().entity(toDTO(match)).build();
     }
 
     @PUT
@@ -77,7 +76,7 @@ public class MatchResource {
         existing.setTournament(match.getTournament());
         existing.setStatus(match.getStatus());
         Match updated = matchDao.update(existing);
-        return Response.ok(MatchDTO.toDTO(updated)).build();
+        return Response.ok().entity(MatchDTO.toDTO(updated)).build();
     }
 
     @DELETE
