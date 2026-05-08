@@ -68,7 +68,7 @@ public class TournamentService {
                 .orElseThrow(() -> new NotFoundException("Tournament not found"));
         if (t.getStatus() != TournamentStatus.DRAFT && t.getStatus() != TournamentStatus.OPEN)
             throw new BadRequestException("Registration is closed for this tournament");
-        if (registrationDAO.existsByPlayerAndTournament(playerId, tournamentId))
+        if (registrationDAO.existsByPlayerIdAndTournamentId(playerId, tournamentId))
             throw new WebApplicationException("Player already registered", 409);
         Player player = playerDAO.findById(playerId)
                 .orElseThrow(() -> new NotFoundException("Player not found"));
