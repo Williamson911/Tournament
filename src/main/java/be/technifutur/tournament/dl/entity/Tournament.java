@@ -1,4 +1,4 @@
-package be.technifutur.tournament.dl.entities;
+package be.technifutur.tournament.dl.entity;
 
 import be.technifutur.tournament.dl.enums.TournamentStatus;
 import jakarta.persistence.*;

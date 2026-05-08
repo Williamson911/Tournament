@@ -1,6 +1,6 @@
 package be.technifutur.tournament.dtl.tournament;
 
-import be.technifutur.tournament.dl.entities.Tournament;
+import be.technifutur.tournament.dl.entity.Tournament;
 import be.technifutur.tournament.dl.enums.TournamentStatus;
 
 import java.time.LocalDateTime;

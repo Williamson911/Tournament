@@ -2,7 +2,7 @@ package be.technifutur.tournament.dtl.registration;
 
 import be.technifutur.tournament.dtl.player.PlayerDTO;
 import be.technifutur.tournament.dtl.tournament.TournamentDTO;
-import be.technifutur.tournament.dl.entities.Registration;
+import be.technifutur.tournament.dl.entity.Registration;
 import be.technifutur.tournament.dl.enums.RegistrationStatus;
 
 import java.time.LocalDateTime;

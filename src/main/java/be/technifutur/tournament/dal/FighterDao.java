@@ -1,7 +1,7 @@
 package be.technifutur.tournament.dal;
 
 import be.technifutur.tournament.utils.EMFProvider;
-import be.technifutur.tournament.dl.entities.Fighter;
+import be.technifutur.tournament.dl.entity.Fighter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

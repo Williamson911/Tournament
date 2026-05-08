@@ -317,8 +317,8 @@ import be.technifutur.tournament.dal.MatchDAO;
 import be.technifutur.tournament.dal.TournamentDAO;
 import be.technifutur.tournament.dtl.*;
 import be.technifutur.tournament.dtl.match.MatchParticipantDto;
-import be.technifutur.tournament.dl.entities.Match;
-import be.technifutur.tournament.dl.entities.Player;
+import be.technifutur.tournament.dl.entity.Match;
+import be.technifutur.tournament.dl.entity.Player;
 import be.technifutur.tournament.dl.enums.BracketStage;
 import be.technifutur.tournament.dl.enums.MatchStatus;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -580,7 +580,7 @@ Bugs corrigés par rapport au code commenté :
 ```java
 package be.technifutur.tournament.utils;
 
-import be.technifutur.tournament.dl.entities.*;
+import be.technifutur.tournament.dl.entity.*;
 import be.technifutur.tournament.dl.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

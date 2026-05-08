@@ -1,6 +1,6 @@
 package be.technifutur.tournament.utils;
 
-import be.technifutur.tournament.dl.entities.*;
+import be.technifutur.tournament.dl.entity.*;
 import be.technifutur.tournament.dl.enums.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

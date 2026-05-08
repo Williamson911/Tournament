@@ -1,7 +1,7 @@
 package be.technifutur.tournament.api;
 
 import be.technifutur.tournament.dal.RegistrationDAO;
-import be.technifutur.tournament.dl.entities.Registration;
+import be.technifutur.tournament.dl.entity.Registration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

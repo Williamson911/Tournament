@@ -1,6 +1,6 @@
 package be.technifutur.tournament.dtl.player;
 
-import be.technifutur.tournament.dl.entities.Player;
+import be.technifutur.tournament.dl.entity.Player;
 
 public record PlayerDTO(
         Integer id,

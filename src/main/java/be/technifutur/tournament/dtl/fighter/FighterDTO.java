@@ -1,6 +1,6 @@
 package be.technifutur.tournament.dtl.fighter;
 
-import be.technifutur.tournament.dl.entities.Fighter;
+import be.technifutur.tournament.dl.entity.Fighter;
 
 public record FighterDTO(
         Integer id,

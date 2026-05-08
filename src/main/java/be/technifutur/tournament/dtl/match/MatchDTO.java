@@ -2,7 +2,7 @@ package be.technifutur.tournament.dtl.match;
 
 import be.technifutur.tournament.dtl.player.PlayerDTO;
 import be.technifutur.tournament.dtl.tournament.TournamentDTO;
-import be.technifutur.tournament.dl.entities.Match;
+import be.technifutur.tournament.dl.entity.Match;
 
 public record MatchDTO(
         Integer id,

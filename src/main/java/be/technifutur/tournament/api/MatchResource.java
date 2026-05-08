@@ -2,7 +2,7 @@ package be.technifutur.tournament.api;
 
 import be.technifutur.tournament.dal.MatchDAO;
 import be.technifutur.tournament.dtl.match.MatchDTO;
-import be.technifutur.tournament.dl.entities.Match;
+import be.technifutur.tournament.dl.entity.Match;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

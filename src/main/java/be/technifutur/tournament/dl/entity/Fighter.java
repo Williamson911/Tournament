@@ -1,4 +1,4 @@
-package be.technifutur.tournament.dl.entities;
+package be.technifutur.tournament.dl.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -2,8 +2,8 @@ package be.technifutur.tournament.api;
 
 import be.technifutur.tournament.dal.FighterDao;
 import be.technifutur.tournament.dal.PlayerDao;
-import be.technifutur.tournament.dl.entities.Fighter;
-import be.technifutur.tournament.dl.entities.Player;
+import be.technifutur.tournament.dl.entity.Fighter;
+import be.technifutur.tournament.dl.entity.Player;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
