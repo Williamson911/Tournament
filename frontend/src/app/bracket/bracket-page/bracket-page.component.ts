@@ -114,9 +114,16 @@ export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  simulateTournament(): void {
+  simulateRound(): void {
     this.simulating.set(true);
-    this.simulateLoop();
+    this.service.simulateNextRound(this.tournamentId).subscribe({
+      next: d => {
+        this.data.set(d);
+        this.simulating.set(false);
+        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
+      },
+      error: () => this.simulating.set(false)
+    });
   }
 
   resetTournament(): void {
@@ -125,21 +132,6 @@ export class BracketPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.service.resetTournament(this.tournamentId).subscribe({
       next: () => this.loadBracket(),
       error: () => this.resetting.set(false)
-    });
-  }
-
-  private simulateLoop(): void {
-    this.service.simulateNextRound(this.tournamentId).subscribe({
-      next: d => {
-        this.data.set(d);
-        setTimeout(() => { this.measureGfConnector(); this.wireStickyScroll(); });
-        if (d.status === 'IN_PROGRESS') {
-          setTimeout(() => this.simulateLoop(), 800);
-        } else {
-          this.simulating.set(false);
-        }
-      },
-      error: () => this.simulating.set(false)
     });
   }
 
