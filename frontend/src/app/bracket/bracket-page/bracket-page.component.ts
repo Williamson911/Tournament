@@ -10,13 +10,14 @@ import { BracketLayoutComponent } from '../bracket-layout/bracket-layout.compone
 import { BracketConnectorComponent } from '../bracket-connector/bracket-connector.component';
 import { GrandFinalComponent } from '../grand-final/grand-final.component';
 import { ChampionCardComponent } from '../champion-card/champion-card.component';
+import { GrandFinalPopupComponent } from '../grand-final-popup/grand-final-popup.component';
 
 @Component({
   selector: 'app-bracket-page',
   imports: [
     BracketTitleComponent, StageTabsComponent, GroupStageComponent,
     BracketLayoutComponent, BracketConnectorComponent,
-    GrandFinalComponent, ChampionCardComponent
+    GrandFinalComponent, ChampionCardComponent, GrandFinalPopupComponent
   ],
   templateUrl: './bracket-page.component.html',
   styleUrl: './bracket-page.component.scss'
