@@ -18,37 +18,43 @@
     }
 
     @if (!d.hasGroupStage || activeTab() === 'bracket') {
-      <div class="bracket-view">
-        @if (d.status === 'DRAFT') {
-          <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
-            {{ launching() ? 'En cours…' : 'Lancer les poules' }}
-          </button>
-        }
-        @if (d.status === 'GROUP_STAGE_COMPLETE') {
-          <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
-            {{ generating() ? 'En cours…' : 'Générer le bracket' }}
-          </button>
-        }
-        @if (d.status === 'IN_PROGRESS' && !d.champion) {
-          <button class="action-btn" [disabled]="simulating()" (click)="simulateTournament()">
-            {{ simulating() ? 'En cours…' : 'Commencer le tournoi' }}
-          </button>
-        }
+      <div class="bracket-clipper" #bracketClipperRef>
+        <div class="bracket-view" #bracketViewRef
+             [style.transform]="'translateX(' + (-scrollX()) + 'px)'">
+          @if (d.status === 'DRAFT') {
+            <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
+              {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+            </button>
+          }
+          @if (d.status === 'GROUP_STAGE_COMPLETE') {
+            <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
+              {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+            </button>
+          }
+          @if (d.status === 'IN_PROGRESS' && !d.champion) {
+            <button class="action-btn" [disabled]="simulating()" (click)="simulateTournament()">
+              {{ simulating() ? 'En cours…' : 'Commencer le tournoi' }}
+            </button>
+          }
 
-        <app-bracket-layout #bracketLayoutRef
-          [winnersBracket]="d.winnersBracket"
-          [losersBracket]="d.losersBracket" />
+          <app-bracket-layout #bracketLayoutRef
+            [winnersBracket]="d.winnersBracket"
+            [losersBracket]="d.losersBracket" />
 
-        @if (d.grandFinal) {
-          <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
-          <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
-                           [style.margin-top.px]="gfMarginTop()" />
-        }
+          @if (d.grandFinal) {
+            <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
+            <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
+                             [style.margin-top.px]="gfMarginTop()" />
+          }
 
-        @if (d.champion) {
-          <app-bracket-connector [matchCount]="1" />
-          <app-champion-card [champion]="d.champion" />
-        }
+          @if (d.champion) {
+            <app-bracket-connector [matchCount]="1" />
+            <app-champion-card [champion]="d.champion" />
+          }
+        </div>
+      </div>
+      <div class="sticky-scrollbar" #stickyScrollRef>
+        <div class="sticky-scrollbar-inner" [style.width.px]="contentWidth()"></div>
       </div>
     }
 

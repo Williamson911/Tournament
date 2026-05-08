@@ -17,7 +17,10 @@
       "Bash(curl -s -o /dev/null -w \"main.js: HTTP %{http_code} \\(%{size_download} bytes\\)\\\\n\" http://localhost:4200/main.js)",
       "Bash(curl -s -o /dev/null -w \"styles.css: HTTP %{http_code} \\(%{size_download} bytes\\)\\\\n\" http://localhost:4200/styles.css)",
       "Bash(curl -s -o /dev/null -w \"@vite/client: HTTP %{http_code} \\(%{size_download} bytes\\)\\\\n\" http://localhost:4200/@vite/client)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Stop-Process *)"
     ]
   }
 }
