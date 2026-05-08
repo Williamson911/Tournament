@@ -1,0 +1,7 @@
+<div class="layout">
+  <app-winners-bracket [rounds]="winnersBracket()" />
+  @if (losersBracket().length > 0) {
+    <div class="lb-separator"></div>
+    <app-losers-bracket [rounds]="losersBracket()" />
+  }
+</div>

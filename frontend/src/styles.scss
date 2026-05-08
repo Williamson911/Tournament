@@ -1,0 +1,29 @@
+// frontend/src/styles.scss
+@use './styles/tekken-tokens' as t;
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+app-root { display: block; }
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: url('https://www.gamewallpapers.com/wallpapers_slechte_compressie/wallpaper_tekken_8_01_1920x1080.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: t.$color-bg;
+  font-family: t.$font-body;
+  color: #fff;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 0, 0, 0.72);
+    pointer-events: none;
+    z-index: 0;
+  }
+}

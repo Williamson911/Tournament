@@ -5,7 +5,7 @@ import jakarta.persistence.Persistence;
 
 public class EmfFactory {
 
-    private static final String PERSISTENCE_UNIT_NAME = "Tournament";
+    private static final String PERSISTENCE_UNIT_NAME = "tournament";
 
     private static EntityManagerFactory emf;
 

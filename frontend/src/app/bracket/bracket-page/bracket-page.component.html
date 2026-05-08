@@ -1,0 +1,64 @@
+<div class="page">
+  @if (loading()) {
+    <div class="state-msg">Chargement…</div>
+  } @else if (error()) {
+    <div class="state-msg error">{{ error() }}</div>
+  } @else {
+    @let d = data()!;
+    <app-bracket-title [title]="d.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
+
+    @if (d.status !== 'DRAFT') {
+      <button class="reset-btn" [disabled]="resetting()" (click)="resetTournament()">
+        {{ resetting() ? 'Reset…' : 'Reset' }}
+      </button>
+    }
+
+    @if (d.hasGroupStage) {
+      <app-stage-tabs [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
+    }
+
+    @if (!d.hasGroupStage || activeTab() === 'bracket') {
+      @if (d.status === 'DRAFT') {
+        <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
+          {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+        </button>
+      }
+      @if (d.status === 'GROUP_STAGE_COMPLETE') {
+        <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
+          {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+        </button>
+      }
+      @if (d.status === 'IN_PROGRESS' && !d.champion) {
+        <button class="action-btn" [disabled]="simulating()" (click)="simulateRound()">
+          {{ simulating() ? 'En cours…' : 'Fight' }}
+        </button>
+      }
+      <div class="bracket-clipper" #bracketClipperRef>
+        <div class="bracket-view" #bracketViewRef
+             [style.transform]="'translateX(' + (-scrollX()) + 'px)'">
+          <app-bracket-layout #bracketLayoutRef
+            [winnersBracket]="d.winnersBracket"
+            [losersBracket]="d.losersBracket" />
+
+          @if (d.grandFinal) {
+            <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
+            <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
+                             [style.margin-top.px]="gfMarginTop()" />
+          }
+
+          @if (d.champion) {
+            <app-bracket-connector [matchCount]="1" />
+            <app-champion-card [champion]="d.champion" />
+          }
+        </div>
+      </div>
+      <div class="sticky-scrollbar" #stickyScrollRef>
+        <div class="sticky-scrollbar-inner" [style.width.px]="contentWidth()"></div>
+      </div>
+    }
+
+    @if (d.hasGroupStage && activeTab() === 'groups') {
+      <app-group-stage [groups]="d.groups" />
+    }
+  }
+</div>

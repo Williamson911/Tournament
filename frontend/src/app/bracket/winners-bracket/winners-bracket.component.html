@@ -1,0 +1,19 @@
+<section class="wb-section">
+  <div class="section-label">WINNER'S BRACKET</div>
+  <div class="rounds-row">
+    @for (round of rounds(); track round.roundId; let last = $last) {
+      <app-bracket-round [round]="round" />
+      @if (!last) {
+        <div class="connector-col">
+          @for (match of round.matches; track match.matchId; let i = $index) {
+            @if (i % 2 === 0) {
+              <div class="connector-pair"></div>
+            }
+          }
+        </div>
+      } @else {
+        <div class="connector-exit"></div>
+      }
+    }
+  </div>
+</section>

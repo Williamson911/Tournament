@@ -1,0 +1,458 @@
+[
+  {
+    "name": "Jinpachi Mishima",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/0/0e/Jinpachi_Mishima_T5_Render.png/revision/latest/scale-to-width-down/400?cb=20170705002554&path-prefix=en"
+  },
+  {
+    "name": "Kazuya Mishima",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/b/bf/Kazuya_Mishima_TK8_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/291?cb=20251202235851&path-prefix=en"
+  },
+  {
+    "name": "Marshall Law",
+    "style": "Martial Arts",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/d/d2/Marshall_Law_TK8_%28High_Resolution%29.jpeg/revision/latest/scale-to-width-down/392?cb=20251203013002&path-prefix=en"
+  },
+  {
+    "name": "Paul Phoenix",
+    "style": "Judo",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/4/4e/Paul_Phoenix_TK8_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/325?cb=20251203014116&path-prefix=en"
+  },
+  {
+    "name": "Nina Williams",
+    "style": "Assassination",
+    "originCountry": "Ireland",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c8/Tekken_8_-_Nina_Williams_Official_Render.jpg/revision/latest/scale-to-width-down/350?cb=20230901101613&path-prefix=en"
+  },
+  {
+    "name": "Yoshimitsu",
+    "style": "Manji Ninjutsu",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/0/0c/Yoshimitsu_TK8_render_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/500?cb=20251203015109&path-prefix=en"
+  },
+  {
+    "name": "King",
+    "style": "Wrestling",
+    "originCountry": "Mexico",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/7/77/Tk2_king.png/revision/latest/scale-to-width-down/267?cb=20200823061154&path-prefix=en"
+  },
+  {
+    "name": "Jack",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Lee Chaolan",
+    "style": "Martial Arts",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/e/e0/Lee_TK8_Render.jpg/revision/latest/scale-to-width-down/456?cb=20251203015642&path-prefix=en"
+  },
+  {
+    "name": "Michelle Chang",
+    "style": "Chinese Martial Arts",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/a4/Michelle_ChangTTT2.jpg/revision/latest/scale-to-width-down/391?cb=20170402095825&path-prefix=en"
+  },
+  {
+    "name": "Heihachi Mishima",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c2/TK8_Heihachi_Render.jpg/revision/latest/scale-to-width-down/391?cb=20241001053733&path-prefix=en"
+  },
+  {
+    "name": "Jun Kazama",
+    "style": "Kazama Style",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/2/2b/Jun_Kazama_TK8_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/350?cb=20251203005216&path-prefix=en"
+  },
+  {
+    "name": "Lei Wulong",
+    "style": "Five Animals",
+    "originCountry": "Hong Kong",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/0/0e/Lei_wulong_tk7_render.jpg/revision/latest/scale-to-width-down/343?cb=20190718035329&path-prefix=en"
+  },
+  {
+    "name": "Bruce Irvin",
+    "style": "Kickboxing",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/9/99/Bruce-irvin-tekken-mobile-2017-render.jpg/revision/latest/scale-to-width-down/427?cb=20181231015513&path-prefix=en"
+  },
+  {
+    "name": "Anna Williams",
+    "style": "Assassination",
+    "originCountry": "Ireland",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/0/0f/Anna_TK8_Render_Large.png/revision/latest/scale-to-width-down/391?cb=20250403152254&path-prefix=en"
+  },
+  {
+    "name": "Baek Doo San",
+    "style": "Taekwondo",
+    "originCountry": "Korea",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/e/e7/Baek_Doo_San_TTT2.png/revision/latest/scale-to-width-down/205?cb=20170625211252&path-prefix=en"
+  },
+  {
+    "name": "Roger",
+    "style": "Boxing",
+    "originCountry": "Australia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/6f/Roger_Tekken_6.jpg/revision/latest/scale-to-width-down/400?cb=20111210120625&path-prefix=en"
+  },
+  {
+    "name": "Alex",
+    "style": "Kickboxing",
+    "originCountry": "Australia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/8/88/20180825_003916.jpg/revision/latest/scale-to-width-down/322?cb=20180824164140&path-prefix=en"
+  },
+  {
+    "name": "Kunimitsu",
+    "style": "Manji Ninjutsu",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c2/Kunimitsu_TTT2.png/revision/latest/scale-to-width-down/394?cb=20170625220053&path-prefix=en"
+  },
+  {
+    "name": "Armor King",
+    "style": "Wrestling",
+    "originCountry": "Mexico",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/a8/ArmorKingTAG.jpg/revision/latest/scale-to-width-down/406?cb=20080304063624&path-prefix=en"
+  },
+  {
+    "name": "Devil",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/f0/Tekken_8_True_Devil_Kazuya_Arcade_Cleared_Gallery_Illustration.jpg/revision/latest/scale-to-width-down/500?cb=20240207232219&path-prefix=en"
+  },
+  {
+    "name": "Jin Kazama",
+    "style": "Karate/Capoeira",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/ab/T8_-_Jin_Render_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/368?cb=20251202234836&path-prefix=en"
+  },
+  {
+    "name": "Hwoarang",
+    "style": "Taekwondo",
+    "originCountry": "Korea",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/1/19/Hwoarang_TK8_render.jpg/revision/latest/scale-to-width-down/333?cb=20230516120648&path-prefix=en"
+  },
+  {
+    "name": "Ling Xiaoyu",
+    "style": "Panda Kung Fu",
+    "originCountry": "China",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/cf/TK8_Ling_Xiaoyu_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/353?cb=20251203004803&path-prefix=en"
+  },
+  {
+    "name": "Eddy Gordo",
+    "style": "Capoeira",
+    "originCountry": "Brazil",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c7/Eddy_Gordo_Tekken_8_Render_Full.png/revision/latest/scale-to-width-down/325?cb=20240402001627&path-prefix=en"
+  },
+  {
+    "name": "Bryan Fury",
+    "style": "Kickboxing",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/fd/Bryan_Fury_TK8_render-II.jpeg/revision/latest/scale-to-width-down/281?cb=20230602001948&path-prefix=en"
+  },
+  {
+    "name": "Forest Law",
+    "style": "Martial Arts",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/1/1e/Forest_Law_TTT2.png/revision/latest/scale-to-width-down/337?cb=20170625213620&path-prefix=en"
+  },
+  {
+    "name": "Gun Jack",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Mokujin",
+    "style": "Mimicry",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/4/4c/Mokujintkmobile.jpg/revision/latest/scale-to-width-down/400?cb=20230607221513&path-prefix=en"
+  },
+  {
+    "name": "Panda",
+    "style": "Panda Kung Fu",
+    "originCountry": "China",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/e/eb/Panda_TK8_render_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/481?cb=20251203013728&path-prefix=en"
+  },
+  {
+    "name": "Tiger Jackson",
+    "style": "Capoeira",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/d/d8/Tiger_jackson.jpg/revision/latest/scale-to-width-down/290?cb=20120710054532&path-prefix=en"
+  },
+  {
+    "name": "Gon",
+    "style": "Unknown",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c4/Gon_-_Full-body_CG_Art_Image_-_Tekken_3.png/revision/latest/scale-to-width-down/394?cb=20110830171938&path-prefix=en"
+  },
+  {
+    "name": "Doctor Bosconovitch",
+    "style": "Science",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/a5/DRB-TTT2.jpg/revision/latest/scale-to-width-down/450?cb=20130321133847&path-prefix=en"
+  },
+  {
+    "name": "Steve Fox",
+    "style": "Boxing",
+    "originCountry": "UK",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/2/26/Steve_TK8_render.jpg/revision/latest/scale-to-width-down/392?cb=20230823141212&path-prefix=en"
+  },
+  {
+    "name": "Craig Marduk",
+    "style": "Vale Tudo",
+    "originCountry": "Australia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/1/11/Craig_Marduk_T7.jpg/revision/latest/scale-to-width-down/495?cb=20181203160700&path-prefix=en"
+  },
+  {
+    "name": "Christie Monteiro",
+    "style": "Capoeira",
+    "originCountry": "Brazil",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/5/55/Christie4.png/revision/latest/scale-to-width-down/500?cb=20171111111301&path-prefix=en"
+  },
+  {
+    "name": "Miharu Hirano",
+    "style": "Panda Kung Fu",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/fa/Miharu.jpg/revision/latest/scale-to-width-down/500?cb=20141104181447&path-prefix=en"
+  },
+  {
+    "name": "Asuka Kazama",
+    "style": "Kazama Style",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/b/b1/Tekken_8_-_Asuka_Render.jpg/revision/latest/scale-to-width-down/306?cb=20230425185037&path-prefix=en"
+  },
+  {
+    "name": "Feng Wei",
+    "style": "Chinese Martial Arts",
+    "originCountry": "China",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/67/FengWei_TK8_render_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/500?cb=20251203011757&path-prefix=en"
+  },
+  {
+    "name": "Raven",
+    "style": "Ninjutsu",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/ca/Raven_TK8_Render_Full.jpg/revision/latest/scale-to-width-down/500?cb=20251203014434&path-prefix=en"
+  },
+  {
+    "name": "Roger Jr",
+    "style": "Boxing",
+    "originCountry": "Australia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/a2/Roger_Jr._TTT2.png/revision/latest/scale-to-width-down/327?cb=20170625223056&path-prefix=en"
+  },
+  {
+    "name": "Jack-5",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Devil Jin",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/f0/Devil_Jin_TK8_Render.jpg/revision/latest/scale-to-width-down/500?cb=20240126004007&path-prefix=en"
+  },
+  {
+    "name": "Lili",
+    "style": "Street Fighting",
+    "originCountry": "Monaco",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/60/Tekken_8_-_Lili_Render.jpeg/revision/latest/scale-to-width-down/375?cb=20251203013354&path-prefix=en"
+  },
+  {
+    "name": "Dragunov",
+    "style": "Sambo",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/5/5e/Dragunov_TK8_render.jpg/revision/latest/scale-to-width-down/312?cb=20230823140904&path-prefix=en"
+  },
+  {
+    "name": "Lars Alexandersson",
+    "style": "Tekken Forces",
+    "originCountry": "Sweden",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/e/e6/Lars_Alexandersson_TK8_%28High_Resolution%29.jpg/revision/latest/scale-to-width-down/393?cb=20251203010212&path-prefix=en"
+  },
+  {
+    "name": "Alisa Bosconovitch",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/7/71/Alisa_TK8_Render.jpg/revision/latest/scale-to-width-down/418?cb=20240116091919&path-prefix=en"
+  },
+  {
+    "name": "Leo Kliesen",
+    "style": "Baji Quan",
+    "originCountry": "Germany",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/4/46/Leo_TK8_render.jpg/revision/latest/scale-to-width-down/312?cb=20230823142506&path-prefix=en"
+  },
+  {
+    "name": "Zafina",
+    "style": "Assassination",
+    "originCountry": "Middle East",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/3/31/Zafina_TK8_Render.jpg/revision/latest/scale-to-width-down/388?cb=20240116162812&path-prefix=en"
+  },
+  {
+    "name": "Miguel Caballero Rojo",
+    "style": "Street Fighting",
+    "originCountry": "Spain",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/0/03/Miguel_T7FR.jpg/revision/latest/scale-to-width-down/410?cb=20170408104320&path-prefix=en"
+  },
+  {
+    "name": "Bob",
+    "style": "Freestyle Karate",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/5/5e/Bob_T7FR.jpg/revision/latest/scale-to-width-down/500?cb=20170615201903&path-prefix=en"
+  },
+  {
+    "name": "Jack-6",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Unknown",
+    "style": "Mimicry",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/ca/Unknown_TTT2.png/revision/latest/scale-to-width-down/231?cb=20170625224350&path-prefix=en"
+  },
+  {
+    "name": "Ogre",
+    "style": "Ancient Fighting",
+    "originCountry": "Mexico",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/64/OgreTTT2.jpg/revision/latest/scale-to-width-down/433?cb=20170402094016&path-prefix=en"
+  },
+  {
+    "name": "True Ogre",
+    "style": "Ancient Fighting",
+    "originCountry": "Mexico",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/c7/True_Ogre_TTT2.png/revision/latest/scale-to-width-down/500?cb=20170625224006&path-prefix=en"
+  },
+  {
+    "name": "Akuma",
+    "style": "Ansatsuken",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/5/5f/Tekken-7-Akuma-CG-art.jpg/revision/latest/scale-to-width-down/500?cb=20170408183224&path-prefix=en"
+  },
+  {
+    "name": "Geese Howard",
+    "style": "Hakkyokuseiken",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/f6/Tekken7-Geese.jpg/revision/latest/scale-to-width-down/500?cb=20170718111915&path-prefix=en"
+  },
+  {
+    "name": "Noctis",
+    "style": "Royal Arms",
+    "originCountry": "Lucis",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/66/Noctis_T7.jpg/revision/latest/scale-to-width-down/500?cb=20230703140937&path-prefix=en"
+  },
+  {
+    "name": "Negan",
+    "style": "Intimidation",
+    "originCountry": "USA",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/2/21/Negan_T7.jpeg/revision/latest/scale-to-width-down/333?cb=20181215020236&path-prefix=en"
+  },
+  {
+    "name": "Katarina Alves",
+    "style": "Savate",
+    "originCountry": "Brazil",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/b/b4/KatarinaRender.jpg/revision/latest/scale-to-width-down/350?cb=20170408135251&path-prefix=en"
+  },
+  {
+    "name": "Claudio Serafino",
+    "style": "Sirius Style",
+    "originCountry": "Italy",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/f0/Claudio_T8_Render_Temp.jpg/revision/latest/scale-to-width-down/375?cb=20251203011305&path-prefix=en"
+  },
+  {
+    "name": "Shaheen",
+    "style": "Military Combat",
+    "originCountry": "Saudi Arabia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/fa/Shaheen_TK8_render.jpg/revision/latest/scale-to-width-down/406?cb=20230823141432&path-prefix=en"
+  },
+  {
+    "name": "Josie Rizal",
+    "style": "Kickboxing",
+    "originCountry": "Philippines",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/7/78/Josie_CG.jpg/revision/latest/scale-to-width-down/400?cb=20170408140034&path-prefix=en"
+  },
+  {
+    "name": "Gigas",
+    "style": "Brute Force",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/b/bb/Gigas_CG.jpg/revision/latest/scale-to-width-down/500?cb=20170408135528&path-prefix=en"
+  },
+  {
+    "name": "Lucky Chloe",
+    "style": "Dance Fighting",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/d/d7/Tk7_Lucky_Chloe_Render.jpg/revision/latest/scale-to-width-down/425?cb=20170408140200&path-prefix=en"
+  },
+  {
+    "name": "Master Raven",
+    "style": "Ninjutsu",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/1/1d/MasterRavenT7.jpg/revision/latest/scale-to-width-down/415?cb=20191018004040&path-prefix=en"
+  },
+  {
+    "name": "Jack-7",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Kazumi Mishima",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/a/a2/Kazumi_CG.jpg/revision/latest/scale-to-width-down/384?cb=20170408135406&path-prefix=en"
+  },
+  {
+    "name": "Eliza",
+    "style": "Vampire Arts",
+    "originCountry": "Unknown",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/c/ce/T7_Eliza.jpg/revision/latest/scale-to-width-down/391?cb=20170408103954&path-prefix=en"
+  },
+  {
+    "name": "Jack-8",
+    "style": "Robotics",
+    "originCountry": "Russia",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/6/65/Jack-8.jpg/revision/latest/scale-to-width-down/384?cb=20230919111619&path-prefix=en"
+  },
+  {
+    "name": "Reina",
+    "style": "Mishima Karate",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/3/32/ReinaT8render.jpg/revision/latest/scale-to-width-down/391?cb=20231113232918&path-prefix=en"
+  },
+  {
+    "name": "Victor Chevalier",
+    "style": "French Martial Arts",
+    "originCountry": "France",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/e/e4/TK8_Victor_Chevalier_render.jpg/revision/latest/scale-to-width-down/375?cb=20241008035551&path-prefix=en"
+  },
+  {
+    "name": "Azucena",
+    "style": "Lucha Libre",
+    "originCountry": "Peru",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/2/2a/TK8_Azucena_Render.jpg/revision/latest/scale-to-width-down/290?cb=20251203011030&path-prefix=en"
+  },
+  {
+    "name": "Lidia Sobieska",
+    "style": "Polish Karate",
+    "originCountry": "Poland",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/5/5b/Lidia_TK8_Render_BGsm.png/revision/latest/scale-to-width-down/444?cb=20240722230820&path-prefix=en"
+  },
+  {
+    "name": "Kuma",
+    "style": "Heihachi Style",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/8/85/Tekken2_Kuma_Render.png/revision/latest?cb=20171120001632&path-prefix=en"
+  },
+  {
+    "name": "Kunimitsu II",
+    "style": "Manji Ninjutsu",
+    "originCountry": "Japan",
+    "imageUrl": "https://static.wikia.nocookie.net/tekken/images/f/f0/Kunimitsu_II_-_T7_Render_-_Masked.jpg/revision/latest/scale-to-width-down/500?cb=20200928053946&path-prefix=en"
+  }
+]

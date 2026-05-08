@@ -1,0 +1,29 @@
+<section class="lb-section">
+  <div class="section-label">LOSER'S BRACKET</div>
+  <div class="rounds-row">
+    @for (round of rounds(); track round.roundId; let last = $last; let i = $index) {
+      <div class="lb-round">
+        <app-bracket-round [round]="round" />
+      </div>
+      @if (!last) {
+        @if (rounds()[i + 1].matches.length < round.matches.length) {
+          <div class="connector-col">
+            @for (match of round.matches; track match.matchId; let mi = $index) {
+              @if (mi % 2 === 0) {
+                <div class="connector-pair"></div>
+              }
+            }
+          </div>
+        } @else {
+          <div class="connector-col">
+            @for (match of round.matches; track match.matchId) {
+              <div class="connector-straight"></div>
+            }
+          </div>
+        }
+      } @else {
+        <div class="connector-exit"></div>
+      }
+    }
+  </div>
+</section>

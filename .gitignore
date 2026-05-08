@@ -10,6 +10,9 @@ target/
 *.iml
 *.ipr
 
+persistence.xml
+
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -34,4 +37,29 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
 persistence.xml
+
+### Swagger dark mode (local override, per-dev) ###
+src/main/webapp/swagger-ui/swagger-dark.css
+
+### Brainstorm sessions ###
+.superpowers/
+
+### Angular ###
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+### Git worktrees ###
+.worktrees/
+
+/**/**/persistence.xml
+src/main/resources/META-INF/persistence.xml
+
+
+.claude/
+
+mydata/appVersion.json
+
+docs/superpowers/

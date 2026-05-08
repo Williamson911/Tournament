@@ -1,0 +1,8 @@
+<div class="round">
+  <div class="round-label">{{ round().label }}</div>
+  <div class="matches">
+    @for (match of round().matches; track match.matchId) {
+      <app-bracket-match [match]="match" />
+    }
+  </div>
+</div>

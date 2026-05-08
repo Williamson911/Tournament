@@ -1,0 +1,48 @@
+package be.technifutur.tournament.dl.entity;
+
+import be.technifutur.tournament.dl.enums.TournamentStatus;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+public class Tournament {
+
+    @Id
+    @Getter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Getter @Setter
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TournamentStatus status;
+
+    @Getter @Setter
+    @Column(nullable = false)
+    private String name;
+
+    @Getter @Setter
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Getter @Setter
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+
+    @Getter @Setter
+    @Column(name = "registration_end_date")
+    private LocalDateTime registrationEndDate;
+
+    @Getter @Setter
+    @Column(name = "max_participants")
+    private Integer maxParticipants;
+
+    @Getter @Setter
+    @Column(name = "has_group_stage")
+    private boolean hasGroupStage;
+}
