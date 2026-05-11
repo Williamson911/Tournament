@@ -1,5 +1,7 @@
 package be.technifutur.tournament.dal;
 
+import be.technifutur.tournament.dl.entity.Player;
+import be.technifutur.tournament.dl.entity.Tournament;
 import be.technifutur.tournament.utils.EMFProvider;
 import be.technifutur.tournament.dl.entity.Registration;
 import be.technifutur.tournament.dl.enums.RegistrationStatus;
@@ -19,30 +21,102 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         super(emfProvider);
     }
 
-    //Permet de récupérer les inscriptions au tournoi pour pouvoir générer les matchs.
-    public List<Registration> findByTournament(int tournamentId) {
+    public boolean existsByPlayerIdAndTournamentId(int playerId, int tournamentId) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
-                            "SELECT r FROM Registration r WHERE r.tournament.id = :tid",
-                            Registration.class)
+                            "SELECT count(r) FROM Registration r WHERE r.player.id = :pid " +
+                                    "AND r.tournament.id = :tid", Long.class)
+                    .setParameter("pid", playerId)
+                    .setParameter("tid", tournamentId)
+                    .getSingleResult() > 0;
+        }
+    }
+
+    public boolean existsByTournamentId(int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                            "SELECT count(r) FROM Registration r WHERE r.tournament.id = :tid", Long.class)
+                    .setParameter("tid", tournamentId)
+                    .getSingleResult() > 0;
+        }
+    }
+
+    public void registerPlayerToTournament(int playerId, int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            Registration r = Registration.builder()
+                    .player(em.getReference(Player.class, playerId))
+                    .tournament(em.getReference(Tournament.class, tournamentId))
+                    .registrationStatus(RegistrationStatus.PENDING)
+                    .build();
+            em.persist(r);
+            em.getTransaction().commit();
+        }
+    }
+
+    public void unregisterPlayerFromTournament(int playerId, int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery(
+                            "DELETE FROM Registration r WHERE r.player.id = :pid " +
+                                    "AND r.tournament.id = :tid")
+                    .setParameter("pid", playerId)
+                    .setParameter("tid", tournamentId)
+                    .executeUpdate();
+            em.getTransaction()
+                    .commit();
+        }
+    }
+
+    public void updateStatusRegistration(int tournamentId, RegistrationStatus newStatus) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery(
+                            "UPDATE Registration r SET r.registrationStatus = :newStatus " +
+                                    "WHERE r.tournament.id = :tid")
+                    .setParameter("newStatus", newStatus)
+                    .setParameter("tid", tournamentId)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        }
+    }
+
+    public int countByTournamentId(int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return (int) em.createQuery(
+                            "SELECT COUNT(r) FROM Registration r WHERE r.tournament.id = :tid")
+                    .setParameter("tid", tournamentId)
+                    .getSingleResult();
+        }
+    }
+
+    public List<Player> getRegisteredPlayersForTournament(int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                            "SELECT r.player FROM Registration r WHERE r.tournament.id = :tid", Player.class)
                     .setParameter("tid", tournamentId)
                     .getResultList();
         }
     }
 
-    /*
-    Filtre de la méthode findByTournament :
-    on prend  en compte seulement les joueurs ayant le statut confirmed
-    */
-    public List<Registration> findByTournamentWithStatus(int tournamentId) {
+    public List<Tournament> getRegisteredTournamentForPlayers(int playerId) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
             return em.createQuery(
-                            "SELECT r FROM Registration r WHERE r.tournament.id = :tid " +
-                                    "AND r.registrationStatus = :status",
-                            Registration.class)
-                    .setParameter("tid", tournamentId)
-                    .setParameter("status", RegistrationStatus.CONFIRMED)
+                            "SELECT r.tournament FROM Registration r WHERE r.player.id = :pid", Tournament.class)
+                    .setParameter("pid", playerId)
                     .getResultList();
+        }
+    }
+
+    public Optional<Registration> findByPlayerAndTournament(int playerId, int tournamentId) {
+        try (EntityManager em = emfProvider.get().createEntityManager()) {
+            return em.createQuery(
+                            "SELECT r FROM Registration r WHERE r.player.id = :pid " +
+                                    "AND r.tournament.id = :tid", Registration.class)
+                    .setParameter("pid", playerId)
+                    .setParameter("tid", tournamentId)
+                    .getResultStream()
+                    .findFirst();
         }
     }
 
@@ -58,16 +132,15 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
-    public void resetAllStatusForTournament(int tournamentId, RegistrationStatus status) {
+    public List<Registration> findByTournamentWithStatus(int tournamentId) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery(
-                            "UPDATE Registration r SET r.registrationStatus = :status " +
-                                    "WHERE r.tournament.id = :tid")
-                    .setParameter("status", status)
+            return em.createQuery(
+                            "SELECT r FROM Registration r WHERE r.tournament.id = :tid " +
+                                    "AND r.registrationStatus = :status",
+                            Registration.class)
                     .setParameter("tid", tournamentId)
-                    .executeUpdate();
-            em.getTransaction().commit();
+                    .setParameter("status", RegistrationStatus.CONFIRMED)
+                    .getResultList();
         }
     }
 
@@ -85,38 +158,16 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
         }
     }
 
-    //Permet de récupérer la liste des tournois auxquels un joueur est inscrit
-    public List<Registration> findByPlayer(int playerId) {
+    public void resetAllStatusForTournament(int tournamentId, RegistrationStatus status) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
-            return em.createQuery(
-                            "SELECT r FROM Registration r WHERE r.player.id = :pid",
-                            Registration.class)
-                    .setParameter("pid", playerId)
-                    .getResultList();
-        }
-    }
-
-    //Verifie si le joueur est déjà inscrit à un tournoi
-    public boolean existsByPlayerAndTournament(int playerId, int tournamentId) {
-        try (EntityManager em = emfProvider.get().createEntityManager()) {
-            return em.createQuery(
-                            "SELECT count(r) FROM Registration r WHERE r.player.id = :pid " +
-                                    "AND r.tournament.id = :tid", Long.class)
-                    .setParameter("pid", playerId)
+            em.getTransaction().begin();
+            em.createQuery(
+                            "UPDATE Registration r SET r.registrationStatus = :status " +
+                                    "WHERE r.tournament.id = :tid")
+                    .setParameter("status", status)
                     .setParameter("tid", tournamentId)
-                    .getSingleResult() > 0;
-        }
-    }
-
-    public Optional<Registration> findByPlayerAndTournament(int playerId, int tournamentId) {
-        try (EntityManager em = emfProvider.get().createEntityManager()) {
-            return em.createQuery(
-                            "SELECT r FROM Registration r WHERE r.player.id = :pid " +
-                                    "AND r.tournament.id = :tid", Registration.class)
-                    .setParameter("pid", playerId)
-                    .setParameter("tid", tournamentId)
-                    .getResultStream()
-                    .findFirst();
+                    .executeUpdate();
+            em.getTransaction().commit();
         }
     }
 }
