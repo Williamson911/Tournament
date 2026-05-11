@@ -24,7 +24,12 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\ST1901-04\\\\Documents\\\\Technifutur\\\\Tournament\\\\src\" -Recurse -Directory -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notmatch 'node_modules|\\\\.angular|target' } | Select-Object FullName)",
       "Bash(grep -rn *)",
       "Bash(grep -n *)",
-      "Bash(echo \"exit=$?\")"
+      "Bash(echo \"exit=$?\")",
+      "Bash(docker compose *)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Program Files/Docker/Docker/resources/**)",
+      "Read(//c/ProgramData/DockerDesktop/**)",
+      "Read(//c/Users/William/AppData/Local/**)"
     ]
   }
 }
