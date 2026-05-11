@@ -171,8 +171,7 @@
                         (max / 2.0) * (1 - Math.cos(c * Math.PI / max))
                 );
 
-                String style = "left:" + (3 * c + "em; top:" + pos + "em; opacity:" + (T / (c * 1.0)) + 0.05 + "; filter: blur(" + (T - 1 - c++) + "px)");
-
+                String style = "left:" + (3 * c + "em; top:" + pos + "em; opacity:" + (T / (c * 1.0)) + 0.05 + "; filter: blur(" + (T - 1 - c++)*0.5 + "px)");
         %>
 
         <a class="endpoint"
