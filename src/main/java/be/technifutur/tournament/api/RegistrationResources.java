@@ -32,7 +32,7 @@ public class RegistrationResources {
     }
 
     @GET
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Get a registration by ID", description = "Retrieves a registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration retrieved successfully" )
     public Response findById(@PathParam("id") Integer id) {
@@ -53,7 +53,7 @@ public class RegistrationResources {
     }
 
     @PUT
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Update a registration", description = "Updates an existing registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration updated successfully")
     public Response update(@PathParam("id") Integer id, Registration registration){
@@ -67,7 +67,7 @@ public class RegistrationResources {
     }
 
     @DELETE
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Delete a registration", description = "Deletes an existing registration by its unique ID.")
     @ApiResponse(responseCode = "204", description = "Registration deleted successfully")
     public Response delete(@PathParam("id") Integer id) {

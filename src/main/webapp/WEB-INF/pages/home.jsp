@@ -70,10 +70,10 @@
         }
 
         .endpoint:hover {
-
             transform: translateY(-1px);
-
             box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+            z-index:10;
+            filter: blur(0px) !important;
         }
 
         .method {
@@ -165,7 +165,14 @@
                 String method = ep.get("method");
                 String path = ep.get("path");
                 String summary = ep.get("summary");
-                String style = "left:" + (3 * c + "em; top:" + c + "em; opacity:" + (T / (c * 1.0)) + 0.05 + "; filter: blur(" + (T - 1 - c++) + "px)");
+
+                int max = 3;
+                int pos = (int)Math.round(
+                        (max / 2.0) * (1 - Math.cos(c * Math.PI / max))
+                );
+
+                String style = "left:" + (3 * c + "em; top:" + pos + "em; opacity:" + (T / (c * 1.0)) + 0.05 + "; filter: blur(" + (T - 1 - c++) + "px)");
+
         %>
 
         <a class="endpoint"
