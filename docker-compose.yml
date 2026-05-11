@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: tournament-postgres
+    environment:
+      POSTGRES_DB: tournament
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: nyhc911
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tournament"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  tomcat:
+    build: .
+    container_name: tournament-tomcat
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: tournament-frontend
+    depends_on:
+      - tomcat
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:

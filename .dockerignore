@@ -1,0 +1,13 @@
+target/
+.idea/
+.git/
+.claude/
+.worktrees/
+.superpowers/
+docs/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+mydata/
+*.iml
+.vscode/
