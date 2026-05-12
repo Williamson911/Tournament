@@ -7,6 +7,7 @@ import be.technifutur.tournament.bl.TournamentService;
 import be.technifutur.tournament.bl.TournamentSimulationService;
 import be.technifutur.tournament.dtl.tournament.TournamentActionRequestDTO;
 import be.technifutur.tournament.dtl.tournament.TournamentIdDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -69,13 +70,18 @@ public class TournamentResource {
                        .build();
     }
 
+    private <T> T getDto(TournamentActionRequestDTO requestDTO, Class<T> clazz) {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(requestDTO.dto(), clazz);
+    }
+
     @POST
     @Operation(summary = "apply an action on tournament(s)")
     public Response apply(TournamentActionRequestDTO requestDTO) {
 
         return (switch (requestDTO.action()) {
             case CREATE -> {
-                CreateTournamentDto dto = (CreateTournamentDto) requestDTO.dto();
+                CreateTournamentDto dto = getDto(requestDTO, CreateTournamentDto.class);
                 var tournament = tournamentService.create(
                         dto.name(), dto.startDate(),
                         dto.registrationEndDate(), dto.maxParticipants());
@@ -83,17 +89,17 @@ public class TournamentResource {
                               .entity(tournament);
             }
             case REGISTER -> {
-                RegisterPlayerDto dto = ((RegisterPlayerDto) requestDTO.dto());
+                RegisterPlayerDto dto = getDto(requestDTO, RegisterPlayerDto.class);
                 var registration = tournamentService.register(dto.tournamentId(), dto.playerId());
                 yield Response.status(Response.Status.CREATED)
                               .entity(registration);
             }
             case GENERATE_BRACKET -> {
-                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
                 yield Response.ok(tournamentService.generateBracket(dto.tournamentId()));
             }
             case LAUNCH_GROUP_STAGE -> {
-                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
                 List<Player> qualifiers = tournamentService.launchGroupStage(dto.tournamentId());
                 yield Response
                         .ok(qualifiers.stream()
@@ -101,15 +107,15 @@ public class TournamentResource {
                                       .toList());
             }
             case SIMULATE_ONE_MATCH -> {
-                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
                 yield Response.ok(simulationService.simulateOneMatch(dto.tournamentId()));
             }
             case SIMULATE_NEXT_ROUND -> {
-                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
                 yield Response.ok(simulationService.simulateNextRound(dto.tournamentId()));
             }
             case RESET -> {
-                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
                 yield Response.ok(tournamentService.resetTournament(dto.tournamentId()));
             }
             default -> Response.status(Response.Status.BAD_REQUEST)
