@@ -54,7 +54,6 @@ public class RegistrationResources {
     }
 
     @PUT
-    @Path("/id/{id}")
     @Consumes("application/json")
     @Produces("application/json")
     @Path("/{id}")
