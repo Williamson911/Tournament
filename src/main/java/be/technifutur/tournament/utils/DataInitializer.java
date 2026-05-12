@@ -130,28 +130,28 @@ public class DataInitializer {
     }
 
 
-    public void initB(EntityManager em) throws IOException {
-
-        em.getTransaction().begin();
-
-        try (InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("scriptSqlTournament.sql")) {
-
-            if (is == null) {
-                throw new RuntimeException("SQL script not found");
-            }
-
-            String sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-
-            for (String stmt : sql.split(";")) {
-                if (!stmt.trim().isEmpty()) {
-                    em.createNativeQuery(stmt).executeUpdate();
-                }
-            }
-        }
-        em.getTransaction().commit();
-
-    }
+//    public void initB(EntityManager em) throws IOException {
+//
+//        em.getTransaction().begin();
+//
+//        try (InputStream is = getClass().getClassLoader()
+//                .getResourceAsStream("scriptSqlTournament.sql")) {
+//
+//            if (is == null) {
+//                throw new RuntimeException("SQL script not found");
+//            }
+//
+//            String sql = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+//
+//            for (String stmt : sql.split(";")) {
+//                if (!stmt.trim().isEmpty()) {
+//                    em.createNativeQuery(stmt).executeUpdate();
+//                }
+//            }
+//        }
+//        em.getTransaction().commit();
+//
+//    }
 
 
 }
