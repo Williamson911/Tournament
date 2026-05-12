@@ -74,11 +74,23 @@ public class DataInitializer {
                     "Bob", "Katarina Alves", "Shaheen", "Josie Rizal"
             );
 
+            List<String> usernames = List.of(
+                    "ShadowFist", "IronKnuckle", "VenomStrike", "MidnightRonin",
+                    "BloodPhoenix", "StormBreaker", "DragonFury", "SteelTalon",
+                    "VoidWalker", "ThunderClap", "CrimsonReaper", "NightHawk",
+                    "ApexPredator", "SilverWolf", "BlackLotus", "PhantomBlade",
+                    "TitanCrusher", "RogueSamurai", "FrostBite", "EmberKing",
+                    "GhostWraith", "AshenViper", "KaijuRoar", "NeonSpecter",
+                    "CobraStrike", "HyperNova", "VortexX", "ChromeFalcon",
+                    "ZeroPulse", "WildKarma", "OmegaRise", "LunarBlade"
+            );
+
             List<Player> players = new ArrayList<>();
             for (int i = 1; i <= 32; i++) {
+                String username = usernames.get(i - 1);
                 Player p = Player.builder()
-                        .username("player" + i)
-                        .email("player" + i + "@test.be")
+                        .username(username)
+                        .email(username.toLowerCase() + "@test.be")
                         .elo(1200)
                         .age(20 + (i % 20))
                         .fighterMain(fighterMap.get(fighterNames.get(i - 1)))

@@ -1,66 +1,239 @@
 @use '../../../styles/tekken-tokens' as t;
 
-.champion-card {
-  position: relative; width: 200px; min-height: 180px;
-  transform: skewX(t.$slot-skew);
-  background: linear-gradient(135deg, rgba(38, 0, 0, 0.99) 0%, rgba(14, 0, 0, 0.99) 100%);
-  border: 1px solid rgba(200, 0, 0, 0.72);
-  box-shadow: 0 0 50px rgba(200, 0, 0, 0.22), inset 0 0 35px rgba(90, 0, 0, 0.10), -4px 0 0 rgba(220, 0, 0, 0.62);
-  overflow: hidden; cursor: pointer;
-  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+.champion-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: rgba(8, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: overlay-fade-in 0.45s ease-out both;
+}
 
-  &::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; z-index: 4;
-    background: linear-gradient(90deg, rgba(160, 0, 0, 0.5), rgba(255, 50, 50, 0.95), rgba(220, 0, 0, 0.7), transparent);
-    box-shadow: 0 0 14px rgba(255, 0, 0, 0.80);
-  }
+.champion-close {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: t.$font-display;
+  font-size: 24px;
+  line-height: 1;
+  color: rgba(255, 220, 130, 0.95);
+  background: rgba(20, 6, 0, 0.7);
+  border: 1.5px solid rgba(255, 200, 80, 0.65);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 0 16px rgba(255, 180, 60, 0.35);
 
   &:hover {
-    transform: skewX(t.$slot-skew) scale(1.04);
-    border-color: t.$color-hover-blue !important;
-    box-shadow: 0 0 40px t.$color-hover-blue-glow, inset 0 0 20px rgba(0, 60, 200, 0.18) !important;
+    transform: scale(1.12) rotate(90deg);
+    background: rgba(60, 20, 0, 0.85);
+    border-color: rgba(255, 240, 160, 1);
+    color: #fff;
+    box-shadow: 0 0 28px rgba(255, 200, 80, 0.85);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 240, 160, 0.9);
+    outline-offset: 3px;
   }
 }
 
-.champion-portrait {
-  position: absolute; inset: 0; overflow: hidden;
-
-  img {
-    width: 110%; height: 100%; object-fit: cover; object-position: top center;
-    opacity: 0.28; filter: saturate(0.55) contrast(1.35);
-    transform: skewX(12deg) translateX(-5%) scale(1.1); transform-origin: top right;
-  }
+.champion-aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(255, 200, 60, 0.28) 0%, rgba(255, 100, 0, 0.1) 30%, transparent 60%);
 
   &::before {
-    content: ''; position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(180deg, rgba(20, 0, 0, 0.25) 0%, rgba(10, 0, 0, 0.85) 100%);
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background: conic-gradient(from 0deg at 50% 50%,
+      transparent 0deg, rgba(255, 215, 80, 0.25) 25deg, transparent 60deg,
+      transparent 120deg, rgba(255, 215, 80, 0.25) 145deg, transparent 180deg,
+      transparent 240deg, rgba(255, 215, 80, 0.25) 265deg, transparent 300deg);
+    animation: aura-rotate 14s linear infinite;
+    filter: blur(10px);
+  }
+}
+
+.champion-stack {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  animation: stack-pop-in 0.7s cubic-bezier(.2, .9, .2, 1.15) both;
+}
+
+.champion-title {
+  font-family: t.$font-display;
+  font-size: 86px;
+  letter-spacing: 22px;
+  margin-right: -22px;
+  background: linear-gradient(180deg, #fffbe0 0%, #ffe785 25%, #ffb000 65%, #8a5500 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter:
+    drop-shadow(0 0 22px rgba(255, 200, 80, 0.9))
+    drop-shadow(0 6px 10px rgba(0, 0, 0, 0.85));
+  text-transform: uppercase;
+  animation: title-glow 2.6s ease-in-out infinite;
+  line-height: 1;
+}
+
+.champion-frame {
+  position: relative;
+  padding: 5px;
+  border-radius: 4px;
+  background: linear-gradient(135deg,
+    #fff5b8 0%,
+    #ffd700 18%,
+    #ffa800 40%,
+    #b87a00 55%,
+    #ffcc44 75%,
+    #fff5b8 100%);
+  background-size: 200% 200%;
+  box-shadow:
+    0 0 70px rgba(255, 200, 50, 0.65),
+    0 0 140px rgba(255, 150, 0, 0.4),
+    0 14px 40px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 220, 0.85);
+  animation: frame-shimmer 5s ease-in-out infinite;
+}
+
+.champion-card {
+  position: relative;
+  width: 360px;
+  background: linear-gradient(135deg, rgba(48, 10, 10, 0.99) 0%, rgba(18, 4, 4, 0.99) 100%);
+  border: 1px solid rgba(255, 200, 80, 0.35);
+  overflow: hidden;
+}
+
+.champion-glare {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -40%;
+  width: 35%;
+  background: linear-gradient(100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 35%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.18) 65%,
+    transparent 100%);
+  transform: skewX(-22deg);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 5;
+  animation: glare-sweep 4s ease-in-out infinite;
+}
+
+.champion-portrait {
+  position: relative;
+  width: 100%;
+  height: 290px;
+  overflow: hidden;
+
+  img {
+    width: 100%; height: 100%; object-fit: cover; object-position: top center;
+    filter: saturate(1.15) contrast(1.1);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(20, 4, 4, 0.6) 75%, rgba(18, 4, 4, 0.98) 100%);
   }
 }
 
 .champion-inner {
-  transform: skewX(12deg); position: relative; z-index: 2;
-  padding: 20px 16px 20px 20px; text-align: center;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px 24px;
+  text-align: center;
+  margin-top: -52px;
 }
 
 .champion-label {
-  font-family: t.$font-display; font-size: 10px; letter-spacing: 6px;
-  color: rgba(210, 80, 80, 0.60); margin-bottom: 8px;
+  font-family: t.$font-display;
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: rgba(255, 200, 100, 0.85);
+  margin-bottom: 12px;
+  text-transform: uppercase;
 }
 
 .champion-player {
-  font-family: t.$font-display; font-size: 26px; letter-spacing: 2px; line-height: 1.05;
-  background: linear-gradient(180deg, #fff 0%, #ffbbbb 35%, #ff3333 75%, #cc0000 100%);
+  font-family: t.$font-display;
+  font-size: 38px;
+  letter-spacing: 3px;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #fff 0%, #fff8c5 35%, #ffd700 75%, #b87a00 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  filter: drop-shadow(0 0 10px rgba(200, 0, 0, 0.55));
+  filter: drop-shadow(0 0 14px rgba(255, 200, 50, 0.7));
+  text-transform: uppercase;
 }
 
 .champion-fighter {
-  font-family: t.$font-display; font-size: 11px; letter-spacing: 3px;
-  color: rgba(200, 140, 140, 0.75); margin-top: 4px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); display: block;
+  font-family: t.$font-display;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: rgba(255, 220, 180, 0.85);
+  margin-top: 6px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+  display: block;
 }
 
 .champion-sub {
-  font-size: 9px; letter-spacing: 3px;
-  color: rgba(200, 70, 70, 0.50); margin-top: 8px; text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: rgba(255, 180, 80, 0.6);
+  margin-top: 14px;
+  text-transform: uppercase;
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes stack-pop-in {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-3deg); }
+  60%  { opacity: 1; transform: scale(1.06) rotate(0deg); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes title-glow {
+  0%, 100% { filter: drop-shadow(0 0 22px rgba(255, 200, 80, 0.9))  drop-shadow(0 6px 10px rgba(0, 0, 0, 0.85)); }
+  50%      { filter: drop-shadow(0 0 38px rgba(255, 230, 120, 1))    drop-shadow(0 6px 10px rgba(0, 0, 0, 0.85)); }
+}
+
+@keyframes glare-sweep {
+  0%   { left: -40%; }
+  55%  { left: 110%; }
+  100% { left: 110%; }
+}
+
+@keyframes aura-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes frame-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
 }

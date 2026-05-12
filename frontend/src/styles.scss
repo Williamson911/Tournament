@@ -5,9 +5,12 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+app-root { display: block; }
+
 body {
   min-height: 100vh;
-  background-image: url('https://www.gamewallpapers.com/wallpapers_slechte_compressie/wallpaper_tekken_8_01_1920x1080.jpg');
+  overflow-x: hidden;
+  background-image: url('../images/kazuya-mishima-jin-3840x2160-14779.jpeg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -19,8 +22,87 @@ body {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(4, 0, 0, 0.72);
+    background: rgba(4, 0, 0, 0.32);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     pointer-events: none;
     z-index: 0;
+    animation: blur-vibrate 3.2s ease-in-out infinite;
   }
+}
+
+@keyframes blur-vibrate {
+  0%, 100% { backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); }
+  25%      { backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+  50%      { backdrop-filter: blur(8.5px); -webkit-backdrop-filter: blur(8.5px); }
+  75%      { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+}
+
+@keyframes ember-rise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0; }
+  8%   { opacity: 1; }
+  60%  { opacity: 0.9; }
+  100% { transform: translate3d(var(--ember-drift, 20px), -110vh, 0) scale(1.1); opacity: 0; }
+}
+
+.tekken-embers {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  span {
+    position: absolute;
+    bottom: -12px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 220, 130, 1) 0%, rgba(255, 100, 30, 0.9) 40%, rgba(180, 30, 0, 0) 100%);
+    box-shadow: 0 0 8px rgba(255, 120, 40, 0.9), 0 0 16px rgba(220, 50, 20, 0.7);
+    animation: ember-rise 9s linear infinite;
+    will-change: transform, opacity;
+  }
+
+  span:nth-child(1)  { left: 6%;  animation-duration: 8s;  animation-delay: 0s;    --ember-drift: 25px; }
+  span:nth-child(2)  { left: 14%; animation-duration: 11s; animation-delay: -2s;   --ember-drift: -18px; width: 3px; height: 3px; }
+  span:nth-child(3)  { left: 22%; animation-duration: 7.5s;animation-delay: -5s;   --ember-drift: 30px; }
+  span:nth-child(4)  { left: 31%; animation-duration: 10s; animation-delay: -1s;   --ember-drift: -22px; width: 5px; height: 5px; }
+  span:nth-child(5)  { left: 39%; animation-duration: 9s;  animation-delay: -4s;   --ember-drift: 12px; }
+  span:nth-child(6)  { left: 47%; animation-duration: 12s; animation-delay: -7s;   --ember-drift: -28px; width: 3px; height: 3px; }
+  span:nth-child(7)  { left: 55%; animation-duration: 8.5s;animation-delay: -3s;   --ember-drift: 18px; }
+  span:nth-child(8)  { left: 63%; animation-duration: 10.5s;animation-delay: -6s;  --ember-drift: -15px; width: 5px; height: 5px; }
+  span:nth-child(9)  { left: 71%; animation-duration: 9.5s; animation-delay: -2.5s; --ember-drift: 22px; }
+  span:nth-child(10) { left: 79%; animation-duration: 7s;  animation-delay: -8s;   --ember-drift: -10px; width: 3px; height: 3px; }
+  span:nth-child(11) { left: 87%; animation-duration: 11.5s;animation-delay: -1.5s; --ember-drift: 26px; }
+  span:nth-child(12) { left: 94%; animation-duration: 8s;  animation-delay: -4.5s; --ember-drift: -20px; width: 4px; height: 4px; }
+  span:nth-child(13) { left: 18%; animation-duration: 13s; animation-delay: -10s;  --ember-drift: 14px; }
+  span:nth-child(14) { left: 50%; animation-duration: 6.5s;animation-delay: -3.5s; --ember-drift: -25px; width: 3px; height: 3px; }
+  span:nth-child(15) { left: 76%; animation-duration: 9s;  animation-delay: -7.5s; --ember-drift: 20px; }
+}
+
+@keyframes screen-shake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-4px, 2px); }
+  20% { transform: translate(4px, -2px); }
+  30% { transform: translate(-3px, -3px); }
+  40% { transform: translate(3px, 3px); }
+  50% { transform: translate(-4px, 1px); }
+  60% { transform: translate(4px, 1px); }
+  70% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  90% { transform: translate(-1px, 0); }
+}
+
+@keyframes fight-flash {
+  0%   { opacity: 0; }
+  15%  { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes fight-punch {
+  0%   { transform: scale(1); box-shadow: 0 0 0 rgba(255, 30, 30, 0); }
+  25%  { transform: scale(1.18); box-shadow: 0 0 60px rgba(255, 60, 60, 0.95), 0 0 120px rgba(255, 0, 0, 0.55); }
+  60%  { transform: scale(0.96); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(255, 30, 30, 0); }
 }

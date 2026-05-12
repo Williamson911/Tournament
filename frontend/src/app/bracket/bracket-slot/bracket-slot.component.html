@@ -1,16 +1,19 @@
 <div class="slot-wrapper"
+     [class.slot-1]="slotIndex() === 1"
+     [class.slot-2]="slotIndex() === 2"
      [class.winner]="participant()?.isWinner"
      [class.loser]="matchComplete() && participant() !== null && !participant()!.isWinner && !participant()!.isEliminated"
-     [class.eliminated]="participant()?.isEliminated">
-  <div class="slot-portrait">
-    @if (participant()) {
-      <img [src]="participant()!.fighterImageUrl" [alt]="participant()!.fighterName" />
-      <div class="portrait-label">{{ participant()!.fighterName }}</div>
-    }
-  </div>
-  <div class="slot-content">
-    <span class="slot-rank">{{ seed() }}</span>
+     [class.eliminated]="participant()?.isEliminated"
+     [class.fx-just-won]="justResolved() && participant()?.isWinner"
+     [class.fx-just-lost]="justResolved() && participant() !== null && !participant()!.isWinner"
+     [class.fx-arriving]="justArrived()">
+  @if (participant()) {
+    <img class="slot-bg" [src]="participant()!.fighterImageUrl" [alt]="participant()!.fighterName" />
+    <div class="slot-score-badge">{{ participant()!.score ?? '' }}</div>
+  }
+  <div class="slot-name-strip">
     <span class="slot-name">{{ participant()?.playerName ?? '???' }}</span>
-    <span class="slot-score">{{ participant()?.score ?? '' }}</span>
   </div>
+  <span class="fx-slash" aria-hidden="true"></span>
+  <span class="fx-electric" aria-hidden="true"></span>
 </div>

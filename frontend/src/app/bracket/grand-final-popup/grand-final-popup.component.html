@@ -1,0 +1,31 @@
+@if (!closed() && grandFinal().participant1 !== null && grandFinal().participant2 !== null && !grandFinal().isComplete) {
+  @let p1 = grandFinal().participant1!;
+  @let p2 = grandFinal().participant2!;
+  <div class="gf-overlay" role="dialog" aria-label="Grand Final">
+    <div class="gf-aura" aria-hidden="true"></div>
+    <div class="gf-stack">
+      <div class="gf-title">GRAND FINAL</div>
+      <div class="gf-frame">
+        <button class="gf-close" type="button" aria-label="Fermer" (click)="close()">×</button>
+        <div class="gf-card">
+          <div class="gf-fighter">
+            <div class="gf-portrait">
+              <img [src]="p1.fighterImageUrl" [alt]="p1.fighterName" />
+            </div>
+            <div class="gf-name">{{ p1.playerName }}</div>
+            <div class="gf-fighter-name">{{ p1.fighterName }}</div>
+          </div>
+          <div class="gf-vs">VS</div>
+          <div class="gf-fighter">
+            <div class="gf-portrait">
+              <img [src]="p2.fighterImageUrl" [alt]="p2.fighterName" />
+            </div>
+            <div class="gf-name">{{ p2.playerName }}</div>
+            <div class="gf-fighter-name">{{ p2.fighterName }}</div>
+          </div>
+          <div class="gf-glare" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

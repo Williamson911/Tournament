@@ -1,52 +1,41 @@
 package be.technifutur.tournament.bl;
 
+import be.technifutur.tournament.utils.BracketStringUtil;
+import be.technifutur.tournament.utils.HexConverter;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class BracketRoutingService {
 
-    public record RoutingResult(String nextWinnerPosition, String nextLoserPosition) {}
+    public record RoutingResult(String nextWinnerPosition,
+                                String nextLoserPosition) {
+    }
 
     /**
      * Computes next bracket positions from a given match position.
      * totalPlayers must be a power of 2 (4, 8, 16...).
      */
     public RoutingResult compute(String bracketPosition, int totalPlayers) {
-        int wbRounds = (int)(Math.log(totalPlayers) / Math.log(2));
-        int lbRounds = 2 * (wbRounds - 1);
 
-        if (bracketPosition.startsWith("GF")) {
-            return new RoutingResult(null, null);
-        }
-
-        if (bracketPosition.startsWith("W")) {
-            int round = Character.getNumericValue(bracketPosition.charAt(1));
-            int match = Character.getNumericValue(bracketPosition.charAt(2));
-
-            if (round == wbRounds) {
-                return new RoutingResult("GF1", "L" + lbRounds + "1");
+        var bracket = BracketStringUtil.extractBracketInfo(bracketPosition);
+        if (bracket != null) {
+            if ("GF".equals(bracket.prefix())) {
+                return new RoutingResult(null, null);
             }
 
-            String nextWinner = "W" + (round + 1) + (int)Math.ceil(match / 2.0);
-            String nextLoser = (round == 1)
-                ? "L1" + (int)Math.ceil(match / 2.0)
-                : "L" + (round * 2 - 2) + match;
-            return new RoutingResult(nextWinner, nextLoser);
-        }
+            int round = bracket.round();
+            int match = bracket.match();
 
-        if (bracketPosition.startsWith("L")) {
-            int round = Character.getNumericValue(bracketPosition.charAt(1));
-            int match = Character.getNumericValue(bracketPosition.charAt(2));
+            if (bracket.prefix()
+                       .startsWith("W")) {
+                return new BracketRoutingCalculator(round,match,totalPlayers).routingResultOfWinners();
+            } else if (bracket.prefix()
+                              .startsWith("L")) {
 
-            if (round == lbRounds) {
-                return new RoutingResult("GF1", null);
+                return new BracketRoutingCalculator(round,match,totalPlayers).routingResultOfLosers();
             }
-
-            String nextWinner = (round % 2 == 1)
-                ? "L" + (round + 1) + match
-                : "L" + (round + 1) + (int)Math.ceil(match / 2.0);
-            return new RoutingResult(nextWinner, null);
         }
+
 
         throw new IllegalArgumentException("Unknown bracket position: " + bracketPosition);
     }

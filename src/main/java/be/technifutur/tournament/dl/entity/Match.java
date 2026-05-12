@@ -53,11 +53,11 @@ public class Match {
     private LocalDateTime finishedAt;
 
     @Getter @Setter
-    @Column(name = "player1_score", nullable = false)
+    @Column(name = "player1_score")
     private Integer player1Score;
 
     @Getter @Setter
-    @Column(name = "player2_score", nullable = false)
+    @Column(name = "player2_score")
     private Integer player2Score;
 
     @Getter @Setter
@@ -67,12 +67,12 @@ public class Match {
 
     @Getter @Setter
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "id_player1", nullable = false)
+    @JoinColumn(name = "id_player1")
     private Player player1;
 
     @Getter @Setter
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "id_player2", nullable = false)
+    @JoinColumn(name = "id_player2")
     private Player player2;
 
     @Getter @Setter

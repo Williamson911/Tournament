@@ -41,11 +41,18 @@ public class TournamentService {
                 .orElseThrow(() -> new NotFoundException("Tournament not found"));
     }
 
-    public Tournament update(int id, String name, LocalDateTime startDate) {
+    public Tournament update(int id, String name, LocalDateTime startDate,
+                             LocalDateTime registrationEndDate, Integer maxParticipants) {
         Tournament t = tournamentDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        if (maxParticipants != null && maxParticipants < 1)
+            throw new BadRequestException("maxParticipants must be at least 1");
+        if (registrationEndDate != null && startDate != null && registrationEndDate.isAfter(startDate))
+            throw new BadRequestException("registrationEndDate must be before startDate");
         t.setName(name);
         t.setStartDate(startDate);
+        t.setRegistrationEndDate(registrationEndDate);
+        t.setMaxParticipants(maxParticipants);
         tournamentDAO.update(t);
         return t;
     }
@@ -56,9 +63,17 @@ public class TournamentService {
         tournamentDAO.delete(id);
     }
 
-    public Tournament create(String name, LocalDateTime startDate) {
+    public Tournament create(String name, LocalDateTime startDate,
+                             LocalDateTime registrationEndDate, Integer maxParticipants) {
+        if (maxParticipants != null && maxParticipants < 1)
+            throw new BadRequestException("maxParticipants must be at least 1");
+        if (registrationEndDate != null && startDate != null && registrationEndDate.isAfter(startDate))
+            throw new BadRequestException("registrationEndDate must be before startDate");
         Tournament t = Tournament.builder()
-                .name(name).startDate(startDate).status(TournamentStatus.DRAFT).build();
+                .name(name).startDate(startDate)
+                .registrationEndDate(registrationEndDate)
+                .maxParticipants(maxParticipants)
+                .status(TournamentStatus.DRAFT).build();
         tournamentDAO.save(t);
         return t;
     }
@@ -67,9 +82,14 @@ public class TournamentService {
         Tournament t = tournamentDAO.findById(tournamentId)
                 .orElseThrow(() -> new NotFoundException("Tournament not found"));
         if (t.getStatus() != TournamentStatus.DRAFT && t.getStatus() != TournamentStatus.OPEN)
-            throw new BadRequestException("Registration is closed for this tournament");
-        if (registrationDAO.existsByPlayerIdAndTournamentId(playerId, tournamentId))
+            throw new BadRequestException("Tournament has already started");
+        if (t.getRegistrationEndDate() != null && LocalDateTime.now().isAfter(t.getRegistrationEndDate()))
+            throw new BadRequestException("Registration period has ended");
+        if (registrationDAO.existsByPlayerAndTournament(playerId, tournamentId))
             throw new WebApplicationException("Player already registered", 409);
+        if (t.getMaxParticipants() != null
+                && registrationDAO.countByTournament(tournamentId) >= t.getMaxParticipants())
+            throw new BadRequestException("Tournament has reached its maximum number of participants");
         Player player = playerDAO.findById(playerId)
                 .orElseThrow(() -> new NotFoundException("Player not found"));
         Registration reg = Registration.builder()
@@ -79,6 +99,10 @@ public class TournamentService {
     }
 
     public void unregister(int tournamentId, int playerId) {
+        Tournament t = tournamentDAO.findById(tournamentId)
+                .orElseThrow(() -> new NotFoundException("Tournament not found"));
+        if (t.getStatus() != TournamentStatus.DRAFT && t.getStatus() != TournamentStatus.OPEN)
+            throw new BadRequestException("Cannot unregister: tournament has already started");
         Registration reg = registrationDAO.findByPlayerAndTournament(playerId, tournamentId)
                 .orElseThrow(() -> new NotFoundException("Registration not found"));
         registrationDAO.delete(reg.getId());

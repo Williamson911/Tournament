@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { MatchParticipant } from '../../models/bracket.models';
 
 @Component({
@@ -8,4 +8,7 @@ import { MatchParticipant } from '../../models/bracket.models';
 })
 export class ChampionCardComponent {
   champion = input.required<MatchParticipant>();
+  closed = signal(false);
+
+  close(): void { this.closed.set(true); }
 }

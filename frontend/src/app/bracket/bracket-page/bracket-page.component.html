@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" [class.fighting]="fighting()">
   @if (loading()) {
     <div class="state-msg">Chargement…</div>
   } @else if (error()) {
@@ -18,38 +18,62 @@
     }
 
     @if (!d.hasGroupStage || activeTab() === 'bracket') {
-      <div class="bracket-view">
-        @if (d.status === 'DRAFT') {
-          <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
-            {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+      @if (d.status === 'DRAFT') {
+        <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
+          {{ launching() ? 'En cours…' : 'Lancer les poules' }}
+        </button>
+      }
+      @if (d.status === 'GROUP_STAGE_COMPLETE') {
+        <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
+          {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+        </button>
+      }
+      @if (d.status === 'IN_PROGRESS' && !d.champion) {
+        <div class="action-row">
+          <button class="action-btn fight-btn" [class.punching]="fighting()"
+                  [disabled]="simulating()" (click)="simulateRound()">
+            @if (simulating()) {
+              En cours…
+            } @else {
+              Fight <span class="key-hint">(F)</span>
+            }
           </button>
-        }
-        @if (d.status === 'GROUP_STAGE_COMPLETE') {
-          <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
-            {{ generating() ? 'En cours…' : 'Générer le bracket' }}
+          <button class="action-btn fight-btn" [class.punching]="fighting()"
+                  [disabled]="simulating()" (click)="simulateMatch()">
+            @if (simulating()) {
+              En cours…
+            } @else {
+              Combat <span class="key-hint">(C)</span>
+            }
           </button>
-        }
-        @if (d.status === 'IN_PROGRESS' && !d.champion) {
-          <button class="action-btn" [disabled]="simulating()" (click)="simulateTournament()">
-            {{ simulating() ? 'En cours…' : 'Commencer le tournoi' }}
-          </button>
-        }
+        </div>
+      }
+      <div class="bracket-clipper" #bracketClipperRef>
+        <div class="bracket-view" #bracketViewRef
+             [style.transform]="'translateX(' + (-scrollX()) + 'px)'">
+          <app-bracket-layout #bracketLayoutRef
+            [winnersBracket]="d.winnersBracket"
+            [losersBracket]="d.losersBracket" />
 
-        <app-bracket-layout #bracketLayoutRef
-          [winnersBracket]="d.winnersBracket"
-          [losersBracket]="d.losersBracket" />
+          @if (d.grandFinal) {
+            <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
+            <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
+                             [style.margin-top.px]="gfMarginTop()" />
+          }
 
-        @if (d.grandFinal) {
-          <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
-          <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
-                           [style.margin-top.px]="gfMarginTop()" />
-        }
-
-        @if (d.champion) {
-          <app-bracket-connector [matchCount]="1" />
-          <app-champion-card [champion]="d.champion" />
-        }
+        </div>
       </div>
+      <div class="sticky-scrollbar" #stickyScrollRef>
+        <div class="sticky-scrollbar-inner" [style.width.px]="contentWidth()"></div>
+      </div>
+    }
+
+    @if (d.grandFinal && !d.champion) {
+      <app-grand-final-popup [grandFinal]="d.grandFinal" />
+    }
+
+    @if (d.champion) {
+      <app-champion-card [champion]="d.champion" />
     }
 
     @if (d.hasGroupStage && activeTab() === 'groups') {

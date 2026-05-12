@@ -1,15 +1,16 @@
 package be.technifutur.tournament.api;
 
 
-import be.technifutur.tournament.dal.TournamentDAO;
-import be.technifutur.tournament.dl.entity.Tournament;
 import be.technifutur.tournament.dtl.*;
 import be.technifutur.tournament.dl.entity.Player;
 import be.technifutur.tournament.bl.TournamentService;
 import be.technifutur.tournament.bl.TournamentSimulationService;
+import be.technifutur.tournament.dtl.tournament.TournamentActionRequestDTO;
+import be.technifutur.tournament.dtl.tournament.TournamentIdDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,43 +18,31 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Tag(name ="Tournament", description = "crud tournament")
-@Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "Tournament", description = "crud tournament")
+@ApplicationScoped
+@Path("/tournaments")
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/tournamentResource")
+@Consumes(MediaType.APPLICATION_JSON)
 public class TournamentResource {
 
-    @Inject TournamentService tournamentService;
-    @Inject TournamentSimulationService simulationService;
     @Inject
-    private TournamentDAO tournamentDAO;
-
-    @POST
-    @Operation(summary = "Create tournament")
-    @ApiResponse(responseCode = "201", description = "Tournament created")
-
-    public Response create(CreateTournamentDto dto) {
-        var tournament = tournamentService.create(dto.name(), dto.startDate());
-        return Response.status(Response.Status.CREATED).entity(tournament).build();
-    }
+    TournamentService tournamentService;
+    @Inject
+    TournamentSimulationService simulationService;
 
     @GET
     @Operation(summary = "Get all tournament")
-    public Response findAll(){
-        List<Tournament> allTournaments = tournamentDAO.findAll();
-
-        return Response.ok()
-                .entity(allTournaments)
-                .build();
+    public Response findAll() {
+        return Response.ok(tournamentService.findAll())
+                       .build();
     }
 
     @GET
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Get tournament by id")
-    public Response findByName(@PathParam("id") Integer id){
-        Tournament tournament = tournamentDAO.findById(id).orElseThrow();
-
-        return Response.ok().entity(tournament).build();
+    public Response findById(@PathParam("id") int id) {
+        return Response.ok(tournamentService.findById(id))
+                       .build();
     }
 
     @PUT
@@ -62,8 +51,11 @@ public class TournamentResource {
     @ApiResponse(responseCode = "200", description = "Tournament updated")
     @ApiResponse(responseCode = "404", description = "Tournament not found")
     public Response update(@PathParam("id") int id, CreateTournamentDto dto) {
-        var updated = tournamentService.update(id, dto.name(), dto.startDate());
-        return Response.ok(updated).build();
+        var updated = tournamentService.update(
+                id, dto.name(), dto.startDate(),
+                dto.registrationEndDate(), dto.maxParticipants());
+        return Response.ok(updated)
+                       .build();
     }
 
     @DELETE
@@ -73,59 +65,71 @@ public class TournamentResource {
     @ApiResponse(responseCode = "404", description = "Tournament not found")
     public Response delete(@PathParam("id") int id) {
         tournamentService.delete(id);
-        return Response.noContent().build();
+        return Response.noContent()
+                       .build();
     }
 
     @POST
-    @Path("/{id}/registrations")
-    public Response register(@PathParam("id") int id, RegisterPlayerDto dto) {
-        var registration = tournamentService.register(id, dto.playerId());
-        return Response.status(Response.Status.CREATED).entity(registration).build();
+    @Operation(summary = "apply an action on tournament(s)")
+    public Response apply(TournamentActionRequestDTO requestDTO) {
+
+        return (switch (requestDTO.action()) {
+            case CREATE -> {
+                CreateTournamentDto dto = (CreateTournamentDto) requestDTO.dto();
+                var tournament = tournamentService.create(
+                        dto.name(), dto.startDate(),
+                        dto.registrationEndDate(), dto.maxParticipants());
+                yield Response.status(Response.Status.CREATED)
+                              .entity(tournament);
+            }
+            case REGISTER -> {
+                RegisterPlayerDto dto = ((RegisterPlayerDto) requestDTO.dto());
+                var registration = tournamentService.register(dto.tournamentId(), dto.playerId());
+                yield Response.status(Response.Status.CREATED)
+                              .entity(registration);
+            }
+            case GENERATE_BRACKET -> {
+                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                yield Response.ok(tournamentService.generateBracket(dto.tournamentId()));
+            }
+            case LAUNCH_GROUP_STAGE -> {
+                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                List<Player> qualifiers = tournamentService.launchGroupStage(dto.tournamentId());
+                yield Response
+                        .ok(qualifiers.stream()
+                                      .map(Player::getId)
+                                      .toList());
+            }
+            case SIMULATE_ONE_MATCH -> {
+                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                yield Response.ok(simulationService.simulateOneMatch(dto.tournamentId()));
+            }
+            case SIMULATE_NEXT_ROUND -> {
+                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                yield Response.ok(simulationService.simulateNextRound(dto.tournamentId()));
+            }
+            case RESET -> {
+                TournamentIdDTO dto = ((TournamentIdDTO) requestDTO.dto());
+                yield Response.ok(tournamentService.resetTournament(dto.tournamentId()));
+            }
+            default -> Response.status(Response.Status.BAD_REQUEST)
+                               .entity("Unsupported operation");
+        }).build();
     }
 
     @DELETE
     @Path("/{id}/registrations/{playerId}")
     public Response unregister(@PathParam("id") int id, @PathParam("playerId") int playerId) {
         tournamentService.unregister(id, playerId);
-        return Response.noContent().build();
-    }
-
-    @POST
-    @Path("/{id}/generate-bracket")
-    public Response generateBracket(@PathParam("id") int id) {
-        var data = tournamentService.generateBracket(id);
-        return Response.ok(data).build();
-    }
-
-    @POST
-    @Path("/{id}/launch-group-stage")
-    @Operation(summary = "Run group stage and select qualifiers")
-    public Response launchGroupStage(@PathParam("id") int id) {
-        List<Player> qualifiers = tournamentService.launchGroupStage(id);
-        List<Integer> qualifierIds = qualifiers.stream().map(Player::getId).toList();
-        return Response.ok(qualifierIds).build();
-    }
-
-    @POST
-    @Path("/{id}/simulate-next-round")
-    @Operation(summary = "Auto-simulate one round of ready matches")
-    public Response simulateNextRound(@PathParam("id") int id) {
-        var data = simulationService.simulateNextRound(id);
-        return Response.ok(data).build();
-    }
-
-    @POST
-    @Path("/{id}/reset")
-    @Operation(summary = "Reset tournament to DRAFT (delete matches, restore registrations)")
-    public Response reset(@PathParam("id") int id) {
-        var tournament = tournamentService.resetTournament(id);
-        return Response.ok(tournament).build();
+        return Response.noContent()
+                       .build();
     }
 
     @PUT
     @Path("/{id}/status")
     public Response updateStatus(@PathParam("id") int id, UpdateStatusDto dto) {
         var tournament = tournamentService.updateStatus(id, dto.status());
-        return Response.ok(tournament).build();
+        return Response.ok(tournament)
+                       .build();
     }
 }

@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/registrationResource")
 @Tag(name = "Registration", description = "Gestion des inscriptions")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Path("/registrationResource")
 public class RegistrationResources {
 
     @Inject
@@ -31,9 +34,7 @@ public class RegistrationResources {
     }
 
     @GET
-    @Path("/id/{id}")
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Path("/{id}")
     @Operation(summary = "Get a registration by ID", description = "Retrieves a registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration retrieved successfully" )
     public Response findById(@PathParam("id") Integer id) {
@@ -44,7 +45,6 @@ public class RegistrationResources {
     }
 
     @GET
-    @Produces("application/json")
     @Operation(summary = "Get all registrations", description = "Retrieves all registrations.")
     public Response findAll(){
         List<Registration> allRegistrations = registrationDAO.findAll();
@@ -57,6 +57,7 @@ public class RegistrationResources {
     @Path("/id/{id}")
     @Consumes("application/json")
     @Produces("application/json")
+    @Path("/{id}")
     @Operation(summary = "Update a registration", description = "Updates an existing registration by its unique ID.")
     @ApiResponse(responseCode = "200", description = "Registration updated successfully")
     public Response update(@PathParam("id") Integer id, Registration registration){
@@ -70,7 +71,7 @@ public class RegistrationResources {
     }
 
     @DELETE
-    @Path("/id/{id}")
+    @Path("/{id}")
     @Operation(summary = "Delete a registration", description = "Deletes an existing registration by its unique ID.")
     @ApiResponse(responseCode = "204", description = "Registration deleted successfully")
     public Response delete(@PathParam("id") Integer id) {
