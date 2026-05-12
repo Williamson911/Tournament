@@ -21,7 +21,7 @@ public class HelloResource {
     public String hello() throws IOException {
         EntityManager em = emfProvider.get().createEntityManager();
 
-        new DataInitializer().initB(emfProvider.get().createEntityManager());
+//        new DataInitializer().initB(emfProvider.get().createEntityManager());
 
         return "Hello with " + em + " for persistence unit "+ emfProvider.getPersistenceName();
     }
