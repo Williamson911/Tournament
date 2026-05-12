@@ -170,7 +170,4 @@ public class RegistrationDAO extends CrudDao<Registration, Integer> {
             em.getTransaction().commit();
         }
     }
-
-
-
 }
