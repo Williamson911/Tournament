@@ -85,7 +85,7 @@ public class TournamentService {
             throw new BadRequestException("Tournament has already started");
         if (t.getRegistrationEndDate() != null && LocalDateTime.now().isAfter(t.getRegistrationEndDate()))
             throw new BadRequestException("Registration period has ended");
-        if (registrationDAO.existsByPlayerIdAndTournamentId(playerId, tournamentId))
+        if (registrationDAO.existsByPlayerAndTournament(playerId, tournamentId))
             throw new WebApplicationException("Player already registered", 409);
         if (t.getMaxParticipants() != null
                 && registrationDAO.countByTournament(tournamentId) >= t.getMaxParticipants())
