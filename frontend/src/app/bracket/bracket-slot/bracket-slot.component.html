@@ -1,6 +1,7 @@
 <div class="slot-wrapper"
      [class.slot-1]="slotIndex() === 1"
      [class.slot-2]="slotIndex() === 2"
+     [class.promoted]="!matchComplete() && participant() && promoted()"
      [class.winner]="participant()?.isWinner"
      [class.loser]="matchComplete() && participant() !== null && !participant()!.isWinner && !participant()!.isEliminated"
      [class.eliminated]="participant()?.isEliminated"

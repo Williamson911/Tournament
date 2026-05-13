@@ -16,6 +16,7 @@ import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -29,13 +30,13 @@ public class TournamentSimulationService {
 
     private final Random random = new Random();
 
-    public TournamentBracketDataDto simulateNextRound(int tournamentId) {
+    public TournamentBracketDataDto applyBrawl(int tournamentId, int maxMatches, int ... winnerIds){
         Tournament t = tournamentDAO.findById(tournamentId)
-            .orElseThrow(() -> new NotFoundException("Tournament not found"));
+                                    .orElseThrow(() -> new NotFoundException("Tournament not found"));
         if (t.getStatus() != TournamentStatus.IN_PROGRESS)
             throw new BadRequestException("Tournament must be in IN_PROGRESS status");
 
-        boolean anyResolved = resolveReadyMatches(tournamentId, Integer.MAX_VALUE);
+        boolean anyResolved = resolveReadyMatches(tournamentId, maxMatches, winnerIds);
 
         if (!anyResolved) {
             t.setStatus(TournamentStatus.FINISHED);
@@ -43,25 +44,17 @@ public class TournamentSimulationService {
         }
 
         return bracketService.buildBracketData(tournamentId);
+    }
+
+    public TournamentBracketDataDto simulateNextRound(int tournamentId) {
+        return applyBrawl(tournamentId, Integer.MAX_VALUE);
     }
 
     public TournamentBracketDataDto simulateOneMatch(int tournamentId) {
-        Tournament t = tournamentDAO.findById(tournamentId)
-            .orElseThrow(() -> new NotFoundException("Tournament not found"));
-        if (t.getStatus() != TournamentStatus.IN_PROGRESS)
-            throw new BadRequestException("Tournament must be in IN_PROGRESS status");
-
-        boolean anyResolved = resolveReadyMatches(tournamentId, 1);
-
-        if (!anyResolved) {
-            t.setStatus(TournamentStatus.FINISHED);
-            tournamentDAO.update(t);
-        }
-
-        return bracketService.buildBracketData(tournamentId);
+        return applyBrawl(tournamentId, 1);
     }
 
-    private boolean resolveReadyMatches(int tournamentId, int maxMatches) {
+    private boolean resolveReadyMatches(int tournamentId, int maxMatches, int[] winnerIds) {
         try (EntityManager em = emfProvider.get().createEntityManager()) {
             em.getTransaction().begin();
 
@@ -86,7 +79,13 @@ public class TournamentSimulationService {
             int totalPlayers = countQualifiedOrConfirmed(em, tournamentId);
 
             for (Match m : ready) {
-                int[] scores = randomScores(m.getNumberRounds());
+                int[] scores = winnerIds.length > 0?
+                    winAndLoseScores(m,winnerIds)
+                : randomScores(m.getNumberRounds());
+
+
+                // use the idPlayer1
+
                 Player winner = scores[0] > scores[1] ? m.getPlayer1() : m.getPlayer2();
                 Player loser  = scores[0] > scores[1] ? m.getPlayer2() : m.getPlayer1();
 
@@ -108,6 +107,19 @@ public class TournamentSimulationService {
             em.getTransaction().commit();
             return true;
         }
+    }
+
+    private int[] winAndLoseScores(Match m, int[] winnerIds) {
+        int rounds = m.getNumberRounds();
+
+        int loseScore = Math.max(0, rounds - 1);
+
+        boolean player1Wins = Arrays.stream(winnerIds)
+                                    .anyMatch(id -> id == m.getPlayer1().getId());
+
+        return player1Wins
+                ? new int[]{rounds, loseScore}
+                : new int[]{loseScore, rounds};
     }
 
     private int countQualifiedOrConfirmed(EntityManager em, int tournamentId) {

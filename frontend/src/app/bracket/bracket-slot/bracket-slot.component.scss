@@ -15,7 +15,9 @@
   &::before {
     content: '';
     position: absolute;
-    left: 0; top: 0; bottom: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
     width: 3px;
     background: rgba(100, 0, 0, 0.40);
     z-index: 4;
@@ -25,30 +27,45 @@
     border-color: rgba(220, 0, 0, 0.85);
     box-shadow: 0 0 18px rgba(200, 0, 0, 0.28), inset 0 0 24px rgba(120, 0, 0, 0.12), -3px 0 0 rgba(220, 0, 0, 0.55);
 
-    &::before { background: linear-gradient(180deg, rgba(255, 60, 60, 0.80), rgba(180, 0, 0, 0.60)); }
+    &::before {
+      background: linear-gradient(180deg, rgba(255, 60, 60, 0.80), rgba(180, 0, 0, 0.60));
+    }
 
     &::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       z-index: 4;
       background: linear-gradient(90deg, rgba(180, 0, 0, 0.5), rgba(255, 70, 70, 0.9), rgba(200, 30, 30, 0.7), transparent);
       box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
     }
 
-    .slot-name { color: #fff; text-shadow: 0 0 8px rgba(255, 80, 80, 0.45), 0 1px 3px rgba(0, 0, 0, 0.95); }
-    .slot-score-badge { color: #ff3333; text-shadow: 0 0 14px rgba(255, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 0.95); }
+    .slot-name {
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255, 80, 80, 0.45), 0 1px 3px rgba(0, 0, 0, 0.95);
+    }
+
+    .slot-score-badge {
+      color: #ff3333;
+      text-shadow: 0 0 14px rgba(255, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 0.95);
+    }
   }
 
-  &.loser { opacity: 0.42; }
+  &.loser {
+    opacity: 0.42;
+  }
 
   &.eliminated {
     opacity: 0.42;
+
     &::after {
       content: '✕';
       position: absolute;
-      top: 50%; right: 12px;
+      top: 50%;
+      right: 12px;
       transform: translateY(-50%) skewX(12deg);
       font-size: 22px;
       color: rgba(220, 0, 0, 0.55);
@@ -62,9 +79,36 @@
     box-shadow: 0 0 28px t.$color-hover-blue-glow, 0 0 55px rgba(0, 90, 255, 0.30), inset 0 0 18px rgba(0, 60, 200, 0.18) !important;
     z-index: 10;
 
-    &::before { background: rgba(0, 180, 255, 0.55); }
-    .slot-name { color: #80ddff !important; }
-    .slot-score-badge { color: #00ddff !important; text-shadow: 0 0 14px rgba(0, 200, 255, 0.85), 0 1px 4px rgba(0, 0, 0, 0.95) !important; }
+    &::before {
+      background: rgba(0, 180, 255, 0.55);
+    }
+
+    .slot-name {
+      color: #80ddff !important;
+    }
+
+    .slot-score-badge {
+      color: #00ddff !important;
+      text-shadow: 0 0 14px rgba(0, 200, 255, 0.85), 0 1px 4px rgba(0, 0, 0, 0.95) !important;
+    }
+  }
+
+  &.promoted {
+    border-color: rgb(0 255 39 / 95%) !important;
+    box-shadow: 0 0 28px rgb(0 255 118 / 55%), 0 0 55px rgb(0 255 157 / 30%), inset 0 0 18px rgb(0 200 107 / 18%) !important;
+
+    &::before {
+      background: rgba(0, 180, 255, 0.55);
+    }
+
+    .slot-name {
+      color: #80ff94 !important;
+    }
+
+    .slot-score-badge {
+      color: #11c332 !important;
+      text-shadow: 0 0 14px rgb(0 255 65 / 85%), 0 1px 4px rgba(0, 0, 0, 0.95) !important;
+    }
   }
 }
 
@@ -108,10 +152,10 @@
   align-items: center;
   padding: 0 12px 0 14px;
   background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(8, 0, 0, 0.6) 30%,
-    rgba(8, 0, 0, 0.92) 70%,
-    rgba(0, 0, 0, 0.96) 100%);
+      transparent 0%,
+      rgba(8, 0, 0, 0.6) 30%,
+      rgba(8, 0, 0, 0.92) 70%,
+      rgba(0, 0, 0, 0.96) 100%);
   pointer-events: none;
 }
 
@@ -131,7 +175,8 @@
   transition: color 0.15s;
 }
 
-.fx-slash, .fx-electric {
+.fx-slash,
+.fx-electric {
   position: absolute;
   pointer-events: none;
   opacity: 0;
@@ -144,11 +189,11 @@
   left: -20px;
   width: 22px;
   background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(255, 255, 255, 1) 35%,
-    rgba(255, 80, 80, 1) 50%,
-    rgba(255, 255, 255, 1) 65%,
-    transparent 100%);
+      transparent 0%,
+      rgba(255, 255, 255, 1) 35%,
+      rgba(255, 80, 80, 1) 50%,
+      rgba(255, 255, 255, 1) 65%,
+      transparent 100%);
   filter: drop-shadow(0 0 14px rgba(255, 60, 60, 0.95)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.85));
   mix-blend-mode: screen;
   transform: translateX(0) skewX(-15deg);
@@ -171,6 +216,7 @@
     slot-collide-down 0.65s cubic-bezier(.34, .07, .32, 1.05) both,
     slot-impact-flicker 0.65s ease-out both;
 }
+
 .slot-wrapper.slot-2.fx-just-won,
 .slot-wrapper.slot-2.fx-just-lost {
   animation:
@@ -191,47 +237,141 @@
 }
 
 @keyframes slot-collide-down {
-  0%   { transform: skewX(t.$slot-skew) translateY(0) scale(1); }
-  35%  { transform: skewX(t.$slot-skew) translateY(48px) scale(1.05); }
-  45%  { transform: skewX(t.$slot-skew) translateY(48px) scale(1.05); }
-  100% { transform: skewX(t.$slot-skew) translateY(0) scale(1); }
+  0% {
+    transform: skewX(t.$slot-skew) translateY(0) scale(1);
+  }
+
+  35% {
+    transform: skewX(t.$slot-skew) translateY(48px) scale(1.05);
+  }
+
+  45% {
+    transform: skewX(t.$slot-skew) translateY(48px) scale(1.05);
+  }
+
+  100% {
+    transform: skewX(t.$slot-skew) translateY(0) scale(1);
+  }
 }
 
 @keyframes slot-collide-up {
-  0%   { transform: skewX(t.$slot-skew) translateY(0) scale(1); }
-  35%  { transform: skewX(t.$slot-skew) translateY(-48px) scale(1.05); }
-  45%  { transform: skewX(t.$slot-skew) translateY(-48px) scale(1.05); }
-  100% { transform: skewX(t.$slot-skew) translateY(0) scale(1); }
+  0% {
+    transform: skewX(t.$slot-skew) translateY(0) scale(1);
+  }
+
+  35% {
+    transform: skewX(t.$slot-skew) translateY(-48px) scale(1.05);
+  }
+
+  45% {
+    transform: skewX(t.$slot-skew) translateY(-48px) scale(1.05);
+  }
+
+  100% {
+    transform: skewX(t.$slot-skew) translateY(0) scale(1);
+  }
 }
 
 @keyframes slot-impact-flicker {
-  0%, 100% { filter: brightness(1); }
-  35%      { filter: brightness(1); }
-  42%      { filter: brightness(2.2) saturate(1.5); }
-  55%      { filter: brightness(1.5) saturate(1.2); }
-  75%      { filter: brightness(1); }
+
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  35% {
+    filter: brightness(1);
+  }
+
+  42% {
+    filter: brightness(2.2) saturate(1.5);
+  }
+
+  55% {
+    filter: brightness(1.5) saturate(1.2);
+  }
+
+  75% {
+    filter: brightness(1);
+  }
 }
 
 @keyframes fx-vertical-slash {
-  0%   { opacity: 0; transform: translateX(0) skewX(-15deg); }
-  20%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { opacity: 0; transform: translateX(200px) skewX(-15deg); }
+  0% {
+    opacity: 0;
+    transform: translateX(0) skewX(-15deg);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(200px) skewX(-15deg);
+  }
 }
 
 @keyframes fx-electric-crackle {
-  0%   { opacity: 0; transform: scaleX(0.4); }
-  15%  { opacity: 1; transform: scaleX(1.1); }
-  30%  { opacity: 0.5; transform: scaleX(0.95) translateX(-2px); }
-  45%  { opacity: 1; transform: scaleX(1.05) translateX(2px); }
-  60%  { opacity: 0.55; transform: scaleX(0.98); }
-  75%  { opacity: 1; transform: scaleX(1.02); }
-  100% { opacity: 0; transform: scaleX(1); }
+  0% {
+    opacity: 0;
+    transform: scaleX(0.4);
+  }
+
+  15% {
+    opacity: 1;
+    transform: scaleX(1.1);
+  }
+
+  30% {
+    opacity: 0.5;
+    transform: scaleX(0.95) translateX(-2px);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scaleX(1.05) translateX(2px);
+  }
+
+  60% {
+    opacity: 0.55;
+    transform: scaleX(0.98);
+  }
+
+  75% {
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
 }
 
 @keyframes slot-arrive {
-  0%   { transform: skewX(t.$slot-skew) translateX(-60px) scale(0.85); opacity: 0; filter: brightness(2) drop-shadow(0 0 12px rgba(255, 100, 60, 0.95)); }
-  40%  { opacity: 1; }
-  70%  { transform: skewX(t.$slot-skew) translateX(6px) scale(1.04); filter: brightness(1.4) drop-shadow(0 0 10px rgba(255, 160, 80, 0.7)); }
-  100% { transform: skewX(t.$slot-skew) translateX(0) scale(1); opacity: 1; filter: brightness(1); }
+  0% {
+    transform: skewX(t.$slot-skew) translateX(-60px) scale(0.85);
+    opacity: 0;
+    filter: brightness(2) drop-shadow(0 0 12px rgba(255, 100, 60, 0.95));
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  70% {
+    transform: skewX(t.$slot-skew) translateX(6px) scale(1.04);
+    filter: brightness(1.4) drop-shadow(0 0 10px rgba(255, 160, 80, 0.7));
+  }
+
+  100% {
+    transform: skewX(t.$slot-skew) translateX(0) scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
 }

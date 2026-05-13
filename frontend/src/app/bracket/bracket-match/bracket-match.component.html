@@ -1,7 +1,26 @@
 <div class="match">
-  <app-bracket-slot [participant]="match().participant1" [seed]="1" [matchComplete]="match().isComplete"
-                    [matchId]="match().matchId" [slotIndex]="1" />
+  @let complete = match().isComplete;
+  @let matchId = match().matchId;
+  @let participant1 = match().participant1;
+  @let participant2 = match().participant2;
+
+  <app-bracket-slot
+    (click)="toggleSelectedParticipant(1,participant1!)"
+    [participant]="participant1"
+    [promoted]="promoted1()"
+    [seed]="1"
+    [matchComplete]="complete"
+    [matchId]="matchId"
+    [slotIndex]="1"
+  />
   <div class="vs-divider">VS</div>
-  <app-bracket-slot [participant]="match().participant2" [seed]="2" [matchComplete]="match().isComplete"
-                    [matchId]="match().matchId" [slotIndex]="2" />
+  <app-bracket-slot
+    (click)="toggleSelectedParticipant(2,participant2!)"
+    [participant]="participant2"
+    [promoted]="promoted2()"
+    [seed]="2"
+    [matchComplete]="complete"
+    [matchId]="matchId"
+    [slotIndex]="2"
+  />
 </div>

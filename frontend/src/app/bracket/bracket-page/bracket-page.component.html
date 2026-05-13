@@ -4,31 +4,31 @@
   } @else if (error()) {
     <div class="state-msg error">{{ error() }}</div>
   } @else {
-    @let d = data()!;
-    <app-bracket-title [title]="d.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
+    @let bracketData = data()!;
+    <app-bracket-title [title]="bracketData.tournamentName" subtitle="Iron Fist Tournament · Grand Prix" />
 
-    @if (d.status !== 'DRAFT') {
+    @if (bracketData.status !== 'DRAFT') {
       <button class="reset-btn" [disabled]="resetting()" (click)="resetTournament()">
         {{ resetting() ? 'Reset…' : 'Reset' }}
       </button>
     }
 
-    @if (d.hasGroupStage) {
+    @if (bracketData.hasGroupStage) {
       <app-stage-tabs [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
     }
 
-    @if (!d.hasGroupStage || activeTab() === 'bracket') {
-      @if (d.status === 'DRAFT') {
+    @if (!bracketData.hasGroupStage || activeTab() === 'bracket') {
+      @if (bracketData.status === 'DRAFT') {
         <button class="action-btn" [disabled]="launching()" (click)="launchGroupStage()">
           {{ launching() ? 'En cours…' : 'Lancer les poules' }}
         </button>
       }
-      @if (d.status === 'GROUP_STAGE_COMPLETE') {
+      @if (bracketData.status === 'GROUP_STAGE_COMPLETE') {
         <button class="action-btn" [disabled]="generating()" (click)="generateBracket()">
           {{ generating() ? 'En cours…' : 'Générer le bracket' }}
         </button>
       }
-      @if (d.status === 'IN_PROGRESS' && !d.champion) {
+      @if (bracketData.status === 'IN_PROGRESS' && !bracketData.champion) {
         <div class="action-row">
           <button class="action-btn fight-btn" [class.punching]="fighting()"
                   [disabled]="simulating()" (click)="simulateRound()">
@@ -52,12 +52,12 @@
         <div class="bracket-view" #bracketViewRef
              [style.transform]="'translateX(' + (-scrollX()) + 'px)'">
           <app-bracket-layout #bracketLayoutRef
-            [winnersBracket]="d.winnersBracket"
-            [losersBracket]="d.losersBracket" />
+            [winnersBracket]="bracketData.winnersBracket"
+            [losersBracket]="bracketData.losersBracket" />
 
-          @if (d.grandFinal) {
+          @if (bracketData.grandFinal) {
             <app-bracket-connector [topLineY]="gfTopLineY()" [bottomLineY]="gfBottomLineY()" [svgH]="gfSvgH()" />
-            <app-grand-final #grandFinalRef [grandFinal]="d.grandFinal"
+            <app-grand-final #grandFinalRef [grandFinal]="bracketData.grandFinal"
                              [style.margin-top.px]="gfMarginTop()" />
           }
 
@@ -68,16 +68,16 @@
       </div>
     }
 
-    @if (d.grandFinal && !d.champion) {
-      <app-grand-final-popup [grandFinal]="d.grandFinal" />
+    @if (bracketData.grandFinal && !bracketData.champion) {
+      <app-grand-final-popup [grandFinal]="bracketData.grandFinal" />
     }
 
-    @if (d.champion) {
-      <app-champion-card [champion]="d.champion" />
+    @if (bracketData.champion) {
+      <app-champion-card [champion]="bracketData.champion" />
     }
 
-    @if (d.hasGroupStage && activeTab() === 'groups') {
-      <app-group-stage [groups]="d.groups" />
+    @if (bracketData.hasGroupStage && activeTab() === 'groups') {
+      <app-group-stage [groups]="bracketData.groups" />
     }
   }
 </div>

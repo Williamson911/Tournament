@@ -6,6 +6,7 @@ import be.technifutur.tournament.dl.entity.Player;
 import be.technifutur.tournament.bl.TournamentService;
 import be.technifutur.tournament.bl.TournamentSimulationService;
 import be.technifutur.tournament.dtl.tournament.TournamentActionRequestDTO;
+import be.technifutur.tournament.dtl.tournament.TournamentBrawlDTO;
 import be.technifutur.tournament.dtl.tournament.TournamentIdDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -107,12 +108,20 @@ public class TournamentResource {
                                       .toList());
             }
             case SIMULATE_ONE_MATCH -> {
-                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
+                TournamentBrawlDTO dto = getDto(requestDTO, TournamentBrawlDTO.class);
                 yield Response.ok(simulationService.simulateOneMatch(dto.tournamentId()));
             }
             case SIMULATE_NEXT_ROUND -> {
-                TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);
+                TournamentBrawlDTO dto = getDto(requestDTO, TournamentBrawlDTO.class);
                 yield Response.ok(simulationService.simulateNextRound(dto.tournamentId()));
+            }
+            case APPLY_BRAWL -> {
+                TournamentBrawlDTO dto = getDto(requestDTO, TournamentBrawlDTO.class);
+                yield Response.ok(simulationService.applyBrawl(dto.tournamentId(), Integer.MAX_VALUE, dto.winnerSet()));
+            }
+            case APPLY_DUEL -> {
+                TournamentBrawlDTO dto = getDto(requestDTO, TournamentBrawlDTO.class);
+                yield Response.ok(simulationService.applyBrawl(dto.tournamentId(), 1, dto.winnerSet()));
             }
             case RESET -> {
                 TournamentIdDTO dto = getDto(requestDTO, TournamentIdDTO.class);

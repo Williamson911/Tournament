@@ -11,6 +11,7 @@ export class BracketSlotComponent {
   participant = input<MatchParticipant | null>(null);
   seed = input<number | string>('');
   matchComplete = input<boolean>(false);
+  promoted = input<boolean>(true);
   matchId = input<number | null>(null);
   slotIndex = input<1 | 2 | null>(null);
 
